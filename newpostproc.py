@@ -2,8 +2,7 @@ import sys
 import codecs
 import glob
 
-
-
+threshold = float(sys.argv[3])
 
 def read_file(path):
         return [line.strip("\n").split("\t") for line in codecs.open(path,"r","UTF-8")]
@@ -39,7 +38,6 @@ def normalize(diffs,segmentation):
     return diffs
 
 def getHardSegmentations(diffs, segmentation, matrix):
-    threshold = 0.0
     for i in range(1, len(diffs)):
         if diffs[i] > threshold:
             bucket = getBucket(matrix[i])
