@@ -52,7 +52,7 @@ Command example: python seq2seq/scripts/prepareData.py my_experiment/files/train
 
 1) For training: python3 translate -m my_experiment/setup_file.yaml --train -v (from inside of the seq2seq folder)
 
-2) For generating the alignment files (one for sentence) python3 seq2seq translate -m my_experiment/setup_file.yaml --align my_experiment/files/SOURCE_FILE (same from .yaml file) my_experiment/files/TARGET_FILE --output my_experiments/alignments_folder/
+2) For generating the alignment files (one for sentence): python3 seq2seq translate -m my_experiment/setup_file.yaml --align my_experiment/files/SOURCE_FILE (same from .yaml file) my_experiment/files/TARGET_FILE --output my_experiments/alignments_folder/
 
 * **How to post-process:**
 
@@ -64,5 +64,5 @@ If you used reverse architecture (words as source), you will use the word_discov
 
 * **How to evaluate:**
 
-The file evaluate_segmentation.py receives the gold standard, the generated segmentation, the dictionary file and the output file name. It generates recall, precision and f-score for types and tokens, and also counts the number of words in the most frequent files list (dictionary) that the model was able to discover, the discovered words outside this list, the vocabulary size and number of correct discovered units.
+The file evaluate_segmentation.py receives the gold standard, the generated segmentation, the dictionary file and the output file name. It generates recall, precision and f-score for types and tokens, and it also counts the number of discovered words inside and outside the most frequent files list (dictionary). It also outputs the vocabulary size and number of correct discovered units.
 
