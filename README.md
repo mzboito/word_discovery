@@ -1,4 +1,4 @@
-# word_discovery
+# Unsupervised Word Discovery Using Encoder-Decoder Neural Machine Translation Models
 
 In this repository I gather all the files I used during my masters project in the GETALP research group.
 
