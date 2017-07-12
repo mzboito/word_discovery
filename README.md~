@@ -46,6 +46,6 @@ The scripts in this folder are used to generate the loss and BLEU score curves, 
 
 4) Generate your files vocabulary. Command example: python seq2seq/scripts/prepareData.py my_experiment/files/train (my training file without the .fr ending) fr (shared ending for train and dev files) my_experiment/file/ (where the vocabulary file will be stored) --no-tokenize --dev-prefix my_experiment/files/dev (my development file without the .fr ending)
 
-* How to execute the NMT model:
+
 
 
