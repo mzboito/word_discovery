@@ -66,3 +66,6 @@ If you used reverse architecture (words as source), you will use the word_discov
 
 The file evaluate_segmentation.py receives the gold standard, the generated segmentation, the dictionary file and the output file name. It generates recall, precision and f-score for types and tokens, and it also counts the number of discovered words inside and outside the most frequent files list (dictionary). It also outputs the vocabulary size and number of correct discovered units.
 
+# Reference:
+
+Marcely Zanon Boito,  Laurent Besacier,  and Aline Villavicencio. Unsupervised worddiscovery using attentional encoder-decoder models.   In WiNLP (Women and Underrepresented Minorities in Natural Language Processing) Workshop ACL 2017, Vancouver, Canada.
