@@ -2,7 +2,7 @@ import sys
 import codecs
 import glob
 
-THRESHOLD = sys.argv[3]
+THRESHOLD = float(sys.argv[3])
 
 def read_file(path):
         return [line.strip("\n").split("\t") for line in codecs.open(path,"r","UTF-8")]
