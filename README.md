@@ -50,9 +50,9 @@ Command example: python seq2seq/scripts/prepareData.py my_experiment/files/train
 
 * **How to execute the NMT model:**
 
-1) For training: python3 translate -m my_experiment/setup_file.yaml --train -v (from inside of the seq2seq folder)
+1) For training: python3 -m translate my_experiment/setup_file.yaml --train -v (from inside of the seq2seq folder)
 
-2) For generating the alignment files (one for sentence): python3 seq2seq translate -m my_experiment/setup_file.yaml --align my_experiment/files/SOURCE_FILE (same from .yaml file) my_experiment/files/TARGET_FILE --output my_experiments/alignments_folder/
+2) For generating the alignment files (one for sentence): python3 seq2seq -m translate my_experiment/setup_file.yaml --align my_experiment/files/SOURCE_FILE (same from .yaml file) my_experiment/files/TARGET_FILE --output my_experiments/alignments_folder/
 
 * **How to post-process:**
 
@@ -69,3 +69,5 @@ The file evaluate_segmentation.py receives the gold standard, the generated segm
 # Reference:
 
 Marcely Zanon Boito,  Laurent Besacier,  and Aline Villavicencio. Unsupervised worddiscovery using attentional encoder-decoder models.   In WiNLP (Women and Underrepresented Minorities in Natural Language Processing) Workshop ACL 2017, Vancouver, Canada.
+
+Marcely Zanon Boito, Aléxandre Berard, Laurent Besacier and Aline Villavicencio. Unwritten Languages Demand Attention Too! Word Discovery with Encoder-Decoder Models, In ASRU (Automatic Speech Recognition and Undestanding), IEEE Workshop 2017, Okinawa, Japan.
