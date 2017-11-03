@@ -60,7 +60,7 @@ If you used reverse architecture (words as source), you will use the word_discov
 
 1) Smoothing (optional): duongPostProcessing.py and reverse_duongPostProcessing.py receive a folder (full of alignment files) and another folder to store the new version of these files.
 
-2) Hard Segmentation: soft2HardAlignment.py and reverse_soft2HardAlignment.py receive the the path for the folder with the matrices, the dictionary file (for mboshi, this file is mboshi-french-parallel-corpus/full_corpus/corpus.token.dic100.train.mb.control), a number (0 for semi-supervised, 1 for unsupervised) and the output file name. If you input one, the script will ignore the dictionary file.
+2) Hard Segmentation: soft2HardAlignment.py and reverse_soft2HardAlignment.py receive the the path for the folder with the matrices, the output file name, the dictionary file (for mboshi, this file is mboshi-french-parallel-corpus/full_corpus/corpus.token.dic100.train.mb.control) and a number (0 for semi-supervised, 1 for unsupervised). If you input one, the script will ignore the dictionary file.
 
 * **How to evaluate:**
 
@@ -68,6 +68,6 @@ The file evaluate_segmentation.py receives the gold standard, the generated segm
 
 # Reference:
 
-Marcely Zanon Boito,  Laurent Besacier,  and Aline Villavicencio. Unsupervised worddiscovery using attentional encoder-decoder models.   In WiNLP (Women and Underrepresented Minorities in Natural Language Processing) Workshop ACL 2017, Vancouver, Canada.
+Marcely Zanon Boito,  Laurent Besacier,  and Aline Villavicencio. **Unsupervised worddiscovery using attentional encoder-decoder models**.   In WiNLP (Women and Underrepresented Minorities in Natural Language Processing) Workshop ACL 2017, Vancouver, Canada.
 
-Marcely Zanon Boito, Aléxandre Berard, Laurent Besacier and Aline Villavicencio. Unwritten Languages Demand Attention Too! Word Discovery with Encoder-Decoder Models, In ASRU (Automatic Speech Recognition and Undestanding), IEEE Workshop 2017, Okinawa, Japan.
+Marcely Zanon Boito, Aléxandre Berard, Laurent Besacier and Aline Villavicencio. **Unwritten Languages Demand Attention Too! Word Discovery with Encoder-Decoder Models**, In ASRU (Automatic Speech Recognition and Undestanding), IEEE Workshop 2017, Okinawa, Japan.
