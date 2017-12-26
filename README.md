@@ -5,11 +5,11 @@ This repository is passing through heavy changes. :)
 
 # visualization folder
 
-For visualizing loss and bleu score behavior during training. There is an example file of the log format, called "example.txt"
+For visualizing loss and bleu score behavior during training. There is an example file of the log format, called "example.txt".
 
-1) python logFileParser.py example.txt (generates a file called "FILE-NAME.out")
+1) python logFileParser.py <FILE-NAME.txt> (generates a file called "FILE-NAME.out")
 
-2) Rscript --vanilla createGraphics.r example.out IMAGES-PATH (generates "lossPlot.png" and "bleuPlot.png", it needs ggplot2)
+2) Rscript --vanilla createGraphics.r <FILE-NAME.out> <IMAGES-PATH> (generates "lossPlot.png" and "bleuPlot.png", it needs ggplot2)
 
 
 
