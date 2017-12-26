@@ -1,0 +1,677 @@
+12/06 14:17:48 label: MFCC_HMM
+12/06 14:17:48 description:
+  MFCC yes HMM no no
+12/06 14:17:48 /data1/home/getalp/zanonbom/seq2seq/translate/__main__.py ../NAACL/experiments/MFCC_HMM/config.yaml --train -v
+12/06 14:17:48 commit hash 0a0d02101925ac38b14cd19f21cc1957d030e3e8
+12/06 14:17:48 tensorflow version: 1.2.0-rc1
+12/06 14:17:48 program arguments
+12/06 14:17:48   aggregation_method   'concat'
+12/06 14:17:48   align_encoder_id     0
+12/06 14:17:48   allow_growth         True
+12/06 14:17:48   attention_type       'global'
+12/06 14:17:48   attn_filter_length   0
+12/06 14:17:48   attn_filters         0
+12/06 14:17:48   attn_prev_word       False
+12/06 14:17:48   attn_size            64
+12/06 14:17:48   attn_temperature     10
+12/06 14:17:48   attn_window_size     0
+12/06 14:17:48   average              False
+12/06 14:17:48   baseline_activation  None
+12/06 14:17:48   baseline_learning_rate 0.001
+12/06 14:17:48   baseline_optimizer   'adam'
+12/06 14:17:48   baseline_steps       0
+12/06 14:17:48   batch_mode           'standard'
+12/06 14:17:48   batch_size           32
+12/06 14:17:48   beam_size            1
+12/06 14:17:48   bidir                True
+12/06 14:17:48   bidir_projection     False
+12/06 14:17:48   binary               False
+12/06 14:17:48   cell_size            64
+12/06 14:17:48   cell_type            'LSTM'
+12/06 14:17:48   character_level      False
+12/06 14:17:48   checkpoints          []
+12/06 14:17:48   conditional_rnn      False
+12/06 14:17:48   config               '../NAACL/experiments/MFCC_HMM/config.yaml'
+12/06 14:17:48   convolutions         None
+12/06 14:17:48   data_dir             '../NAACL/experiments/MFCC_HMM/files/'
+12/06 14:17:48   debug                False
+12/06 14:17:48   decay_after_n_epoch  0
+12/06 14:17:48   decay_every_n_epoch  None
+12/06 14:17:48   decay_if_no_progress None
+12/06 14:17:48   decoders             [{'name': 'ph'}]
+12/06 14:17:48   description          'MFCC yes HMM no no'
+12/06 14:17:48   dev_prefix           ['dev', 'train']
+12/06 14:17:48   early_stopping       True
+12/06 14:17:48   embedding_size       64
+12/06 14:17:48   embeddings_on_cpu    True
+12/06 14:17:48   encoders             [{'name': 'fr'}]
+12/06 14:17:48   ensemble             False
+12/06 14:17:48   eval_burn_in         0
+12/06 14:17:48   feed_previous        0.0
+12/06 14:17:48   final_state          'last'
+12/06 14:17:48   freeze_variables     []
+12/06 14:17:48   generate_first       True
+12/06 14:17:48   gpu_id               0
+12/06 14:17:48   highway_layers       0
+12/06 14:17:48   initial_state_dropout 0.5
+12/06 14:17:48   initializer          None
+12/06 14:17:48   input_layer_dropout  0.0
+12/06 14:17:48   input_layers         None
+12/06 14:17:48   keep_best            4
+12/06 14:17:48   keep_every_n_hours   0
+12/06 14:17:48   label                'MFCC_HMM'
+12/06 14:17:48   layer_norm           False
+12/06 14:17:48   layers               1
+12/06 14:17:48   learning_rate        0.001
+12/06 14:17:48   learning_rate_decay_factor 1.0
+12/06 14:17:48   len_normalization    1.0
+12/06 14:17:48   log_file             'log_mfcc_hmm.txt'
+12/06 14:17:48   loss_function        'xent'
+12/06 14:17:48   max_dev_size         0
+12/06 14:17:48   max_epochs           0
+12/06 14:17:48   max_gradient_norm    5.0
+12/06 14:17:48   max_len              80
+12/06 14:17:48   max_steps            550000
+12/06 14:17:48   max_test_size        0
+12/06 14:17:48   max_to_keep          1
+12/06 14:17:48   max_train_size       0
+12/06 14:17:48   maxout_stride        None
+12/06 14:17:48   mem_fraction         1.0
+12/06 14:17:48   min_learning_rate    1e-06
+12/06 14:17:48   model_dir            '../NAACL/experiments/MFCC_HMM/model/'
+12/06 14:17:48   moving_average       None
+12/06 14:17:48   no_gpu               False
+12/06 14:17:48   optimizer            'adam'
+12/06 14:17:48   orthogonal_init      False
+12/06 14:17:48   output               None
+12/06 14:17:48   output_dropout       0.0
+12/06 14:17:48   parallel_iterations  16
+12/06 14:17:48   pervasive_dropout    False
+12/06 14:17:48   pooling_avg          True
+12/06 14:17:48   post_process_script  None
+12/06 14:17:48   pred_deep_layer      False
+12/06 14:17:48   pred_edits           False
+12/06 14:17:48   pred_embed_proj      True
+12/06 14:17:48   pred_maxout_layer    True
+12/06 14:17:48   purge                False
+12/06 14:17:48   raw_output           False
+12/06 14:17:48   read_ahead           10
+12/06 14:17:48   reinforce_after_n_epoch None
+12/06 14:17:48   remove_unk           False
+12/06 14:17:48   reverse_input        False
+12/06 14:17:48   reward_function      'sentence_bleu'
+12/06 14:17:48   rnn_feed_attn        True
+12/06 14:17:48   rnn_input_dropout    0.5
+12/06 14:17:48   rnn_output_dropout   0.0
+12/06 14:17:48   rnn_state_dropout    0.0
+12/06 14:17:48   score_function       'corpus_bleu'
+12/06 14:17:48   script_dir           'scripts'
+12/06 14:17:48   sgd_after_n_epoch    None
+12/06 14:17:48   sgd_learning_rate    1.0
+12/06 14:17:48   shuffle              True
+12/06 14:17:48   softmax_temperature  1.0
+12/06 14:17:48   steps_per_checkpoint 10000
+12/06 14:17:48   steps_per_eval       10000
+12/06 14:17:48   swap_memory          True
+12/06 14:17:48   tie_embeddings       False
+12/06 14:17:48   time_pooling         None
+12/06 14:17:48   train                True
+12/06 14:17:48   train_initial_states True
+12/06 14:17:48   train_prefix         'train'
+12/06 14:17:48   truncate_lines       True
+12/06 14:17:48   update_first         False
+12/06 14:17:48   use_baseline         True
+12/06 14:17:48   use_dropout          True
+12/06 14:17:48   use_lstm             True
+12/06 14:17:48   use_lstm_full_state  False
+12/06 14:17:48   use_previous_word    True
+12/06 14:17:48   verbose              True
+12/06 14:17:48   vocab_prefix         'vocab'
+12/06 14:17:48   weight_scale         None
+12/06 14:17:48   word_dropout         0.0
+12/06 14:17:48 creating model
+12/06 14:17:48 using device: /gpu:0
+12/06 14:17:48 copying vocab to ../NAACL/experiments/MFCC_HMM/model/data/vocab.fr
+12/06 14:17:48 copying vocab to ../NAACL/experiments/MFCC_HMM/model/data/vocab.ph
+12/06 14:17:48 reading vocabularies
+12/06 14:17:48 creating model
+12/06 14:17:56 model parameters (82)
+12/06 14:17:56   learning_rate:0 ()
+12/06 14:17:56   global_step:0 ()
+12/06 14:17:56   baseline_step:0 ()
+12/06 14:17:56   rnn_input_keep_prob:0 ()
+12/06 14:17:56   initial_state_keep_prob:0 ()
+12/06 14:17:56   rnn_input_keep_prob_1:0 ()
+12/06 14:17:56   initial_state_keep_prob_1:0 ()
+12/06 14:17:56   embedding_fr:0 (4928, 64)
+12/06 14:17:56   encoder_fr/initial_state_fw:0 (128,)
+12/06 14:17:56   encoder_fr/initial_state_bw:0 (128,)
+12/06 14:17:56   encoder_fr/stack_bidirectional_rnn/cell_0/bidirectional_rnn/fw/basic_lstm_cell/kernel:0 (128, 256)
+12/06 14:17:56   encoder_fr/stack_bidirectional_rnn/cell_0/bidirectional_rnn/fw/basic_lstm_cell/bias:0 (256,)
+12/06 14:17:56   encoder_fr/stack_bidirectional_rnn/cell_0/bidirectional_rnn/bw/basic_lstm_cell/kernel:0 (128, 256)
+12/06 14:17:56   encoder_fr/stack_bidirectional_rnn/cell_0/bidirectional_rnn/bw/basic_lstm_cell/bias:0 (256,)
+12/06 14:17:56   embedding_ph:0 (56, 64)
+12/06 14:17:56   decoder_ph/initial_state_projection/kernel:0 (64, 128)
+12/06 14:17:56   decoder_ph/initial_state_projection/bias:0 (128,)
+12/06 14:17:56   attention_fr/W_a/kernel:0 (64, 64)
+12/06 14:17:56   attention_fr/W_a/bias:0 (64,)
+12/06 14:17:56   attention_fr/U_a/kernel:0 (128, 64)
+12/06 14:17:56   attention_fr/v_a:0 (64,)
+12/06 14:17:56   decoder_ph/attention_fr/W_a/kernel:0 (64, 64)
+12/06 14:17:56   decoder_ph/attention_fr/W_a/bias:0 (64,)
+12/06 14:17:56   decoder_ph/attention_fr/U_a/kernel:0 (128, 64)
+12/06 14:17:56   decoder_ph/attention_fr/v_a:0 (64,)
+12/06 14:17:56   decoder_ph/maxout/kernel:0 (256, 64)
+12/06 14:17:56   decoder_ph/maxout/bias:0 (64,)
+12/06 14:17:56   decoder_ph/softmax0/kernel:0 (32, 64)
+12/06 14:17:56   decoder_ph/softmax1/kernel:0 (64, 56)
+12/06 14:17:56   decoder_ph/softmax1/bias:0 (56,)
+12/06 14:17:56   decoder_ph/basic_lstm_cell/kernel:0 (256, 256)
+12/06 14:17:56   decoder_ph/basic_lstm_cell/bias:0 (256,)
+12/06 14:17:56   reward_baseline/kernel:0 (56, 1)
+12/06 14:17:56   reward_baseline/bias:0 (1,)
+12/06 14:17:56   gradients_1/beta1_power:0 ()
+12/06 14:17:56   gradients_1/beta2_power:0 ()
+12/06 14:17:56   gradients/embedding_fr/Adam:0 (4928, 64)
+12/06 14:17:56   gradients/embedding_fr/Adam_1:0 (4928, 64)
+12/06 14:17:56   gradients/encoder_fr/initial_state_fw/Adam:0 (128,)
+12/06 14:17:56   gradients/encoder_fr/initial_state_fw/Adam_1:0 (128,)
+12/06 14:17:56   gradients/encoder_fr/initial_state_bw/Adam:0 (128,)
+12/06 14:17:56   gradients/encoder_fr/initial_state_bw/Adam_1:0 (128,)
+12/06 14:17:56   gradients/encoder_fr/stack_bidirectional_rnn/cell_0/bidirectional_rnn/fw/basic_lstm_cell/kernel/Adam:0 (128, 256)
+12/06 14:17:56   gradients/encoder_fr/stack_bidirectional_rnn/cell_0/bidirectional_rnn/fw/basic_lstm_cell/kernel/Adam_1:0 (128, 256)
+12/06 14:17:56   gradients/encoder_fr/stack_bidirectional_rnn/cell_0/bidirectional_rnn/fw/basic_lstm_cell/bias/Adam:0 (256,)
+12/06 14:17:56   gradients/encoder_fr/stack_bidirectional_rnn/cell_0/bidirectional_rnn/fw/basic_lstm_cell/bias/Adam_1:0 (256,)
+12/06 14:17:56   gradients/encoder_fr/stack_bidirectional_rnn/cell_0/bidirectional_rnn/bw/basic_lstm_cell/kernel/Adam:0 (128, 256)
+12/06 14:17:56   gradients/encoder_fr/stack_bidirectional_rnn/cell_0/bidirectional_rnn/bw/basic_lstm_cell/kernel/Adam_1:0 (128, 256)
+12/06 14:17:56   gradients/encoder_fr/stack_bidirectional_rnn/cell_0/bidirectional_rnn/bw/basic_lstm_cell/bias/Adam:0 (256,)
+12/06 14:17:56   gradients/encoder_fr/stack_bidirectional_rnn/cell_0/bidirectional_rnn/bw/basic_lstm_cell/bias/Adam_1:0 (256,)
+12/06 14:17:56   gradients/embedding_ph/Adam:0 (56, 64)
+12/06 14:17:56   gradients/embedding_ph/Adam_1:0 (56, 64)
+12/06 14:17:56   gradients/decoder_ph/initial_state_projection/kernel/Adam:0 (64, 128)
+12/06 14:17:56   gradients/decoder_ph/initial_state_projection/kernel/Adam_1:0 (64, 128)
+12/06 14:17:56   gradients/decoder_ph/initial_state_projection/bias/Adam:0 (128,)
+12/06 14:17:56   gradients/decoder_ph/initial_state_projection/bias/Adam_1:0 (128,)
+12/06 14:17:56   gradients/decoder_ph/attention_fr/W_a/kernel/Adam:0 (64, 64)
+12/06 14:17:56   gradients/decoder_ph/attention_fr/W_a/kernel/Adam_1:0 (64, 64)
+12/06 14:17:56   gradients/decoder_ph/attention_fr/W_a/bias/Adam:0 (64,)
+12/06 14:17:56   gradients/decoder_ph/attention_fr/W_a/bias/Adam_1:0 (64,)
+12/06 14:17:56   gradients/decoder_ph/attention_fr/U_a/kernel/Adam:0 (128, 64)
+12/06 14:17:56   gradients/decoder_ph/attention_fr/U_a/kernel/Adam_1:0 (128, 64)
+12/06 14:17:56   gradients/decoder_ph/attention_fr/v_a/Adam:0 (64,)
+12/06 14:17:56   gradients/decoder_ph/attention_fr/v_a/Adam_1:0 (64,)
+12/06 14:17:56   gradients/decoder_ph/maxout/kernel/Adam:0 (256, 64)
+12/06 14:17:56   gradients/decoder_ph/maxout/kernel/Adam_1:0 (256, 64)
+12/06 14:17:56   gradients/decoder_ph/maxout/bias/Adam:0 (64,)
+12/06 14:17:56   gradients/decoder_ph/maxout/bias/Adam_1:0 (64,)
+12/06 14:17:56   gradients/decoder_ph/softmax0/kernel/Adam:0 (32, 64)
+12/06 14:17:56   gradients/decoder_ph/softmax0/kernel/Adam_1:0 (32, 64)
+12/06 14:17:56   gradients/decoder_ph/softmax1/kernel/Adam:0 (64, 56)
+12/06 14:17:56   gradients/decoder_ph/softmax1/kernel/Adam_1:0 (64, 56)
+12/06 14:17:56   gradients/decoder_ph/softmax1/bias/Adam:0 (56,)
+12/06 14:17:56   gradients/decoder_ph/softmax1/bias/Adam_1:0 (56,)
+12/06 14:17:56   gradients/decoder_ph/basic_lstm_cell/kernel/Adam:0 (256, 256)
+12/06 14:17:56   gradients/decoder_ph/basic_lstm_cell/kernel/Adam_1:0 (256, 256)
+12/06 14:17:56   gradients/decoder_ph/basic_lstm_cell/bias/Adam:0 (256,)
+12/06 14:17:56   gradients/decoder_ph/basic_lstm_cell/bias/Adam_1:0 (256,)
+12/06 14:17:56   gradients/reward_baseline/kernel/Adam:0 (56, 1)
+12/06 14:17:56   gradients/reward_baseline/kernel/Adam_1:0 (56, 1)
+12/06 14:17:56   gradients/reward_baseline/bias/Adam:0 (1,)
+12/06 14:17:56   gradients/reward_baseline/bias/Adam_1:0 (1,)
+12/06 14:17:56 number of parameters: 0.51M
+12/06 14:19:33 global step: 0
+12/06 14:19:33 baseline step: 0
+12/06 14:19:33 reading training data
+12/06 14:19:33 total line count: 4616
+12/06 14:19:33 files: ../NAACL/experiments/MFCC_HMM/files/train.fr ../NAACL/experiments/MFCC_HMM/files/train.ph
+12/06 14:19:33 lines reads: 4616
+12/06 14:19:33 reading development data
+12/06 14:19:33 files: ../NAACL/experiments/MFCC_HMM/files/dev.fr ../NAACL/experiments/MFCC_HMM/files/dev.ph
+12/06 14:19:33 lines reads: 514
+12/06 14:19:33 files: ../NAACL/experiments/MFCC_HMM/files/train.fr ../NAACL/experiments/MFCC_HMM/files/train.ph
+12/06 14:19:33 lines reads: 4616
+12/06 14:19:33 starting training
+12/06 16:13:47 step 10000 epoch 70 learning rate 0.001 step-time 0.684 loss 68.141
+12/06 16:13:59   dev eval: loss 83.16
+12/06 16:15:55   train eval: loss 52.49
+12/06 16:15:55 starting decoding
+12/06 16:16:15 dev score=14.87 penalty=0.915 ratio=0.919
+12/06 16:19:10 train score=28.51 penalty=0.954 ratio=0.955
+12/06 16:19:10 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/06 16:19:10 finished saving model
+12/06 18:11:21 step 20000 epoch 139 learning rate 0.001 step-time 0.671 loss 56.356
+12/06 18:11:33   dev eval: loss 86.19
+12/06 18:13:30   train eval: loss 44.45
+12/06 18:13:30 starting decoding
+12/06 18:13:49 dev score=14.81 penalty=0.929 ratio=0.931
+12/06 18:16:41 train score=34.86 penalty=0.974 ratio=0.974
+12/06 18:16:41 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/06 18:16:41 finished saving model
+12/06 20:21:54 step 30000 epoch 208 learning rate 0.001 step-time 0.749 loss 52.781
+12/06 20:22:07   dev eval: loss 87.67
+12/06 20:24:01   train eval: loss 40.73
+12/06 20:24:01 starting decoding
+12/06 20:24:21 dev score=14.83 penalty=0.959 ratio=0.960
+12/06 20:27:11 train score=38.74 penalty=0.986 ratio=0.986
+12/06 20:27:11 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/06 20:27:11 finished saving model
+12/06 22:20:09 step 40000 epoch 278 learning rate 0.001 step-time 0.676 loss 50.888
+12/06 22:20:22   dev eval: loss 89.08
+12/06 22:22:18   train eval: loss 38.35
+12/06 22:22:18 starting decoding
+12/06 22:22:39 dev score=14.33 penalty=0.924 ratio=0.927
+12/06 22:25:31 train score=40.20 penalty=0.956 ratio=0.957
+12/06 22:25:31 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/06 22:25:31 finished saving model
+12/07 00:20:48 step 50000 epoch 347 learning rate 0.001 step-time 0.690 loss 49.585
+12/07 00:21:00   dev eval: loss 89.29
+12/07 00:22:56   train eval: loss 36.94
+12/07 00:22:56 starting decoding
+12/07 00:23:15 dev score=14.84 penalty=0.942 ratio=0.944
+12/07 00:26:04 train score=41.55 penalty=0.977 ratio=0.977
+12/07 00:26:04 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/07 00:26:04 finished saving model
+12/07 02:21:27 step 60000 epoch 416 learning rate 0.001 step-time 0.690 loss 48.690
+12/07 02:21:39   dev eval: loss 90.69
+12/07 02:23:35   train eval: loss 35.58
+12/07 02:23:35 starting decoding
+12/07 02:23:54 dev score=14.34 penalty=0.943 ratio=0.945
+12/07 02:26:45 train score=42.95 penalty=0.970 ratio=0.970
+12/07 02:26:45 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/07 02:26:45 finished saving model
+12/07 04:28:35 step 70000 epoch 486 learning rate 0.001 step-time 0.729 loss 48.009
+12/07 04:28:42   dev eval: loss 90.98
+12/07 04:29:47   train eval: loss 34.58
+12/07 04:29:47 starting decoding
+12/07 04:29:58 dev score=14.59 penalty=0.944 ratio=0.945
+12/07 04:31:35 train score=43.91 penalty=0.971 ratio=0.971
+12/07 04:31:35 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/07 04:31:35 finished saving model
+12/07 06:30:11 step 80000 epoch 555 learning rate 0.001 step-time 0.710 loss 47.455
+12/07 06:30:24   dev eval: loss 91.68
+12/07 06:32:21   train eval: loss 33.81
+12/07 06:32:21 starting decoding
+12/07 06:32:40 dev score=14.81 penalty=0.950 ratio=0.951
+12/07 06:35:32 train score=44.44 penalty=0.974 ratio=0.975
+12/07 06:35:32 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/07 06:35:32 finished saving model
+12/07 08:28:24 step 90000 epoch 624 learning rate 0.001 step-time 0.675 loss 47.016
+12/07 08:28:37   dev eval: loss 91.79
+12/07 08:30:34   train eval: loss 33.35
+12/07 08:30:34 starting decoding
+12/07 08:30:54 dev score=15.14 penalty=0.938 ratio=0.939
+12/07 08:33:46 train score=44.38 penalty=0.958 ratio=0.959
+12/07 08:33:46 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/07 08:33:46 finished saving model
+12/07 10:29:32 step 100000 epoch 694 learning rate 0.001 step-time 0.693 loss 46.642
+12/07 10:29:45   dev eval: loss 92.40
+12/07 10:31:42   train eval: loss 32.91
+12/07 10:31:42 starting decoding
+12/07 10:32:01 dev score=14.55 penalty=0.928 ratio=0.930
+12/07 10:34:50 train score=44.76 penalty=0.954 ratio=0.955
+12/07 10:34:50 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/07 10:34:50 finished saving model
+12/07 12:34:25 step 110000 epoch 763 learning rate 0.001 step-time 0.716 loss 46.293
+12/07 12:34:32   dev eval: loss 92.92
+12/07 12:35:38   train eval: loss 32.26
+12/07 12:35:38 starting decoding
+12/07 12:35:49 dev score=14.21 penalty=0.933 ratio=0.935
+12/07 12:37:25 train score=44.99 penalty=0.953 ratio=0.954
+12/07 12:37:25 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/07 12:37:25 finished saving model
+12/07 14:38:47 step 120000 epoch 832 learning rate 0.001 step-time 0.726 loss 46.023
+12/07 14:38:59   dev eval: loss 92.84
+12/07 14:40:56   train eval: loss 32.01
+12/07 14:40:56 starting decoding
+12/07 14:41:15 dev score=14.28 penalty=0.962 ratio=0.963
+12/07 14:44:08 train score=46.01 penalty=0.978 ratio=0.978
+12/07 14:44:08 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/07 14:44:08 finished saving model
+12/07 16:39:23 step 130000 epoch 902 learning rate 0.001 step-time 0.690 loss 45.755
+12/07 16:39:36   dev eval: loss 92.86
+12/07 16:41:26   train eval: loss 31.55
+12/07 16:41:26 starting decoding
+12/07 16:41:44 dev score=14.80 penalty=0.938 ratio=0.940
+12/07 16:44:22 train score=46.11 penalty=0.960 ratio=0.961
+12/07 16:44:22 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/07 16:44:22 finished saving model
+12/07 18:33:30 step 140000 epoch 971 learning rate 0.001 step-time 0.653 loss 45.519
+12/07 18:33:43   dev eval: loss 93.17
+12/07 18:35:39   train eval: loss 31.30
+12/07 18:35:39 starting decoding
+12/07 18:35:58 dev score=15.03 penalty=0.949 ratio=0.950
+12/07 18:38:48 train score=46.35 penalty=0.975 ratio=0.975
+12/07 18:38:48 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/07 18:38:48 finished saving model
+12/07 20:38:37 step 150000 epoch 1040 learning rate 0.001 step-time 0.717 loss 45.323
+12/07 20:38:45   dev eval: loss 93.35
+12/07 20:39:50   train eval: loss 31.12
+12/07 20:39:50 starting decoding
+12/07 20:40:01 dev score=14.67 penalty=0.925 ratio=0.928
+12/07 20:41:37 train score=46.56 penalty=0.956 ratio=0.957
+12/07 20:41:37 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/07 20:41:37 finished saving model
+12/07 22:46:30 step 160000 epoch 1110 learning rate 0.001 step-time 0.747 loss 45.148
+12/07 22:46:43   dev eval: loss 92.94
+12/07 22:48:39   train eval: loss 31.00
+12/07 22:48:39 starting decoding
+12/07 22:48:59 dev score=15.03 penalty=0.954 ratio=0.955
+12/07 22:51:50 train score=46.64 penalty=0.971 ratio=0.972
+12/07 22:51:50 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/07 22:51:50 finished saving model
+12/08 00:45:40 step 170000 epoch 1179 learning rate 0.001 step-time 0.681 loss 44.991
+12/08 00:45:52   dev eval: loss 93.62
+12/08 00:47:49   train eval: loss 30.54
+12/08 00:47:49 starting decoding
+12/08 00:48:09 dev score=14.83 penalty=0.935 ratio=0.937
+12/08 00:51:00 train score=46.90 penalty=0.958 ratio=0.959
+12/08 00:51:00 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/08 00:51:00 finished saving model
+12/08 02:46:56 step 180000 epoch 1248 learning rate 0.001 step-time 0.694 loss 44.810
+12/08 02:47:09   dev eval: loss 93.96
+12/08 02:49:05   train eval: loss 30.35
+12/08 02:49:05 starting decoding
+12/08 02:49:25 dev score=14.79 penalty=0.921 ratio=0.924
+12/08 02:52:14 train score=46.65 penalty=0.957 ratio=0.958
+12/08 02:52:14 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/08 02:52:15 finished saving model
+12/08 04:45:51 step 190000 epoch 1318 learning rate 0.001 step-time 0.680 loss 44.660
+12/08 04:46:04   dev eval: loss 93.99
+12/08 04:48:01   train eval: loss 30.13
+12/08 04:48:01 starting decoding
+12/08 04:48:21 dev score=14.58 penalty=0.941 ratio=0.942
+12/08 04:51:11 train score=47.25 penalty=0.964 ratio=0.965
+12/08 04:51:11 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/08 04:51:11 finished saving model
+12/08 06:57:31 step 200000 epoch 1387 learning rate 0.001 step-time 0.756 loss 44.544
+12/08 06:57:44   dev eval: loss 94.47
+12/08 06:59:42   train eval: loss 29.98
+12/08 06:59:42 starting decoding
+12/08 07:00:02 dev score=14.48 penalty=0.911 ratio=0.915
+12/08 07:02:55 train score=46.72 penalty=0.942 ratio=0.944
+12/08 07:02:55 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/08 07:02:56 finished saving model
+12/08 08:58:54 step 210000 epoch 1456 learning rate 0.001 step-time 0.694 loss 44.417
+12/08 08:59:07   dev eval: loss 94.03
+12/08 09:01:04   train eval: loss 29.80
+12/08 09:01:04 starting decoding
+12/08 09:01:24 dev score=14.68 penalty=0.937 ratio=0.939
+12/08 09:04:16 train score=47.53 penalty=0.967 ratio=0.967
+12/08 09:04:16 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/08 09:04:16 finished saving model
+12/08 10:58:04 step 220000 epoch 1526 learning rate 0.001 step-time 0.681 loss 44.301
+12/08 10:58:18   dev eval: loss 94.89
+12/08 11:00:14   train eval: loss 29.65
+12/08 11:00:14 starting decoding
+12/08 11:00:33 dev score=14.81 penalty=0.959 ratio=0.960
+12/08 11:03:24 train score=47.58 penalty=0.977 ratio=0.978
+12/08 11:03:24 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/08 11:03:24 finished saving model
+12/08 12:59:37 step 230000 epoch 1595 learning rate 0.001 step-time 0.695 loss 44.154
+12/08 12:59:51   dev eval: loss 94.94
+12/08 13:01:46   train eval: loss 29.37
+12/08 13:01:46 starting decoding
+12/08 13:02:06 dev score=14.49 penalty=0.933 ratio=0.935
+12/08 13:04:58 train score=47.66 penalty=0.962 ratio=0.962
+12/08 13:04:58 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/08 13:04:58 finished saving model
+12/08 15:07:12 step 240000 epoch 1664 learning rate 0.001 step-time 0.731 loss 44.070
+12/08 15:07:20   dev eval: loss 94.90
+12/08 15:08:25   train eval: loss 29.22
+12/08 15:08:25 starting decoding
+12/08 15:08:36 dev score=14.67 penalty=0.929 ratio=0.931
+12/08 15:10:14 train score=47.68 penalty=0.954 ratio=0.955
+12/08 15:10:14 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/08 15:10:14 finished saving model
+12/08 17:09:58 step 250000 epoch 1734 learning rate 0.001 step-time 0.716 loss 43.973
+12/08 17:10:11   dev eval: loss 94.46
+12/08 17:12:08   train eval: loss 29.12
+12/08 17:12:08 starting decoding
+12/08 17:12:29 dev score=14.88 penalty=0.966 ratio=0.967
+12/08 17:15:20 train score=48.41 penalty=0.979 ratio=0.979
+12/08 17:15:20 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/08 17:15:20 finished saving model
+12/08 19:11:11 step 260000 epoch 1803 learning rate 0.001 step-time 0.693 loss 43.882
+12/08 19:11:18   dev eval: loss 95.74
+12/08 19:12:17   train eval: loss 29.04
+12/08 19:12:17 starting decoding
+12/08 19:12:28 dev score=14.38 penalty=0.947 ratio=0.948
+12/08 19:13:54 train score=47.62 penalty=0.970 ratio=0.970
+12/08 19:13:54 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/08 19:13:54 finished saving model
+12/08 21:10:04 step 270000 epoch 1872 learning rate 0.001 step-time 0.695 loss 43.786
+12/08 21:10:17   dev eval: loss 95.08
+12/08 21:12:13   train eval: loss 28.88
+12/08 21:12:13 starting decoding
+12/08 21:12:33 dev score=14.78 penalty=0.946 ratio=0.948
+12/08 21:15:23 train score=48.24 penalty=0.973 ratio=0.973
+12/08 21:15:23 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/08 21:15:23 finished saving model
+12/08 23:14:08 step 280000 epoch 1942 learning rate 0.001 step-time 0.711 loss 43.722
+12/08 23:14:16   dev eval: loss 95.20
+12/08 23:15:20   train eval: loss 28.96
+12/08 23:15:20 starting decoding
+12/08 23:15:32 dev score=14.58 penalty=0.974 ratio=0.974
+12/08 23:17:08 train score=47.51 penalty=0.984 ratio=0.984
+12/08 23:17:08 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/08 23:17:08 finished saving model
+12/09 01:20:24 step 290000 epoch 2011 learning rate 0.001 step-time 0.738 loss 43.651
+12/09 01:20:37   dev eval: loss 95.81
+12/09 01:22:35   train eval: loss 28.94
+12/09 01:22:35 starting decoding
+12/09 01:22:56 dev score=14.05 penalty=0.961 ratio=0.962
+12/09 01:25:47 train score=47.80 penalty=0.978 ratio=0.978
+12/09 01:25:47 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/09 01:25:47 finished saving model
+12/09 03:21:55 step 300000 epoch 2080 learning rate 0.001 step-time 0.695 loss 43.552
+12/09 03:22:09   dev eval: loss 95.22
+12/09 03:24:06   train eval: loss 28.61
+12/09 03:24:06 starting decoding
+12/09 03:24:26 dev score=14.38 penalty=0.932 ratio=0.935
+12/09 03:27:18 train score=47.99 penalty=0.960 ratio=0.961
+12/09 03:27:18 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/09 03:27:18 finished saving model
+12/09 05:21:21 step 310000 epoch 2150 learning rate 0.001 step-time 0.682 loss 43.490
+12/09 05:21:34   dev eval: loss 95.67
+12/09 05:23:31   train eval: loss 28.62
+12/09 05:23:31 starting decoding
+12/09 05:23:50 dev score=14.59 penalty=0.946 ratio=0.948
+12/09 05:26:41 train score=48.34 penalty=0.977 ratio=0.977
+12/09 05:26:41 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/09 05:26:42 finished saving model
+12/09 07:22:33 step 320000 epoch 2219 learning rate 0.001 step-time 0.693 loss 43.428
+12/09 07:22:47   dev eval: loss 95.26
+12/09 07:24:43   train eval: loss 28.57
+12/09 07:24:43 starting decoding
+12/09 07:25:02 dev score=15.08 penalty=0.956 ratio=0.957
+12/09 07:27:54 train score=48.16 penalty=0.975 ratio=0.975
+12/09 07:27:54 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/09 07:27:54 finished saving model
+12/09 09:34:23 step 330000 epoch 2288 learning rate 0.001 step-time 0.757 loss 43.352
+12/09 09:34:36   dev eval: loss 95.92
+12/09 09:36:32   train eval: loss 28.34
+12/09 09:36:32 starting decoding
+12/09 09:36:56 dev score=14.98 penalty=0.959 ratio=0.959
+12/09 09:40:07 train score=48.41 penalty=0.975 ratio=0.975
+12/09 09:40:07 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/09 09:40:08 finished saving model
+12/09 11:33:46 step 340000 epoch 2358 learning rate 0.001 step-time 0.680 loss 43.305
+12/09 11:34:00   dev eval: loss 95.74
+12/09 11:35:55   train eval: loss 28.29
+12/09 11:35:55 starting decoding
+12/09 11:36:16 dev score=14.86 penalty=0.970 ratio=0.970
+12/09 11:39:07 train score=48.13 penalty=0.988 ratio=0.988
+12/09 11:39:07 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/09 11:39:08 finished saving model
+12/09 13:35:12 step 350000 epoch 2427 learning rate 0.001 step-time 0.695 loss 43.234
+12/09 13:35:26   dev eval: loss 96.03
+12/09 13:37:23   train eval: loss 28.24
+12/09 13:37:23 starting decoding
+12/09 13:37:42 dev score=14.65 penalty=0.953 ratio=0.954
+12/09 13:40:34 train score=47.68 penalty=0.971 ratio=0.972
+12/09 13:40:34 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/09 13:40:34 finished saving model
+12/09 15:34:12 step 360000 epoch 2496 learning rate 0.001 step-time 0.680 loss 43.179
+12/09 15:34:25   dev eval: loss 96.05
+12/09 15:36:22   train eval: loss 28.22
+12/09 15:36:22 starting decoding
+12/09 15:36:42 dev score=14.46 penalty=0.961 ratio=0.961
+12/09 15:39:32 train score=48.35 penalty=0.980 ratio=0.980
+12/09 15:39:32 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/09 15:39:32 finished saving model
+12/09 17:42:50 step 370000 epoch 2565 learning rate 0.001 step-time 0.738 loss 43.115
+12/09 17:42:57   dev eval: loss 96.16
+12/09 17:44:03   train eval: loss 28.02
+12/09 17:44:03 starting decoding
+12/09 17:44:15 dev score=14.52 penalty=0.955 ratio=0.956
+12/09 17:45:52 train score=48.36 penalty=0.963 ratio=0.964
+12/09 17:45:52 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/09 17:45:52 finished saving model
+12/09 19:47:23 step 380000 epoch 2635 learning rate 0.001 step-time 0.727 loss 43.065
+12/09 19:47:36   dev eval: loss 96.83
+12/09 19:49:33   train eval: loss 27.99
+12/09 19:49:33 starting decoding
+12/09 19:49:53 dev score=14.31 penalty=0.946 ratio=0.948
+12/09 19:52:42 train score=48.30 penalty=0.975 ratio=0.975
+12/09 19:52:42 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/09 19:52:42 finished saving model
+12/09 21:41:52 step 390000 epoch 2704 learning rate 0.001 step-time 0.653 loss 43.010
+12/09 21:42:05   dev eval: loss 96.84
+12/09 21:44:01   train eval: loss 27.93
+12/09 21:44:01 starting decoding
+12/09 21:44:22 dev score=15.07 penalty=0.975 ratio=0.976
+12/09 21:47:11 train score=49.10 penalty=0.996 ratio=0.996
+12/09 21:47:11 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/09 21:47:11 finished saving model
+12/09 23:42:49 step 400000 epoch 2773 learning rate 0.001 step-time 0.692 loss 42.973
+12/09 23:43:02   dev eval: loss 96.69
+12/09 23:44:58   train eval: loss 27.91
+12/09 23:44:58 starting decoding
+12/09 23:45:19 dev score=14.84 penalty=0.943 ratio=0.945
+12/09 23:48:08 train score=48.26 penalty=0.968 ratio=0.968
+12/09 23:48:08 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/09 23:48:08 finished saving model
+12/10 01:45:35 step 410000 epoch 2843 learning rate 0.001 step-time 0.703 loss 42.914
+12/10 01:45:43   dev eval: loss 96.71
+12/10 01:46:48   train eval: loss 27.73
+12/10 01:46:48 starting decoding
+12/10 01:46:59 dev score=14.31 penalty=0.942 ratio=0.944
+12/10 01:48:35 train score=48.80 penalty=0.975 ratio=0.975
+12/10 01:48:35 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/10 01:48:35 finished saving model
+12/10 03:51:53 step 420000 epoch 2912 learning rate 0.001 step-time 0.738 loss 42.883
+12/10 03:52:06   dev eval: loss 96.63
+12/10 03:54:04   train eval: loss 27.81
+12/10 03:54:04 starting decoding
+12/10 03:54:24 dev score=14.24 penalty=0.952 ratio=0.953
+12/10 03:57:18 train score=48.32 penalty=0.976 ratio=0.976
+12/10 03:57:18 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/10 03:57:18 finished saving model
+12/10 05:53:37 step 430000 epoch 2981 learning rate 0.001 step-time 0.696 loss 42.825
+12/10 05:53:50   dev eval: loss 96.90
+12/10 05:55:46   train eval: loss 27.62
+12/10 05:55:46 starting decoding
+12/10 05:56:06 dev score=14.69 penalty=0.965 ratio=0.966
+12/10 05:59:00 train score=48.73 penalty=0.985 ratio=0.985
+12/10 05:59:00 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/10 05:59:00 finished saving model
+12/10 07:53:03 step 440000 epoch 3051 learning rate 0.001 step-time 0.682 loss 42.767
+12/10 07:53:17   dev eval: loss 96.97
+12/10 07:55:12   train eval: loss 27.69
+12/10 07:55:12 starting decoding
+12/10 07:55:33 dev score=14.62 penalty=0.946 ratio=0.947
+12/10 07:58:24 train score=48.44 penalty=0.970 ratio=0.970
+12/10 07:58:24 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/10 07:58:24 finished saving model
+12/10 09:54:45 step 450000 epoch 3120 learning rate 0.001 step-time 0.696 loss 42.719
+12/10 09:54:58   dev eval: loss 97.17
+12/10 09:56:54   train eval: loss 27.66
+12/10 09:56:54 starting decoding
+12/10 09:57:14 dev score=14.41 penalty=0.953 ratio=0.954
+12/10 10:00:05 train score=48.22 penalty=0.972 ratio=0.972
+12/10 10:00:05 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/10 10:00:05 finished saving model
+12/10 12:04:36 step 460000 epoch 3189 learning rate 0.001 step-time 0.745 loss 42.671
+12/10 12:04:50   dev eval: loss 97.31
+12/10 12:06:46   train eval: loss 27.49
+12/10 12:06:46 starting decoding
+12/10 12:07:06 dev score=14.83 penalty=0.951 ratio=0.952
+12/10 12:09:57 train score=48.64 penalty=0.978 ratio=0.978
+12/10 12:09:57 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/10 12:09:57 finished saving model
+12/10 14:06:21 step 470000 epoch 3259 learning rate 0.001 step-time 0.696 loss 42.641
+12/10 14:06:34   dev eval: loss 98.15
+12/10 14:08:30   train eval: loss 27.24
+12/10 14:08:30 starting decoding
+12/10 14:08:51 dev score=14.55 penalty=0.938 ratio=0.940
+12/10 14:11:40 train score=48.54 penalty=0.962 ratio=0.962
+12/10 14:11:40 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/10 14:11:40 finished saving model
+12/10 16:08:17 step 480000 epoch 3328 learning rate 0.001 step-time 0.698 loss 42.625
+12/10 16:08:30   dev eval: loss 97.13
+12/10 16:10:26   train eval: loss 27.39
+12/10 16:10:26 starting decoding
+12/10 16:10:46 dev score=15.10 penalty=0.975 ratio=0.975
+12/10 16:13:37 train score=48.89 penalty=0.992 ratio=0.992
+12/10 16:13:37 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/10 16:13:37 finished saving model
+12/10 18:08:09 step 490000 epoch 3397 learning rate 0.001 step-time 0.685 loss 42.565
+12/10 18:08:22   dev eval: loss 97.66
+12/10 18:10:19   train eval: loss 27.43
+12/10 18:10:19 starting decoding
+12/10 18:10:39 dev score=14.67 penalty=0.958 ratio=0.959
+12/10 18:13:30 train score=48.53 penalty=0.971 ratio=0.972
+12/10 18:13:30 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/10 18:13:30 finished saving model
+12/10 20:17:32 step 500000 epoch 3467 learning rate 0.001 step-time 0.742 loss 42.541
+12/10 20:17:39   dev eval: loss 97.71
+12/10 20:18:44   train eval: loss 27.32
+12/10 20:18:44 starting decoding
+12/10 20:18:55 dev score=14.71 penalty=0.942 ratio=0.943
+12/10 20:20:31 train score=48.59 penalty=0.973 ratio=0.974
+12/10 20:20:31 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/10 20:20:31 finished saving model
+12/10 22:18:58 step 510000 epoch 3536 learning rate 0.001 step-time 0.709 loss 42.505
+12/10 22:19:11   dev eval: loss 98.00
+12/10 22:21:08   train eval: loss 27.35
+12/10 22:21:08 starting decoding
+12/10 22:21:28 dev score=14.24 penalty=0.965 ratio=0.966
+12/10 22:24:18 train score=48.27 penalty=0.979 ratio=0.979
+12/10 22:24:18 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/10 22:24:18 finished saving model
+12/11 00:20:45 step 520000 epoch 3605 learning rate 0.001 step-time 0.697 loss 42.456
+12/11 00:20:58   dev eval: loss 97.82
+12/11 00:22:55   train eval: loss 27.23
+12/11 00:22:55 starting decoding
+12/11 00:23:15 dev score=14.68 penalty=0.939 ratio=0.940
+12/11 00:26:05 train score=48.70 penalty=0.976 ratio=0.976
+12/11 00:26:05 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/11 00:26:05 finished saving model
+12/11 02:22:46 step 530000 epoch 3675 learning rate 0.001 step-time 0.698 loss 42.448
+12/11 02:22:58   dev eval: loss 97.84
+12/11 02:24:54   train eval: loss 27.22
+12/11 02:24:54 starting decoding
+12/11 02:25:15 dev score=14.70 penalty=0.940 ratio=0.942
+12/11 02:28:05 train score=48.44 penalty=0.977 ratio=0.977
+12/11 02:28:05 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/11 02:28:05 finished saving model
+12/11 04:23:26 step 540000 epoch 3744 learning rate 0.001 step-time 0.690 loss 42.408
+12/11 04:23:33   dev eval: loss 98.33
+12/11 04:24:39   train eval: loss 26.99
+12/11 04:24:39 starting decoding
+12/11 04:24:50 dev score=14.35 penalty=0.958 ratio=0.959
+12/11 04:26:53 train score=48.65 penalty=0.980 ratio=0.980
+12/11 04:26:53 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/11 04:26:54 finished saving model
+12/11 06:33:41 step 550000 epoch 3813 learning rate 0.001 step-time 0.759 loss 42.368
+12/11 06:33:55   dev eval: loss 97.71
+12/11 06:35:52   train eval: loss 27.12
+12/11 06:35:52 starting decoding
+12/11 06:36:11 dev score=14.40 penalty=0.942 ratio=0.943
+12/11 06:39:03 train score=48.80 penalty=0.972 ratio=0.973
+12/11 06:39:03 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/11 06:39:03 finished saving model
+12/11 06:39:03 finished training
+12/11 06:39:03 exiting...
+12/11 06:39:03 saving model to ../NAACL/experiments/MFCC_HMM/model/checkpoints
+12/11 06:39:03 finished saving model
