@@ -48,13 +48,13 @@ def writeOutput(finalString, output):
         outputFile.write(finalString + "\n")
 
 def readControlFile(inputPath):
-    words = []
-    with codecs.open(inputPath, "r", "UTF-8") as inputFile:
-        for line in inputFile:
-		for word in line.strip("\n").split("\t"):
-			if not word in words:
-				words.append(word)
-    return words
+	words = []
+	with codecs.open(inputPath, "r", "UTF-8") as inputFile:
+		for line in inputFile:
+			for word in line.strip("\n").split("\t"):
+				if not word in words:
+					words.append(word)
+	return words
 
 def main():
     sentencesPaths = glob.glob(sys.argv[1]+"*.txt")
