@@ -45,7 +45,7 @@ def write_output(path, matrix):
 
 def main():
     path_folders = sys.argv[1]
-    folders = ["rand1/att_model/", "rand2/att_model/", "rand3/att_model/"]#, "rand4/att_model/", "rand5/att_model/"]
+    folders = ["rand1/att_model/", "rand2/att_model/", "rand3/att_model/"]#, "rand4", "rand5"]
     files_list = [line.strip("\n") for line in open(sys.argv[2],"r")]
     output_folder = sys.argv[3]
     size = len(files_list)
