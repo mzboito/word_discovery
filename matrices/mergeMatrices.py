@@ -10,7 +10,7 @@ def read_matrix(path):
 def find_matrices(path_folders, folders, id):
     matrices = []
     for folder in folders:
-        matrix_file = glob.glob(path_folders + folder + "/*."+str(id)+".txt") 
+        matrix_file = glob.glob(path_folders + folder + "att_model/*."+str(id)+".txt")
         matrix = read_matrix(matrix_file[0])
         matrices.append(matrix)
     if len(matrices) != len(folders):
@@ -43,17 +43,35 @@ def write_output(path, matrix):
             except TypeError:
                 pass
 
+def load_files(path_folders, folders, file_list_name):
+	d_list = zip([],[])
+	for folder in folders:
+		count = 1
+		d_list[folder] = []
+		with open(path_folders + folder + file_list_name, "r") as inputFile:
+			d_list[folder].append([inputFile.readline().strip(), count])
+			count +=1
+	return d_list
+
 def main():
     path_folders = sys.argv[1]
-    folders = ["rand1/att_model/", "rand2/att_model/", "rand3/att_model/"]#, "rand4/att_model/", "rand5/att_model/"]
-    files_list = [line.strip("\n") for line in open(sys.argv[2],"r")]
+    folders = ["rand1/", "rand2/", "rand3/", "rand4/", "rand5/"]
+	file_list_name = sys.argv[2]
+	#files_list = [line.strip("\n") for line in open(sys.argv[2],"r")]
     output_folder = sys.argv[3]
     size = len(files_list)
     for i in range(0, size):
-        matrices = find_matrices(path_folders, folders, i+1)
-        avg_matrix = merge_matrices(matrices)
-        f = files_list[i]
-        write_output(output_folder + f, avg_matrix)
+		d_list = load_files(path_folders, folders, file_list_name)
+		print d_list, len(d_list), d_list[folders[0]]
+		#load the list files with indexes
+		#get matrices i (send the generated dictionary to be able to find them)
+		#avg matrices
+		#write output
+
+		#matrices = find_matrices(path_folders, folders, i+1)
+        #avg_matrix = merge_matrices(matrices)
+        #f = files_list[i]
+        #write_output(output_folder + f, avg_matrix)
 
 
 if __name__ == '__main__':
