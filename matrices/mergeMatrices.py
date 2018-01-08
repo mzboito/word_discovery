@@ -54,12 +54,12 @@ def load_files(path_folders, folders, file_list_name):
 	return d_list
 
 def main():
-    path_folders = sys.argv[1]
-    folders = ["rand1/", "rand2/", "rand3/", "rand4/", "rand5/"]
+	path_folders = sys.argv[1]
+	folders = ["rand1/", "rand2/", "rand3/", "rand4/", "rand5/"]
 	list_name = sys.argv[2]#files_list = [line.strip("\n") for line in open(sys.argv[2],"r")]
-    output_folder = sys.argv[3]
-    size = len(files_list)
-    for i in range(0, size):
+	output_folder = sys.argv[3]
+	size = len(files_list)
+	for i in range(0, size):
 		d_list = load_files(path_folders, folders, file_list_name)
 		print d_list, len(d_list), d_list[folders[0]]
 		#load the list files with indexes
@@ -74,4 +74,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+   \tmain()
