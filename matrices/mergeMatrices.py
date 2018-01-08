@@ -33,23 +33,28 @@ def write_output(path, matrix):
             except TypeError:
                 pass
 
-def load_files(path_folders, folders, list_type):
+def load_files(path_folders, folders):
 	files_dict = dict(zip([],[]))
 	for folder in folders:
 		count = 1
 		files_dict[folder] = []
-		file_name = list_type + "." + folder[:-1] + ".list"
-		with open(path_folders + folder + file_name, "r") as inputFile:
+		file_name = "train" + "." + folder[:-1] + ".list"
+		with open(path_folders + folder + file_name, "r") as inputFile: #read train
 			intern_dict = dict(zip([],[]))
 			for line in inputFile:
 				intern_dict[line.strip()] = count
-				#files_dict[folder].append([line.strip(), count])
 				count +=1
+			file_name = file_name.replace("train","dev")
+			with open(path_folders + folder + file_name, "r") as inputFile: #read dev
+				count = 1
+				for line in inputFile:
+					intern_dict[line.strip()] = count
+					count +=1
 			files_dict[folder] = intern_dict
 	return files_dict
 
 def print_usage():
-	print "USAGE: path_folders (where are the randX/ folders) + \n\tlist_type (dev or train) + \n\toutput_folder (where it will be the output attention matrices)\n\t rand_num (number of random folders)\n"
+	print "USAGE: path_folders (where are the randX/ folders) + \n\toutput_folder (where it will be the output attention matrices)\n\t rand_num (number of random folders)\n"
 
 def get_file_from_index(files_dict, folder, f_id):
 	for key in files_dict[folder].keys():
@@ -79,44 +84,39 @@ def find_matrices(path_folders, folders, files_dict, file_name):
 
 def main():
 	path_folders = sys.argv[1]
-	list_type = sys.argv[2]#files_list = [line.strip("\n") for line in open(sys.argv[2],"r")]
-	output_folder = sys.argv[3]
-	rand_num = int(sys.argv[4])
+	#list_type = sys.argv[2]#files_list = [line.strip("\n") for line in open(sys.argv[2],"r")]
+	output_folder = sys.argv[2]
+	rand_num = int(sys.argv[3])
 	folders = []#folders = ["rand1/", "rand2/", "rand3/", "rand4/", "rand5/"]
 	for i in range(1,rand_num+1):
 		folders.append("rand"+str(i)+"/")
 	print folders
-	if list_type != "dev" and list_type != "train":
-		print "ERROR WITH THE LIST TYPE ARGUMENT\n"
-		print_usage()
-		sys.exit(1)
-	else:
-		files_dict = load_files(path_folders, folders, list_type)
-		#print len(files_dict), len(files_dict[folders[0]])
-		size = len(files_dict[folders[0]])
-		for i in range(1, rand_num):
-			if len(files_dict[folders[i]]) != size:
-				print "PROBLEM READING THE LISTS (INDEX = " + str(i) + ")\n"
-				sys.exit(1)
+	files_dict = load_files(path_folders, folders, list_type)
+	#print len(files_dict), len(files_dict[folders[0]])
+	size = len(files_dict[folders[0]])
+	for i in range(1, rand_num):
+		if len(files_dict[folders[i]]) != size:
+			print "PROBLEM READING THE LISTS (INDEX = " + str(i) + ")\n"
+			sys.exit(1)
 
-		for i in range(1, size+1):
-			print size
-			#break
-			file_i = get_file_from_index(files_dict, folders[0], i)
-			print file_i
-			if i > 4:
-				break
-			matrices = find_matrices(path_folders, folders, files_dict, file_i)
+	for i in range(1, size+1):
+		print size
+		#break
+		file_i = get_file_from_index(files_dict, folders[0], i)
+		print file_i
+		if i > 4:
+			break
+		matrices = find_matrices(path_folders, folders, files_dict, file_i)
 
-			#load the list files with indexes
-			#get matrices i (send the generated dictionary to be able to find them)
-			#avg matrices
-			#write output
+		#load the list files with indexes
+		#get matrices i (send the generated dictionary to be able to find them)
+		#avg matrices
+		#write output
 
-			#matrices = find_matrices(path_folders, folders, i+1)
-	        #avg_matrix = merge_matrices(matrices)
-	        #f = files_list[i]
-	        #write_output(output_folder + f, avg_matrix)
+		#matrices = find_matrices(path_folders, folders, i+1)
+        #avg_matrix = merge_matrices(matrices)
+        #f = files_list[i]
+        #write_output(output_folder + f, avg_matrix)
 
 
 if __name__ == '__main__':
