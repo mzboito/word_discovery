@@ -50,7 +50,7 @@ def load_files(path_folders, folders, list_type):
 		d_list[folder] = []
 		file_name = list_type + "." + folder[:-1] + ".list"
 		with open(path_folders + folder + file_name, "r") as inputFile:
-			intern_dict = dict(zip[],[])
+			intern_dict = dict(zip([],[]))
 			for line in inputFile:
 				intern_dict[line.strip()] = count
 				#d_list[folder].append([line.strip(), count])
