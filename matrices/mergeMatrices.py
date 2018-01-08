@@ -47,38 +47,53 @@ def load_files(path_folders, folders, file_list_name):
 	d_list = dict(zip([],[]))
 	for folder in folders:
 		count = 1
-		#print folder, folder[-2]
 		d_list[folder] = []
-		#print file_list_name, file_list_name.replace(folders[0],folder), folders[0], folder
-		with open(path_folders + folder + file_list_name.replace(folders[0][:-1],folder[:-1]), "r") as inputFile:
+		file_name = file_list_name + "." + folder[:-1] + ".list"
+		with open(path_folders + folder + file_name, "r") as inputFile:
 			for line in inputFile:
 				d_list[folder].append([line.strip(), count])
 				count +=1
 	return d_list
 
+def print_usage():
+	print "USAGE: path_folders (where are the randX/ folders) + \n\tlist_type (dev or train) + \n\toutput_folder (where it will be the output attention matrices)\n\t rand_num (number of random folders)\n"
+
 def main():
 	path_folders = sys.argv[1]
-	list_name = sys.argv[2]#files_list = [line.strip("\n") for line in open(sys.argv[2],"r")]
+	list_type = sys.argv[2]#files_list = [line.strip("\n") for line in open(sys.argv[2],"r")]
 	output_folder = sys.argv[3]
 	rand_num = int(sys.argv[4])
 	folders = []#folders = ["rand1/", "rand2/", "rand3/", "rand4/", "rand5/"]
 	for i in range(1,rand_num+1):
 		folders.append("rand"+str(i)+"/")
 	print folders
-	d_list = load_files(path_folders, folders, list_name)
-	print len(d_list), len(d_list[folders[0]])
-	size = 5130#len(files_list)
-	for i in range(0, size):
-		count = 0
-		#load the list files with indexes
-		#get matrices i (send the generated dictionary to be able to find them)
-		#avg matrices
-		#write output
+	if list_name != "dev" and list_name != "train":
+		print "ERROR WITH THE LIST TYPE ARGUMENT\n"
+		print_usage()
+		sys.exit(1)
+	else:
+		d_list = load_files(path_folders, folders, list_name)
+		#print len(d_list), len(d_list[folders[0]])
+		size = len(d_list[folders[0]])
+		for i in range(1, rand_num):
+			if len(d_list[folders[i]]) != size:
+				print "PROBLEM READING THE LISTS (INDEX = " + str(i) + ")\n"
+				sys.exit(1)
 
-		#matrices = find_matrices(path_folders, folders, i+1)
-        #avg_matrix = merge_matrices(matrices)
-        #f = files_list[i]
-        #write_output(output_folder + f, avg_matrix)
+		#size = 5130#len(files_list)
+		for i in range(0, size):
+			print count
+			break
+			count = 0
+			#load the list files with indexes
+			#get matrices i (send the generated dictionary to be able to find them)
+			#avg matrices
+			#write output
+
+			#matrices = find_matrices(path_folders, folders, i+1)
+	        #avg_matrix = merge_matrices(matrices)
+	        #f = files_list[i]
+	        #write_output(output_folder + f, avg_matrix)
 
 
 if __name__ == '__main__':
