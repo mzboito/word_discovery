@@ -68,7 +68,7 @@ def main():
 	print len(d_list)
 	size = 5130#len(files_list)
 	for i in range(0, size):
-
+		count = 0
 		#load the list files with indexes
 		#get matrices i (send the generated dictionary to be able to find them)
 		#avg matrices
