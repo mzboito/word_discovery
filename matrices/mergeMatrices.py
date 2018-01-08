@@ -43,12 +43,12 @@ def write_output(path, matrix):
             except TypeError:
                 pass
 
-def load_files(path_folders, folders, file_list_name):
+def load_files(path_folders, folders, list_type):
 	d_list = dict(zip([],[]))
 	for folder in folders:
 		count = 1
 		d_list[folder] = []
-		file_name = file_list_name + "." + folder[:-1] + ".list"
+		file_name = list_type + "." + folder[:-1] + ".list"
 		with open(path_folders + folder + file_name, "r") as inputFile:
 			for line in inputFile:
 				d_list[folder].append([line.strip(), count])
@@ -67,12 +67,12 @@ def main():
 	for i in range(1,rand_num+1):
 		folders.append("rand"+str(i)+"/")
 	print folders
-	if list_name != "dev" and list_name != "train":
+	if list_type != "dev" and list_type != "train":
 		print "ERROR WITH THE LIST TYPE ARGUMENT\n"
 		print_usage()
 		sys.exit(1)
 	else:
-		d_list = load_files(path_folders, folders, list_name)
+		d_list = load_files(path_folders, folders, list_type)
 		#print len(d_list), len(d_list[folders[0]])
 		size = len(d_list[folders[0]])
 		for i in range(1, rand_num):
