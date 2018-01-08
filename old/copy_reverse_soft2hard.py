@@ -62,12 +62,12 @@ def main():
     outputPath = sys.argv[2]
     controlFile = readControlFile(sys.argv[3])
     unseg = int(sys.argv[4])
-    for index in range(1, len(sentencesPaths)+1):
-        filePath = getPath(index, sentencesPaths)
+    for sentence in sentencesPath:
+        #filePath = getPath(index, sentencesPaths)
         if unseg == 1:
-            finalstr = segment(filePath, [])
+            finalstr = segment(sentence, [])
         else:
-            finalstr = segment(filePath, controlFile)
+            finalstr = segment(sentence, controlFile)
         writeOutput(finalstr, outputPath)
 
 
