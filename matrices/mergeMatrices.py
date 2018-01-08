@@ -8,21 +8,21 @@ def read_matrix(path):
 	return [line.strip("\n").split("\t") for line in codecs.open(path,"r","UTF-8")]
 
 def merge_matrices(matrices_list):
-    num_lines = len(matrices_list[0])
-    num_columns = len(matrices_list[0][0]) + 1
-    num_matrices = len(matrices_list)
-    output = [[0 for i in xrange(num_columns)] for j in xrange(num_lines)]
-    output[0] = matrices_list[0][0]
-    for line in range(1, num_lines):
-        output[line][0] = matrices_list[0][line][0]
-        for column in range(1, num_columns):
-            for i in range(0, num_matrices):
-                if len(matrices_list[i][line]) > 1:
+	num_lines = len(matrices_list[0])
+	num_columns = len(matrices_list[0][0]) + 1
+	num_matrices = len(matrices_list)
+	output = [[0 for i in xrange(num_columns)] for j in xrange(num_lines)]
+	output[0] = matrices_list[0][0]
+	for line in range(1, num_lines):
+		output[line][0] = matrices_list[0][line][0]
+		for column in range(1, num_columns):
+			for i in range(0, num_matrices):
+				if len(matrices_list[i][line]) > 1:
 					print output
 					print matrices_list[i][line][column]
-                    output[line][column] += float(matrices_list[i][line][column])
-            output[line][column] = str(output[line][column] / num_matrices)
-    return output
+					output[line][column] += float(matrices_list[i][line][column])
+			output[line][column] = str(output[line][column] / num_matrices)
+	return output
 
 def write_output(path, matrix):
     output_path = path.replace(".lab", ".attmat")
