@@ -3,14 +3,7 @@ import sys
 import codecs
 import glob
 
-def getPath(number, paths):
-    for path in paths:
-        if "." + str(number) + "." in path:
-            return path
-    return None
-
 def readMatrixFile(path):
-    print path
     return [line.strip("\n").split("\t") for line in codecs.open(path,"r","UTF-8")]
 
 def getMaxProbCol(line, sentenceMatrix):
@@ -44,32 +37,16 @@ def segment(filePath, top100):
         finalString = finalString[1:]
     return finalString
 
-def writeOutput(finalString, output):
-    with codecs.open(output, "a", "UTF-8") as outputFile:
+def writeOutput(finalString, output, path):
+    with codecs.open(output + path, "w", "UTF-8") as outputFile:
         outputFile.write(finalString + "\n")
-
-def readControlFile(inputPath):
-	words = []
-	with codecs.open(inputPath, "r", "UTF-8") as inputFile:
-		for line in inputFile:
-			for word in line.strip("\n").split("\t"):
-				if not word in words:
-					words.append(word)
-	return words
 
 def main():
     sentencesPaths = glob.glob(sys.argv[1]+"*.txt")
     outputPath = sys.argv[2]
-    controlFile = readControlFile(sys.argv[3])
-    unseg = int(sys.argv[4])
-    for sentence in sentencesPaths:
-        #filePath = getPath(index, sentencesPaths)
-        if unseg == 1:
-            finalstr = segment(sentence, [])
-        else:
-            finalstr = segment(sentence, controlFile)
-        writeOutput(finalstr, outputPath)
-
+    for path in sentencesPaths:
+        finalstr = segment(path, []).replace(" </S>","").replace("</S>","")
+        writeOutput(finalstr, outputPath, path.replace(".txt", ""))
 
 
 if __name__ == "__main__":
