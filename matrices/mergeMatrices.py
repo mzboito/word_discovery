@@ -107,7 +107,7 @@ def main():
 		if i > 4:
 			break
 		matrices = find_matrices(path_folders, folders, files_dict, file_i)
-
+		print len(matrices)
 		#load the list files with indexes
 		#get matrices i (send the generated dictionary to be able to find them)
 		#avg matrices
