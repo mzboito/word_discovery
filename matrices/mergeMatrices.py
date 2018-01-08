@@ -67,7 +67,7 @@ def get_file_from_index(files_dict, folder, f_id):
 	for key in files_dict[folder].keys():
 		if files_dict[folder][key] == f_id:
 			return key
-	print "PROBLEM GETTING KEY FROM DICTIONARY:\nid: " str(f_id) + " folder: " + folder + "\n"
+	print "PROBLEM GETTING KEY FROM DICTIONARY:\nid: " + str(f_id) + " folder: " + folder + "\n"
 	sys.exit(1)
 
 def main():
