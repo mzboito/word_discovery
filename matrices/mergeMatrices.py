@@ -25,8 +25,8 @@ def merge_matrices(matrices_list):
 	return output
 
 def write_output(path, matrix):
-    output_path = path.replace(".lab", ".attmat")
-    print output_path
+    output_path = path.replace(".lab", ".avgatt.txt")
+    #print output_path
     with codecs.open(output_path, "w", "UTF-8") as outputFile:
         for line in matrix:
             #print line, "\t".join(line)
@@ -100,7 +100,7 @@ def main():
 	folders = []#folders = ["rand1/", "rand2/", "rand3/", "rand4/", "rand5/"]
 	for i in range(1,rand_num+1):
 		folders.append("rand"+str(i)+"/")
-	print folders
+	#print folders
 	files_dict = load_files(path_folders, folders)
 	#print len(files_dict), len(files_dict[folders[0]])
 	size = len(files_dict[folders[0]])
@@ -114,12 +114,10 @@ def main():
 			file_i = get_file_from_index(files_dict, folders[0], "dev_att." + str(i - train_max))
 		else:
 			file_i = get_file_from_index(files_dict, folders[0], "train_att." + str(i))
-		print file_i, i
+		#print file_i, i
 		matrices = find_matrices(path_folders, folders, files_dict, file_i)
 		avg_matrix = merge_matrices(matrices)
 		write_output(output_folder + file_i, avg_matrix)
-		if i > 4:
-			sys.exit(1)
 
 
 if __name__ == '__main__':
