@@ -65,7 +65,7 @@ def main():
 		folders.append("rand"+str(i)+"/")
 	print folders
 	d_list = load_files(path_folders, folders, list_name)
-	print len(d_list)
+	print len(d_list), len(d_list[folders[0]])
 	size = 5130#len(files_list)
 	for i in range(0, size):
 		count = 0
