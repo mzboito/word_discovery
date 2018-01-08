@@ -44,13 +44,13 @@ def load_files(path_folders, folders):
 		with open(path_folders + folder + file_name, "r") as inputFile: #read train
 			intern_dict = dict(zip([],[]))
 			for line in inputFile:
-				intern_dict[line.strip()] = count
+				intern_dict[line.strip()] = "train_att."+ str(count)
 				count +=1
 			file_name = file_name.replace("train","dev")
 			with open(path_folders + folder + file_name, "r") as inputFile: #read dev
 				count = 1
 				for line in inputFile:
-					intern_dict[line.strip()] = count
+					intern_dict[line.strip()] = "dev_att."+ str(count)
 					count +=1
 			files_dict[folder] = intern_dict
 	return files_dict
@@ -76,7 +76,7 @@ def find_matrices(path_folders, folders, files_dict, file_name):
 	matrices = []
 	for folder in folders:
 		f_id = get_index_from_file(files_dict, folder, file_name)
-		matrix_file = glob.glob(path_folders + folder + "att_model/*."+str(f_id)+".txt")
+		matrix_file = glob.glob(path_folders + folder + "att_model/" + f_id +".txt")
 		matrix = read_matrix(matrix_file[0])
 		matrices.append(matrix)
 	if len(matrices) != len(folders):
@@ -108,11 +108,14 @@ def main():
 		if len(files_dict[folders[i]]) != size:
 			print "PROBLEM READING THE LISTS (INDEX = " + str(i) + ")\n"
 			sys.exit(1)
-
+	train_max = 4616 #FIX THIS UGLY THINGY
 	for i in range(1, size+1):
 		print size
 		#break
-		file_i = get_file_from_index(files_dict, folders[0], i)
+		if i > train_max:
+			file_i = get_file_from_index(files_dict, folders[0], "dev_att." + str(i - train_max))
+		else:
+			file_i = get_file_from_index(files_dict, folders[0], "train_att." + str(i))
 		print file_i
 		if i > 4:
 			break
