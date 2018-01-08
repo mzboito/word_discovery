@@ -49,7 +49,7 @@ def load_files(path_folders, folders, file_list_name):
 		count = 1
 		#print folder, folder[-2]
 		d_list[folder] = []
-		with open(path_folders + folder + file_list_name, "r") as inputFile:
+		with open(path_folders + folder + file_list_name.replace(folders[0],folder), "r") as inputFile:
 			d_list[folder].append([inputFile.readline().strip(), count])
 			count +=1
 	return d_list
