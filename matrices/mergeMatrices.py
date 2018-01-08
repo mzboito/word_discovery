@@ -64,10 +64,11 @@ def main():
 	for i in range(1,rand_num+1):
 		folders.append("rand"+str(i)+"/")
 	print folders
+	d_list = load_files(path_folders, folders, list_name)
+	print len(d_list)
 	size = 5130#len(files_list)
 	for i in range(0, size):
-		d_list = load_files(path_folders, folders, list_name)
-		print len(d_list)
+
 		#load the list files with indexes
 		#get matrices i (send the generated dictionary to be able to find them)
 		#avg matrices
