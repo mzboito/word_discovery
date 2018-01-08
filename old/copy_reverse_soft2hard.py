@@ -38,7 +38,7 @@ def segment(filePath, top100):
     return finalString
 
 def writeOutput(finalString, output, path):
-    with codecs.open(output + path, "w", "UTF-8") as outputFile:
+    with codecs.open(output + path.split("/")[-1], "w", "UTF-8") as outputFile:
         outputFile.write(finalString + "\n")
 
 def main():
