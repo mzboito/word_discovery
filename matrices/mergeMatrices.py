@@ -51,24 +51,31 @@ def load_files(path_folders, folders, list_type):
 def print_usage():
 	print "USAGE: path_folders (where are the randX/ folders) + \n\tlist_type (dev or train) + \n\toutput_folder (where it will be the output attention matrices)\n\t rand_num (number of random folders)\n"
 
-def find_matrices(path_folders, folders, file_name):
-    matrices = []
-	#read the first one
-	#files_dict[folder[0]]
-    for folder in folders:
-        matrix_file = glob.glob(path_folders + folder + "att_model/*."+str(id)+".txt")
-        matrix = read_matrix(matrix_file[0])
-        matrices.append(matrix)
-    if len(matrices) != len(folders):
-        print "carefull, we are missing some matrices..."
-    return matrices
-
 def get_file_from_index(files_dict, folder, f_id):
 	for key in files_dict[folder].keys():
 		if files_dict[folder][key] == f_id:
 			return key
 	print "PROBLEM GETTING KEY FROM DICTIONARY:\nid: " + str(f_id) + " folder: " + folder + "\n"
 	sys.exit(1)
+
+def get_index_from_file(files_dict, folder, f_name):
+	for key in files_dict[folder].keys():
+		if key == f_name:
+			return files_dict[folder][key]
+	print "PROBLEM GETTING ID FROM DICTIONARY:\nfile: " + f_name + " folder: " + folder + "\n"
+	sys.exit(1)
+
+def find_matrices(path_folders, folders, files_dict, file_name):
+    matrices = []
+    for folder in folders:
+		f_id = get_index_from_file(files_dict, folder, file_name)
+        matrix_file = glob.glob(path_folders + folder + "att_model/*."+str(f_id)+".txt")
+        matrix = read_matrix(matrix_file[0])
+        matrices.append(matrix)
+    if len(matrices) != len(folders):
+        print "COULD NOT READ ALL THE MATRICES FOR FILE: " + file_name + "\n"
+		sys.exit(1)
+    return matrices
 
 def main():
 	path_folders = sys.argv[1]
@@ -99,7 +106,7 @@ def main():
 			print file_i
 			if i > 4:
 				break
-			#matrices = find_matrices(path_folders, folders, i+1, files_dict)
+			matrices = find_matrices(path_folders, folders, files_dict, file_i)
 
 			#load the list files with indexes
 			#get matrices i (send the generated dictionary to be able to find them)
