@@ -44,11 +44,11 @@ def write_output(path, matrix):
                 pass
 
 def load_files(path_folders, folders, file_list_name):
-	d_list = zip([],[])
+	d_list = dict(zip([],[]))
 	for folder in folders:
 		count = 1
-		print folder, folder[-2]
-		d_list[int(folder[-2])] = []
+		#print folder, folder[-2]
+		d_list[folder] = []
 		with open(path_folders + folder + file_list_name, "r") as inputFile:
 			d_list[folder].append([inputFile.readline().strip(), count])
 			count +=1
