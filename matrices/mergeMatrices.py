@@ -76,6 +76,7 @@ def find_matrices(path_folders, folders, files_dict, file_name):
 	matrices = []
 	for folder in folders:
 		f_id = get_index_from_file(files_dict, folder, file_name)
+		print f_id
 		matrix_file = glob.glob(path_folders + folder + "att_model/" + f_id +".txt")
 		matrix = read_matrix(matrix_file[0])
 		matrices.append(matrix)
