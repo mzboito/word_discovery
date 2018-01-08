@@ -66,16 +66,16 @@ def get_index_from_file(files_dict, folder, f_name):
 	sys.exit(1)
 
 def find_matrices(path_folders, folders, files_dict, file_name):
-    matrices = []
-    for folder in folders:
+	matrices = []
+	for folder in folders:
 		f_id = get_index_from_file(files_dict, folder, file_name)
-        matrix_file = glob.glob(path_folders + folder + "att_model/*."+str(f_id)+".txt")
-        matrix = read_matrix(matrix_file[0])
-        matrices.append(matrix)
-    if len(matrices) != len(folders):
-        print "COULD NOT READ ALL THE MATRICES FOR FILE: " + file_name + "\n"
+		matrix_file = glob.glob(path_folders + folder + "att_model/*."+str(f_id)+".txt")
+		matrix = read_matrix(matrix_file[0])
+		matrices.append(matrix)
+	if len(matrices) != len(folders):
+		print "COULD NOT READ ALL THE MATRICES FOR FILE: " + file_name + "\n"
 		sys.exit(1)
-    return matrices
+	return matrices
 
 def main():
 	path_folders = sys.argv[1]
