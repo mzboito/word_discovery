@@ -62,7 +62,7 @@ def main():
     outputPath = sys.argv[2]
     controlFile = readControlFile(sys.argv[3])
     unseg = int(sys.argv[4])
-    for sentence in sentencesPath:
+    for sentence in sentencesPaths:
         #filePath = getPath(index, sentencesPaths)
         if unseg == 1:
             finalstr = segment(sentence, [])
