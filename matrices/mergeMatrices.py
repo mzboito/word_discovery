@@ -7,16 +7,6 @@ import glob
 def read_matrix(path):
 	return [line.strip("\n").split("\t") for line in codecs.open(path,"r","UTF-8")]
 
-def find_matrices(path_folders, folders, id):
-    matrices = []
-    for folder in folders:
-        matrix_file = glob.glob(path_folders + folder + "att_model/*."+str(id)+".txt")
-        matrix = read_matrix(matrix_file[0])
-        matrices.append(matrix)
-    if len(matrices) != len(folders):
-        print "carefull, we are missing some matrices..."
-    return matrices
-
 def merge_matrices(matrices_list):
     num_lines = len(matrices_list[0])
     num_columns = len(matrices_list[0][0]) + 1
@@ -44,22 +34,41 @@ def write_output(path, matrix):
                 pass
 
 def load_files(path_folders, folders, list_type):
-	d_list = dict(zip([],[]))
+	files_dict = dict(zip([],[]))
 	for folder in folders:
 		count = 1
-		d_list[folder] = []
+		files_dict[folder] = []
 		file_name = list_type + "." + folder[:-1] + ".list"
 		with open(path_folders + folder + file_name, "r") as inputFile:
 			intern_dict = dict(zip([],[]))
 			for line in inputFile:
 				intern_dict[line.strip()] = count
-				#d_list[folder].append([line.strip(), count])
+				#files_dict[folder].append([line.strip(), count])
 				count +=1
-			d_list[folder] = intern_dict
-	return d_list
+			files_dict[folder] = intern_dict
+	return files_dict
 
 def print_usage():
 	print "USAGE: path_folders (where are the randX/ folders) + \n\tlist_type (dev or train) + \n\toutput_folder (where it will be the output attention matrices)\n\t rand_num (number of random folders)\n"
+
+def find_matrices(path_folders, folders, file_name):
+    matrices = []
+	#read the first one
+	files_dict[folder[0]]
+    for folder in folders:
+        matrix_file = glob.glob(path_folders + folder + "att_model/*."+str(id)+".txt")
+        matrix = read_matrix(matrix_file[0])
+        matrices.append(matrix)
+    if len(matrices) != len(folders):
+        print "carefull, we are missing some matrices..."
+    return matrices
+
+def get_file_from_index(files_dict, folder, f_id):
+	for key in files_dict[folder].keys():
+		if files_dict[folder][key] == f_id:
+			return key
+	print "PROBLEM GETTING KEY FROM DICTIONARY:\nid: " str(f_id) + " folder: " + folder + "\n"
+	sys.exit(1)
 
 def main():
 	path_folders = sys.argv[1]
@@ -75,19 +84,22 @@ def main():
 		print_usage()
 		sys.exit(1)
 	else:
-		d_list = load_files(path_folders, folders, list_type)
-		#print len(d_list), len(d_list[folders[0]])
-		size = len(d_list[folders[0]])
+		files_dict = load_files(path_folders, folders, list_type)
+		#print len(files_dict), len(files_dict[folders[0]])
+		size = len(files_dict[folders[0]])
 		for i in range(1, rand_num):
-			if len(d_list[folders[i]]) != size:
+			if len(files_dict[folders[i]]) != size:
 				print "PROBLEM READING THE LISTS (INDEX = " + str(i) + ")\n"
 				sys.exit(1)
 
-		for i in range(0, size):
-			#matrices = find_matrices(path_folders, folders, i+1, d_list)
-			count = 0
+		for i in range(1, size+1):
 			print size
-			break
+			#break
+			file_i = get_file_from_index(files_dict, folders[0], i)
+			print file_i
+			if i > 4:
+				break
+			#matrices = find_matrices(path_folders, folders, i+1, files_dict)
 
 			#load the list files with indexes
 			#get matrices i (send the generated dictionary to be able to find them)
