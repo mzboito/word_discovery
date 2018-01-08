@@ -18,6 +18,8 @@ def merge_matrices(matrices_list):
         for column in range(1, num_columns):
             for i in range(0, num_matrices):
                 if len(matrices_list[i][line]) > 1:
+					print output
+					print matrices_list[i][line][column]
                     output[line][column] += float(matrices_list[i][line][column])
             output[line][column] = str(output[line][column] / num_matrices)
     return output
