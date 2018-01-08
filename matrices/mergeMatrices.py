@@ -120,7 +120,7 @@ def main():
 		avg_matrix = merge_matrices(matrices)
         write_output(output_folder + file_i, avg_matrix)
 		if i > 4:
-			break
+			sys.exit(1)
 
 
 if __name__ == '__main__':
