@@ -91,7 +91,7 @@ def main():
 	for i in range(1,rand_num+1):
 		folders.append("rand"+str(i)+"/")
 	print folders
-	files_dict = load_files(path_folders, folders, list_type)
+	files_dict = load_files(path_folders, folders)
 	#print len(files_dict), len(files_dict[folders[0]])
 	size = len(files_dict[folders[0]])
 	for i in range(1, rand_num):
