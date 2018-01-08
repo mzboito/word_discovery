@@ -82,6 +82,13 @@ def find_matrices(path_folders, folders, files_dict, file_name):
 	if len(matrices) != len(folders):
 		print "COULD NOT READ ALL THE MATRICES FOR FILE: " + file_name + "\n"
 		sys.exit(1)
+	else:
+		size = len(matrices[0])
+		for i in range(1, len(folders)):
+			if len(matrices[i]) != size:
+				print "PROBLEM WITH MATRIX SIZE: " + file_name + "index: " + str(i) + "\n"
+				sys.exit(1)
+
 	return matrices
 
 def main():
