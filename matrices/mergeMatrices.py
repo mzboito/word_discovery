@@ -57,7 +57,7 @@ def main():
 	path_folders = sys.argv[1]
 	list_name = sys.argv[2]#files_list = [line.strip("\n") for line in open(sys.argv[2],"r")]
 	output_folder = sys.argv[3]
-	rand_num = sys.argv[4]
+	rand_num = int(sys.argv[4])
 	folders = []#folders = ["rand1/", "rand2/", "rand3/", "rand4/", "rand5/"]
 	for i in range(1,rand_num+1):
 		folders.append("rand"+str(i)+"/")
