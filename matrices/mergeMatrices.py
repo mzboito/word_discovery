@@ -1,4 +1,4 @@
-## input: [1] path to the folder where are the rand folders; [2] list of ".lab" files; [3] output folder path
+# -*- coding: utf-8 -*-
 
 import sys
 import codecs
