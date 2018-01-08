@@ -117,12 +117,13 @@ def main():
 		else:
 			file_i = get_file_from_index(files_dict, folders[0], "train_att." + str(i))
 		print file_i
-		if i > 4:
-			break
+
 		matrices = find_matrices(path_folders, folders, files_dict, file_i)
 		print len(matrices)
 		avg_matrix = merge_matrices(matrices)
         write_output(output_folder + file_i, avg_matrix)
+		if i > 4:
+			break
 
 
 if __name__ == '__main__':
