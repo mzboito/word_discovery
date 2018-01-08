@@ -47,6 +47,7 @@ def load_files(path_folders, folders, file_list_name):
 	d_list = zip([],[])
 	for folder in folders:
 		count = 1
+		print folder
 		d_list[int(folder[-2])] = []
 		with open(path_folders + folder + file_list_name, "r") as inputFile:
 			d_list[folder].append([inputFile.readline().strip(), count])
