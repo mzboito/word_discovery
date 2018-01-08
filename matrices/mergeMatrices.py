@@ -54,7 +54,7 @@ def print_usage():
 def find_matrices(path_folders, folders, file_name):
     matrices = []
 	#read the first one
-	files_dict[folder[0]]
+	#files_dict[folder[0]]
     for folder in folders:
         matrix_file = glob.glob(path_folders + folder + "att_model/*."+str(id)+".txt")
         matrix = read_matrix(matrix_file[0])
