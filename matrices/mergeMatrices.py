@@ -47,7 +47,7 @@ def load_files(path_folders, folders, file_list_name):
 	d_list = zip([],[])
 	for folder in folders:
 		count = 1
-		d_list[folder] = []
+		d_list[int(folder[-1])] = []
 		with open(path_folders + folder + file_list_name, "r") as inputFile:
 			d_list[folder].append([inputFile.readline().strip(), count])
 			count +=1
@@ -55,9 +55,13 @@ def load_files(path_folders, folders, file_list_name):
 
 def main():
 	path_folders = sys.argv[1]
-	folders = ["rand1/", "rand2/", "rand3/", "rand4/", "rand5/"]
 	list_name = sys.argv[2]#files_list = [line.strip("\n") for line in open(sys.argv[2],"r")]
 	output_folder = sys.argv[3]
+	rand_nums = sys,argv[4]
+	folders = []#folders = ["rand1/", "rand2/", "rand3/", "rand4/", "rand5/"]
+	for i in range(1,rand_num+1):
+		folders.append("rand"+str(i)+"/")
+	print folders
 	size = 5130#len(files_list)
 	for i in range(0, size):
 		d_list = load_files(path_folders, folders, list_name)
