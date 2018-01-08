@@ -9,7 +9,7 @@ def read_matrix(path):
 
 def merge_matrices(matrices_list):
 	num_lines = len(matrices_list[0])
-	num_columns = len(matrices_list[0][0]) + 1
+	num_columns = len(matrices_list[0][0]) #+ 1
 	num_matrices = len(matrices_list)
 	output = [[0 for i in xrange(num_columns)] for j in xrange(num_lines)]
 	output[0] = matrices_list[0][0]
