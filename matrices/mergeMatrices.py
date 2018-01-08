@@ -108,15 +108,8 @@ def main():
 			break
 		matrices = find_matrices(path_folders, folders, files_dict, file_i)
 		print len(matrices)
-		#load the list files with indexes
-		#get matrices i (send the generated dictionary to be able to find them)
-		#avg matrices
-		#write output
-
-		#matrices = find_matrices(path_folders, folders, i+1)
-        #avg_matrix = merge_matrices(matrices)
-        #f = files_list[i]
-        #write_output(output_folder + f, avg_matrix)
+		avg_matrix = merge_matrices(matrices)
+        write_output(output_folder + file_i, avg_matrix)
 
 
 if __name__ == '__main__':
