@@ -29,7 +29,7 @@ def write_output(path, matrix):
     print output_path
     with codecs.open(output_path, "w", "UTF-8") as outputFile:
         for line in matrix:
-            print line, "\t".join(line)
+            #print line, "\t".join(line)
             try:
                 outputFile.write("\t".join(line) + "\n")
             except TypeError:
