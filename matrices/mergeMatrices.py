@@ -50,9 +50,12 @@ def load_files(path_folders, folders, list_type):
 		d_list[folder] = []
 		file_name = list_type + "." + folder[:-1] + ".list"
 		with open(path_folders + folder + file_name, "r") as inputFile:
+			intern_dict = dict(zip[],[])
 			for line in inputFile:
-				d_list[folder].append([line.strip(), count])
+				intern_dict[line.strip()] = count
+				#d_list[folder].append([line.strip(), count])
 				count +=1
+			d_list[folder] = intern_dict
 	return d_list
 
 def print_usage():
@@ -80,11 +83,12 @@ def main():
 				print "PROBLEM READING THE LISTS (INDEX = " + str(i) + ")\n"
 				sys.exit(1)
 
-		#size = 5130#len(files_list)
 		for i in range(0, size):
-			print count
-			break
+			#matrices = find_matrices(path_folders, folders, i+1, d_list)
 			count = 0
+			print size
+			break
+
 			#load the list files with indexes
 			#get matrices i (send the generated dictionary to be able to find them)
 			#avg matrices
