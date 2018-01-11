@@ -55,9 +55,6 @@ def load_files(path_folders, folders):
 			files_dict[folder] = intern_dict
 	return files_dict
 
-def print_usage():
-	print "USAGE: path_folders (where are the randX/ folders) + \n\toutput_folder (where it will be the output attention matrices)\n\t rand_num (number of random folders)\n"
-
 def get_file_from_index(files_dict, folder, f_id):
 	for key in files_dict[folder].keys():
 		if files_dict[folder][key] == f_id:
