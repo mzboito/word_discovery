@@ -10,7 +10,7 @@ def getPath(number, paths):
     return None
 
 def readMatrixFile(path):
-    print path
+    #print path
     return [line.strip("\n").split("\t") for line in codecs.open(path,"r","UTF-8")]
 
 def getMaxProbCol(line, sentenceMatrix):
@@ -60,11 +60,11 @@ def readControlFile(inputPath):
 def main():
 
     sentencesPaths = glob.glob(sys.argv[1]+"*.txt")
-    print len(sentencesPaths)
+    #print len(sentencesPaths)
     outputPath = sys.argv[2]
     for index in range(1, len(sentencesPaths)+1):
         filePath = getPath(index, sentencesPaths)
-        finalstr = segment(filePath, [])
+        finalstr = segment(filePath, []).replace(" </S>","").replace("</S>","")
         writeOutput(finalstr, outputPath)
 
 
