@@ -86,7 +86,7 @@ def write_output(metrics, output_name):
         output_file.write("\t".join("TOKENS", str(metrics[0][0]), str(metrics[0][1]), str(metrics[0][2]))+"\n")
 
 def main():
-    if len(sys.argv) > 4:
+    if len(sys.argv) == 4:
         generated_seg = readFile(sys.argv[1])
         gold_seg = readFile(sys.argv[2])
         output_name = sys.argv[3]
