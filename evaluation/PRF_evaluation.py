@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import codecs
 
 def get_score(gold, unsup):
     words = gold.split(" ")
