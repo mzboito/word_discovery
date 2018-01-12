@@ -59,6 +59,9 @@ def print_usage():
     print "arg1: unsegmented source (with blank spaces between the symbols)\narg2: aligned target translation\narg3: output file name\n"
 
 def main():
+    if len(sys.argv) < 4:
+        print_usage()
+        sys.exit(1)
     source_list = read_file(sys.argv[1])
     target_list = read_file(sys.argv[2])
     out_file = sys.argv[3]
