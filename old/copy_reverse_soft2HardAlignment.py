@@ -4,7 +4,6 @@ import codecs
 import glob
 
 def getPath(number, paths):
-    print number, paths
     for path in paths:
         if "." + str(number) + "." in path:
             return path
@@ -59,6 +58,7 @@ def readControlFile(inputPath):
 	return words
 
 def main():
+
     sentencesPaths = glob.glob(sys.argv[1]+"*.txt")
     print len(sentencesPaths)
     outputPath = sys.argv[2]
