@@ -67,12 +67,12 @@ def filter_types(gold, words):
 def evaluate_types(generated_seg, gold_seg):
     types_gold = get_types(gold_seg)
     types_unsup = get_types(generated_seg)
-    correctTypes = filter_types(types_gold, types_unsup)
+    correct_types = filter_types(types_gold, types_unsup)
 
 
-    numberTypesGold = len(typesGold)
-    numberTypesUnsup = len(typesUnsup)
-    numberCorrectTypes = len(correctTypes)
+    numberTypesGold = len(types_gold)
+    numberTypesUnsup = len(types_unsup)
+    numberCorrectTypes = len(correct_types)
 
     r = recall(numberCorrectTypes, numberTypesGold)
     p = precision(numberCorrectTypes, numberTypesUnsup)
