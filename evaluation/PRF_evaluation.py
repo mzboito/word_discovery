@@ -77,9 +77,7 @@ def evaluate_types(generated_seg, gold_seg):
     p = precision(numberCorrectTypes, numberTypesUnsup)
 
     return [p, r, fscore(r,p)]
-s
-def evaluate_types
-    pass
+
 
 def write_output(metrics, output_name):
     with open(output_name,"w") as output_file:
