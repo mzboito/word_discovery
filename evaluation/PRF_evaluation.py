@@ -2,6 +2,15 @@
 
 import sys
 
+def get_score(gold, unsup):
+    words = gold.split(" ")
+    expWords = unsup.split(" ")
+    score = 0
+    for word in expWords:
+        if word in words:
+            words.remove(word) #avoid multiples matches for incorrect substrings
+            score += 1
+    return score
 
 def print_usage():
     print "PRF evaluation\n"
@@ -15,16 +24,61 @@ def evaluate(generated_seg, gold_seg):
     types = evaluate_types(generated_seg, gold_seg)
     return [tokens, types]
 
-def evaluate_tokens(generated_seg, gold_seg):
+def recall(numberCorrect, totalNumberGold):
+    return float(numberCorrect) / totalNumberGold
 
+def precision(numberCorrect, totalNumberUnsup):
+    return float(numberCorrect) / totalNumberUnsup
+
+def fscore(r, p):
+    return 2.0*r*p / (p + r)
+
+def evaluate_tokens(generated_seg, gold_seg):
+    numberTokensGold =0
+    numberTokensUnsup =0
+    numberCorrectTokens =0
     for i in range(0, len(gold_seg)):
         line_tokens = len(gold_seg[i].split(" ")) #number of tokens in that line
         line_generated = len(generated_seg[i].split(" ")) #same
-        correctlySegmented = getScore(mboshiGold[i], mboshiUnsupervised[i]) #number of tokens found
+        correctly_segmented = get_score(gold_seg[i], generated_seg[i]) #number of tokens found
+        numberTokensGold += line_tokens
+        numberTokensUnsup += line_generated
+        numberCorrectTokens += correctly_segmented
+    p = precision(numberCorrectTokens, numberTokensUnsup)
+    r = recall(numberCorrectTokens, numberTokensGold)
+    return [p, r, fscore(r, p)]
 
+def get_types(sentencesList):
+    types = []
+    for i in range(0, len(sentencesList)):
+        for word in sentencesList[i].split(" "):
+            if not word in types:
+                types.append(word)
+    return types
 
+def filter_types(gold, words):
+    newWords = []
+    for word in words:
+        if word in gold:
+            newWords.append(word)
+    return newWords
 
 def evaluate_types(generated_seg, gold_seg):
+    types_gold = get_types(gold_seg)
+    types_unsup = get_types(generated_seg)
+    correctTypes = filter_types(types_gold, types_unsup)
+
+
+    numberTypesGold = len(typesGold)
+    numberTypesUnsup = len(typesUnsup)
+    numberCorrectTypes = len(correctTypes)
+
+    r = recall(numberCorrectTypes, numberTypesGold)
+    p = precision(numberCorrectTypes, numberTypesUnsup)
+
+    return [p, r, fscore(r,p)]
+s
+def evaluate_types
     pass
 
 def write_output(metrics, output_name):
@@ -43,8 +97,6 @@ def main():
     else:
         print_usage()
         sys.exit(1)
-
-
 
 if __name__ == '__main__':
     main()
