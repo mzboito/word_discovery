@@ -26,13 +26,13 @@ def evaluate(generated_seg, gold_seg):
     return [tokens, types]
 
 def recall(numberCorrect, totalNumberGold):
-    return float(numberCorrect) / totalNumberGold
+    return (float(numberCorrect) / totalNumberGold) * 100
 
 def precision(numberCorrect, totalNumberUnsup):
-    return float(numberCorrect) / totalNumberUnsup
+    return (float(numberCorrect) / totalNumberUnsup) * 100
 
 def fscore(r, p):
-    return 2.0*r*p / (p + r)
+    return (2.0*r*p / (p + r))
 
 def evaluate_tokens(generated_seg, gold_seg):
     numberTokensGold =0
