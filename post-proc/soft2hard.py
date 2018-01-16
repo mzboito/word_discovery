@@ -49,6 +49,7 @@ def writeOutput(finalString, output):
     with codecs.open(output, "a", "UTF-8") as outputFile:
         outputFile.write(finalString + "\n")
 
+'''
 def readControlFile(inputPath):
 	words = []
 	with codecs.open(inputPath, "r", "UTF-8") as inputFile:
@@ -57,21 +58,37 @@ def readControlFile(inputPath):
 				if not word in words:
 					words.append(word)
 	return words
+'''
+
+def readFile(path):
+    return [line for line in codecs.open(path, "r","UTF-8")]
 
 def print_usage():
     print "soft2hard for corpus"
-    print "arg1: matrices folder\narg2: output file\n"
+    print "arg1: matrices folder\narg2: output file\narg3: list of names for generating individual files\n"
 
 def main():
     if len(sys.argv) < 3:
         print_usage()
         sys.exit(1)
+
     sentencesPaths = glob.glob(sys.argv[1]+"*.txt") #the seq2seq always produces matrices ending with .txt
     outputPath = sys.argv[2]
-    for index in range(1, len(sentencesPaths)+1):
-        filePath = getPath(index, sentencesPaths)
-        finalstr = segment(filePath, []).replace(" </S>","").replace("</S>","") #removing EOS
-        writeOutput(finalstr, outputPath)
+    if len(sys.argv) == 3:
+        for index in range(1, len(sentencesPaths)+1):
+            filePath = getPath(index, sentencesPaths)
+            finalstr = segment(filePath, []).replace(" </S>","").replace("</S>","") #removing EOS
+            writeOutput(finalstr, outputPath)
+    else:
+        files_output_list = readFile(sys.argv[3])
+        if len(files_output_list) != len(sentencesPaths):
+            print "DIFFERENT NUMBER: FILES LIST: " + str(len(files_output_list)) + " MATRICES: " str(len(sentencesPaths))
+            sys.exit(1)
+        for index in range(1, len(sentencesPaths)+1):
+            filePath = getPath(index, sentencesPaths)
+            finalstr = segment(filePath, []).replace(" </S>","").replace("</S>","") #removing EOS
+            writeOutput(finalstr, files_output_list[i-1])
+            writeOutput(finalstr, outputPath)
 
 
 
