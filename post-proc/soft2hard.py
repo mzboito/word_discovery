@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## for the moment just works for reverse architecture
 
 import sys
@@ -65,7 +66,7 @@ def readFile(path):
 
 def print_usage():
     print "soft2hard for corpus"
-    print "arg1: matrices folder\narg2: output file\narg3: list of names for generating individual files\n"
+    print "arg1: matrices folder\narg2: output file\narg3: list of names for generating individual files\narg4: folder for storing individual files\n"
 
 def main():
     if len(sys.argv) < 3:
@@ -81,13 +82,16 @@ def main():
             writeOutput(finalstr, outputPath)
     else:
         files_output_list = readFile(sys.argv[3])
+        folder = sys.argv[4]
+        if folder[-1] != "/":
+            folder+= "/"
         if len(files_output_list) != len(sentencesPaths):
-            print "DIFFERENT NUMBER: FILES LIST: " + str(len(files_output_list)) + " MATRICES: " str(len(sentencesPaths))
+            print "DIFFERENT NUMBER: FILES LIST: " + str(len(files_output_list)) + " MATRICES: " + str(len(sentencesPaths))
             sys.exit(1)
         for index in range(1, len(sentencesPaths)+1):
             filePath = getPath(index, sentencesPaths)
             finalstr = segment(filePath, []).replace(" </S>","").replace("</S>","") #removing EOS
-            writeOutput(finalstr, files_output_list[i-1])
+            writeOutput(finalstr, folder + files_output_list[index-1].split("/")[-1])
             writeOutput(finalstr, outputPath)
 
 
