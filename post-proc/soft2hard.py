@@ -1,9 +1,17 @@
+## for the moment just works for reverse architecture
 
 import sys
 import codecs
 import glob
 
+def getPath(number, paths):
+    for path in paths:
+        if "." + str(number) + "." in path:
+            return path
+    return None
+
 def readMatrixFile(path):
+    #print path
     return [line.strip("\n").split("\t") for line in codecs.open(path,"r","UTF-8")]
 
 def getMaxProbCol(line, sentenceMatrix):
@@ -37,16 +45,34 @@ def segment(filePath, top100):
         finalString = finalString[1:]
     return finalString
 
-def writeOutput(finalString, output, path):
-    with codecs.open(output + path.split("/")[-1], "w", "UTF-8") as outputFile:
+def writeOutput(finalString, output):
+    with codecs.open(output, "a", "UTF-8") as outputFile:
         outputFile.write(finalString + "\n")
 
+def readControlFile(inputPath):
+	words = []
+	with codecs.open(inputPath, "r", "UTF-8") as inputFile:
+		for line in inputFile:
+			for word in line.strip("\n").split("\t"):
+				if not word in words:
+					words.append(word)
+	return words
+
+def print_usage():
+    print "soft2hard for corpus"
+    print "arg1: matrices folder\narg2: output file\n"
+
 def main():
-    sentencesPaths = glob.glob(sys.argv[1]+"*.txt")
+    if len(sys.argv) < 3:
+        print_usage()
+        sys.exit(1)
+    sentencesPaths = glob.glob(sys.argv[1]+"*.txt") #the seq2seq always produces matrices ending with .txt
     outputPath = sys.argv[2]
-    for path in sentencesPaths:
-        finalstr = segment(path, []).replace(" </S>","").replace("</S>","") #cleaning a little bit
-        writeOutput(finalstr, outputPath, path.replace(".txt", ""))
+    for index in range(1, len(sentencesPaths)+1):
+        filePath = getPath(index, sentencesPaths)
+        finalstr = segment(filePath, []).replace(" </S>","").replace("</S>","") #removing EOS
+        writeOutput(finalstr, outputPath)
+
 
 
 if __name__ == "__main__":
