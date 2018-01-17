@@ -24,13 +24,13 @@ def getMaxProbCol(line, sentenceMatrix):
             maxValue = float(sentenceMatrix[line][i])
     return col
 
-def segment(filePath, top100):
+def segment(filePath, controlSeg):
     matrix = readMatrixFile(filePath)
     finalString = ""
     lastCol = -1
     for i in range(1, len(matrix)): #for each element
         col = getMaxProbCol(i, matrix)
-        if matrix[i][0] in top100:
+        if matrix[i][0] in controlSeg:
             finalString += " " + matrix[i][0]  + " "
         elif lastCol == -1: #first character
             finalString += matrix[i][0] #put the character in the beginning
@@ -50,7 +50,6 @@ def writeOutput(finalString, output):
     with codecs.open(output, "a", "UTF-8") as outputFile:
         outputFile.write(finalString + "\n")
 
-'''
 def readControlFile(inputPath):
 	words = []
 	with codecs.open(inputPath, "r", "UTF-8") as inputFile:
@@ -59,20 +58,18 @@ def readControlFile(inputPath):
 				if not word in words:
 					words.append(word)
 	return words
-'''
 
 def readFile(path):
-    return [line for line in codecs.open(path, "r","UTF-8")]
+    return [line.strip("\n") for line in codecs.open(path, "r","UTF-8")]
 
 def print_usage():
-    print "soft2hard for corpus"
-    print "arg1: matrices folder\narg2: output file\narg3: list of names for generating individual files\narg4: folder for storing individual files\n"
+    print "soft2hard - reverse version (for the moment) \n"
+    print "arg1: matrices folder\narg2: output file\narg3: list of names for generating individual files (optional)\narg4: folder for storing individual files (optional)"
 
 def main():
     if len(sys.argv) < 3:
         print_usage()
         sys.exit(1)
-
     sentencesPaths = glob.glob(sys.argv[1]+"*.txt") #the seq2seq always produces matrices ending with .txt
     outputPath = sys.argv[2]
     if len(sys.argv) == 3:
