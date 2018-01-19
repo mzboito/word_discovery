@@ -69,7 +69,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--matrices-folder', type=str, nargs='?', help='matrices folder')
     parser.add_argument('--output-file', type=str, nargs='?', help='name for the output name')
-    parser.add_argument('reverse', type=bool, default=False, nargs='?', help='indicates if the matrix needs to be transposed before segmentation')
+    parser.add_argument('reverse', type=bool, default=True, nargs='?', help='indicates if the matrix needs to be transposed before segmentation')
     parser.add_argument('--individual-files', type=str, nargs='?', help='list of names for generating individual files')
     parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
     args = parser.parse_args()
@@ -77,6 +77,7 @@ def main():
     if len(sys.argv) < 3:
         parser.print_help()
         sys.exit(1)
+
     if args.matrices_folder and args.output_file:
         sentencesPaths = glob.glob(args.matrices_folder+"*.txt") #the seq2seq always produces matrices ending with .txt
         outputPath = args.output_file
@@ -97,7 +98,7 @@ def main():
             filePath = getPath(index, sentencesPaths)
             finalstr = segment(filePath, [], args.reverse).replace(" </S>","").replace("</S>","") #removing EOS
             writeOutput(finalstr, folder + files_output_list[index-1].split("/")[-1])
-            writeOutput(finalstr, outputPath)
+            #writeOutput(finalstr, outputPath)
 
 if __name__ == "__main__":
     main()
