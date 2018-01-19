@@ -27,7 +27,7 @@ def getMaxProbCol(line, sentenceMatrix):
 
 def segment(filePath, controlSeg, reverse):
     matrix = readMatrixFile(filePath)
-    if reverse:
+    if not reverse:
         matrix = [list(i) for i in zip(*matrix)]
     finalString = ""
     lastCol = -1
@@ -69,7 +69,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--matrices-folder', type=str, nargs='?', help='matrices folder')
     parser.add_argument('--output-file', type=str, nargs='?', help='name for the output name')
-    parser.add_argument('reverse', type=bool, default=True, nargs='?', help='indicates if the matrix needs to be transposed before segmentation')
+    parser.add_argument('reverse', type=bool, default=False, nargs='?', help='indicates if the matrix needs to be transposed before segmentation')
     parser.add_argument('--individual-files', type=str, nargs='?', help='list of names for generating individual files')
     parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
     args = parser.parse_args()
