@@ -87,7 +87,8 @@ def main():
             finalstr = segment(filePath, [], args.reverse).replace(" </S>","").replace("</S>","") #removing EOS
             writeOutput(finalstr, outputPath)
 
-    if args.individual_files and args.output_folder:
+    if args.matrices_folder and args.individual_files and args.output_folder:
+        sentencesPaths = glob.glob(args.matrices_folder+"*.txt") #the seq2seq always produces matrices ending with .txt
         files_output_list = readFile(args.files_output_list)
         folder = args.output_folder
         if folder[-1] != "/":
@@ -97,7 +98,7 @@ def main():
         for index in range(1, len(sentencesPaths)+1):
             filePath = getPath(index, sentencesPaths)
             finalstr = segment(filePath, [], args.reverse).replace(" </S>","").replace("</S>","") #removing EOS
-            writeOutput(finalstr, folder + files_output_list[index-1].split("/")[-1])
+            writeOutput(finalstr, folder + files_output_list[index-1].split("/")[-1] + ".hardseg")
             #writeOutput(finalstr, outputPath)
 
 if __name__ == "__main__":
