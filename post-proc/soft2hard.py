@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-## for the moment just works for reverse architecture
 
 import sys
 import codecs
