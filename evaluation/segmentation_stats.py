@@ -73,7 +73,7 @@ def main():
     stats_folder = sys.argv[3]
     generated = Stats(sys.argv[1],"generated")
     gold = Stats(sys.argv[2], "gold_standard")
-    write_stats(stats_folder + "/segmentation_stats", generated, gold)
+    write_stats(stats_folder + "/" + sys.argv[1].split("/")[-1] +".segmentation_stats", generated, gold)
     #generates vocab file
     write_vocab(stats_folder + "/" + sys.argv[1].split("/")[-1] + ".vocab", generated)
     write_vocab(stats_folder + "/" + sys.argv[2].split("/")[-1] + ".vocab", gold)
