@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import os
 
 def main():
     log_file = sys.argv[1]
+    output_name = sys.argv[1].replace(".txt",".out")
+    current_path = os.getcwd()
     lines = [line for line in open(log_file,"r")]
     infos = []
+
     for i in range(0, len(lines)):
         if " step " in lines[i]:
             step = lines[i].split(" ")[3]
@@ -21,11 +25,15 @@ def main():
             infos.append([step, dev_eval, dev_score, train_eval, train_score])
         else:
             i+=1
-    with open(sys.argv[1].replace(".txt",".out"),"w") as outputFile:
+    with open(output_name,"w") as outputFile:
         outputFile.write("\t".join(["step","dev_loss", "dev_bleu", "train_loss", "train_bleu\n"]))
         for i in range(0,len(infos)):
             outputFile.write("\t".join(infos[i]) + "\n")
-
+    if len(sys.argv) > 2:
+        images_path = sys.argv[2]
+    else:
+        images_path = current_path
+    os.system("Rscript --vanilla " + current_path + "/createGraphics.r " + output_name + " " + images_path)
 
 
 if __name__ == '__main__':
