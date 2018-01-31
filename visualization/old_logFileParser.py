@@ -1,53 +1,37 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import os
 
 def main():
     log_file = sys.argv[1]
-    output_name = sys.argv[1].replace(".txt",".out")
-    current_path = os.getcwd()
     lines = [line for line in open(log_file,"r")]
     infos = []
-
     for i in range(0, len(lines)):
         if " step " in lines[i]:
             step = lines[i].split(" ")[3]
-            i+=2
-            dev_score = lines[i].split("dev bleu=")[1].split(" ")[0]
-            dev_eval = lines[i].split("loss=")[1].split(" ")[0]
             i+=1
-            train_score = lines[i].split("train bleu=")[1].split(" ")[0]
-            train_eval = lines[i].split("loss=")[1].split(" ")[0]
+            dev_eval = lines[i].split("dev eval: loss")[1].strip()
+            i+=1
+            train_eval = lines[i].split("train eval: loss")[1].strip()
             i+=2
+            dev_score = lines[i].split("dev score=")[1].split(" ")[0]
+            i+=1
+            train_score = lines[i].split("train score=")[1].split(" ")[0]
+            i+=3
             infos.append([step, dev_eval, dev_score, train_eval, train_score])
         else:
             i+=1
-    with open(output_name,"w") as outputFile:
+    with open(sys.argv[1].replace(".txt",".out"),"w") as outputFile:
         outputFile.write("\t".join(["step","dev_loss", "dev_bleu", "train_loss", "train_bleu\n"]))
         for i in range(0,len(infos)):
             outputFile.write("\t".join(infos[i]) + "\n")
-    if len(sys.argv) > 2:
-        images_path = sys.argv[2]
-    else:
-        images_path = current_path
-    os.system("Rscript --vanilla " + current_path + "/createGraphics.r " + output_name + " " + images_path)
+
 
 
 if __name__ == '__main__':
     main()
 
 '''
-new
-01/20 05:15:48 step 150000 epoch 1040 learning rate 0.001 step-time 0.209 loss 17.447
-01/20 05:15:48 starting evaluation
-01/20 05:15:52 dev bleu=33.40 loss=133.16 penalty=0.982 ratio=0.982
-01/20 05:16:33 train bleu=78.52 loss=6.40 penalty=1.000 ratio=1.004
-01/20 05:16:33 saving model to ../griko_mboshi_exp/FR-MB-FR/exp1/model/checkpoints
-01/20 05:16:33 finished saving model
-
-
-
 12/07 14:38:47 step 120000 epoch 832 learning rate 0.001 step-time 0.726 loss 46.023
 12/07 14:38:59   dev eval: loss 92.84
 12/07 14:40:56   train eval: loss 32.01
