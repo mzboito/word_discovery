@@ -6,7 +6,15 @@ import os
 def main():
     log_file = sys.argv[1]
     output_name = sys.argv[1].replace(".txt",".out")
-    current_path = os.getcwd()
+    if len(log_file.split("/")) > 1:
+        log_path = "/".join(log_file.split("/")[:-1])
+    else:
+        log_path = os.getcwd()
+    script_file = sys.argv[0]
+    if len(script_file.split("/")) > 1:
+        script_path = "/".join(script_file.split("/")[:-1])
+    else:
+        script_path = os.getcwd()
     lines = [line for line in open(log_file,"r")]
     infos = []
 
@@ -30,8 +38,8 @@ def main():
     if len(sys.argv) > 2:
         images_path = sys.argv[2]
     else:
-        images_path = current_path
-    os.system("Rscript --vanilla " + current_path + "/createGraphics.r " + output_name + " " + images_path)
+        images_path = log_path
+    os.system("Rscript --vanilla " + script_path + "/createGraphics.r " + output_name + " " + images_path)
 
 
 if __name__ == '__main__':

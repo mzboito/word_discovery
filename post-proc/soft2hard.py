@@ -12,7 +12,6 @@ def getPath(number, paths):
     return None
 
 def readMatrixFile(path):
-    #print path
     return [line.strip("\n").split("\t") for line in codecs.open(path,"r","UTF-8")]
 
 def getMaxProbCol(line, sentenceMatrix):
