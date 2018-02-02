@@ -13,9 +13,11 @@ def write_output(matrix, path):
 		for line in matrix:
 			outputFile.write("\t".join(line) + "\n")
 
-def smooth(paths, reverse, outputPath):
+def smooth(paths, target, outputPath):
 	for filem in paths:
 		matrix = read_file(filem)
+		if not target:
+			matrix = [list(i) for i in zip(*matrix)]
 		s_matrix = numpy.zeros(len(matrix), len(matrix[0]))
 		for line in range(1,len(matrix)):
 			for column in range(1,len(matrix[line])):
@@ -32,8 +34,8 @@ def smooth(paths, reverse, outputPath):
 def main():
 	paths = glob.glob(sys.argv[1]+"*.txt")
 	outputPath = sys.argv[2]
-	reverse = bool(sys.argv[3])
-	matrix = smooth(paths, reverse, outputPath)
+	target = bool(sys.argv[3])
+	matrix = smooth(paths, target, outputPath)
 
 if __name__ == '__main__':
 	main()

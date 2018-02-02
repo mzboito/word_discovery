@@ -23,9 +23,9 @@ def getMaxProbCol(line, sentenceMatrix):
             maxValue = float(sentenceMatrix[line][i])
     return col
 
-def segment(filePath, controlSeg, reverse):
+def segment(filePath, controlSeg, target):
     matrix = readMatrixFile(filePath)
-    if not reverse:
+    if not target:
         matrix = [list(i) for i in zip(*matrix)]
     finalString = ""
     lastCol = -1
@@ -67,7 +67,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--matrices-folder', type=str, nargs='?', help='matrices folder')
     parser.add_argument('--output-file', type=str, nargs='?', help='name for the output name')
-    parser.add_argument('reverse', type=bool, default=False, nargs='?', help='indicates if the matrix needs to be transposed before segmentation')
+    parser.add_argument('source',type=bool, default=False, nargs='?', help='default considers that the target is to segment, include this option to segment the source')
     parser.add_argument('--individual-files', type=str, nargs='?', help='list of names for generating individual files')
     parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
     args = parser.parse_args()
@@ -82,7 +82,7 @@ def main():
 
         for index in range(1, len(sentencesPaths)+1):
             filePath = getPath(index, sentencesPaths)
-            finalstr = segment(filePath, [], args.reverse).replace(" </S>","").replace("</S>","") #removing EOS
+            finalstr = segment(filePath, [], args.source).replace(" </S>","").replace("</S>","") #removing EOS
             writeOutput(finalstr, outputPath)
 
     if args.matrices_folder and args.individual_files and args.output_folder:
