@@ -47,7 +47,7 @@ def segment_and_write(ph, fr, output_name):
         out.write("\n")
 
 def read_file(path):
-    return [line for line in codecs.open(path,"r","uTF-8")]
+    return [line for line in codecs.open(path,"r","UTF-8")]
 
 def print_usage():
     print "Proportional Baseline - sentence version \n"
@@ -65,6 +65,7 @@ def main():
 
     if(len(files_list) == len(ph_list) and len(ph_list )== len(fr_list)):
         for i in range(0, len(files_list)):
+            print len(files_list), i,files_list[i] 
             segment_and_write(ph_list[i], fr_list[i], out_dir + files_list[i].split(".lab")[0] + ".baseline")
 
 if __name__ == '__main__':
