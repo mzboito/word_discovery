@@ -95,7 +95,7 @@ def main():
 
         for index in range(1, len(sentencesPaths)+1):
             filePath = getPath(index, sentencesPaths)
-            finalstr = segment(filePath, [], args.reverse).replace(" </S>","").replace("</S>","") #removing EOS
+            finalstr = segment(filePath, [], args.target).replace(" </S>","").replace("</S>","") #removing EOS
             writeOutput(finalstr, folder + files_output_list[index-1].split("/")[-1] + ".hardseg")
             #writeOutput(finalstr, outputPath)
 
