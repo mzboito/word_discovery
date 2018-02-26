@@ -87,7 +87,7 @@ def main():
 
     if args.matrices_folder and args.individual_files and args.output_folder:
         sentencesPaths = glob.glob(args.matrices_folder+"*.txt") #the seq2seq always produces matrices ending with .txt
-        files_output_list = readFile(args.files_output_list)
+        files_output_list = readFile(args.individual_files)
         folder = args.output_folder
         if folder[-1] != "/":
             folder+= "/"

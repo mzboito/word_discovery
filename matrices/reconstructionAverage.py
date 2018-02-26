@@ -27,8 +27,11 @@ def main():
 
     for s2t_matrix in source2target_matrices:
         file_name = s2t_matrix.split("/")[-1]
+        print file_name
         s2t = readMatrixFile(s2t_matrix)
         t2s = readMatrixFile(target2source_folder + file_name)
+        print len(s2t), len(s2t[0])
+        print len(t2s), len(t2s[0])
         s2t_avg = averageMatrices(s2t, t2s)
         writeOutput(output_folder + file_name, s2t)
 
