@@ -35,7 +35,7 @@ def main():
 	paths = glob.glob(sys.argv[1]+"*.txt")
 	outputPath = sys.argv[2]
 	target = bool(sys.argv[3])
-	matrix = smooth(paths, target, outputPath)
+	smooth(paths, target, outputPath)
 
 if __name__ == '__main__':
 	main()
