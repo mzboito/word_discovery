@@ -35,7 +35,7 @@ class Sentence:
         self.gold = self.create_list(s1, s1_unseg)
         self.segmentation = self.create_list(s2, s2_unseg)
 
-        assert len(self.gold) != len(self.segmentation)
+        assert len(self.gold) == len(self.segmentation)
         self.create_alignment() 
         
     def create_list(self, s, s_unseg):
@@ -52,7 +52,6 @@ class Sentence:
                 t = Token(s_unseg[i], False, order)
                 index+=1
             s_list.append(t)
-        print len(s_list)
         return s_list
     
     def create_alignment(self):
