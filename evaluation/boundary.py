@@ -35,8 +35,11 @@ class Sentence:
         self.gold = self.create_list(s1, s1_unseg)
         self.segmentation = self.create_list(s2, s2_unseg)
 
-        assert len(self.gold) == len(self.segmentation)
-        
+        if len(self.gold) != len(self.segmentation):
+            print len(self.gold), len(self.segmentation)
+            print s1, s2
+            exit(1)
+
         self.create_alignment() 
         
     def create_list(self, s, s_unseg):
