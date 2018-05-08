@@ -78,8 +78,8 @@ def tokens_eval(segmentation, gold):
     return score(correctTokens, tokensSeg, tokensGold)
 
 def types_eval(segmentation, gold):
-    typesGold = get_types(gold)
-    typesSeg = get_types(segmentation)
+    typesGold = len(get_types(gold))
+    typesSeg = len(get_types(segmentation))
     correctTypes = types_intersection(typesSeg, typesGold)
     return score(correctTypes, typesSeg, typesGold)
 
