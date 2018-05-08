@@ -35,14 +35,7 @@ class Sentence:
         self.gold = self.create_list(s1, s1_unseg)
         self.segmentation = self.create_list(s2, s2_unseg)
 
-        if len(self.gold) != len(self.segmentation):
-            print len(self.gold), len(self.segmentation)
-            print s1
-            print s2
-            print s1_unseg
-            print s2_unseg
-            exit(1)
-
+        assert len(self.gold) != len(self.segmentation)
         self.create_alignment() 
         
     def create_list(self, s, s_unseg):
@@ -51,17 +44,14 @@ class Sentence:
         s_list = []
         for i in range(0,len(s_unseg)):
             assert s_unseg[i] == s[index]
-            print s_unseg[i], s[index]
             if index +1 < len(s) and s[index+1] == " ": #if the next thing is a boundary
                 t = Token(s_unseg[i], True, order)
                 order+=1
                 index+=2 #keeps aligned
-                print "boundary!"
             else:
                 t = Token(s_unseg[i], False, order)
-                s_list.append(t)
                 index+=1
-        print "OUT\n"
+            s_list.append(t)
         return s_list
     
     def create_alignment(self):
