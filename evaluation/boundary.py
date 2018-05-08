@@ -52,7 +52,7 @@ class Sentence:
                 t = Token(s_unseg[i], False, order)
                 index+=1
             s_list.append(t)
-            print s_list
+        print len(s_list)
         return s_list
     
     def create_alignment(self):
