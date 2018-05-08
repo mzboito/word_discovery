@@ -34,23 +34,26 @@ class Sentence:
 
         self.gold = self.create_list(s1, s1_unseg)
         self.segmentation = self.create_list(s2, s2_unseg)
+
+        assert len(self.gold) == len(self.segmentation)
+        
         self.create_alignment() 
         
-    def create_list(self, s1, s1_unseg):
+    def create_list(self, s, s_unseg):
         index = 0
         order = 1
-        s1_list = []
-        for i in range(0,len(s1_unseg)):
-            assert s1_unseg[i] == s1[index]
-            if index +1 < len(s1) and s1[index+1] == " ": #if the next thing is a boundary
-                t = Token(s1_unseg[i], True, order)
+        s_list = []
+        for i in range(0,len(s_unseg)):
+            assert s_unseg[i] == s[index]
+            if index +1 < len(s) and s[index+1] == " ": #if the next thing is a boundary
+                t = Token(s_unseg[i], True, order)
                 order+=1
                 index+=2 #keeps aligned
             else:
-                t = Token(s1_unseg[i], False, order)
-                s1_list.append(t)
+                t = Token(s_unseg[i], False, order)
+                s_list.append(t)
                 index+=1
-        return s1_list
+        return s_list
     
     def create_alignment(self):
         for i in range(0,len(self.gold)):
