@@ -15,12 +15,15 @@ def write_file(outputPath, scores):
     boundaries = scores[2]
     with open(outputPath, "w") as outputFile:
         outputFile.write("TYPES\n")
+        outputFile.write("R\tP\tF\n")
         outputFile.write("-"*20 + "\n")
         outputFile.write("%2.2f\t%2.2f\t%2.2f\n\n" % (types[0], types[1], types[2]))
         outputFile.write("TOKENS\n")
+        outputFile.write("R\tP\tF\n")
         outputFile.write("-"*20 + "\n")
         outputFile.write("%2.2f\t%2.2f\t%2.2f\n\n" % (tokens[0], tokens[1], tokens[2]))
         outputFile.write("BOUNDARIES\n")
+        outputFile.write("R\tP\tF\n")
         outputFile.write("-"*20 + "\n")
         outputFile.write("%2.2f\t%2.2f\t%2.2f\n\n" % (boundaries[0], boundaries[1], boundaries[2]))
 
@@ -36,7 +39,7 @@ def fscore(recall, precision):
 def score(correct, sizeSeg, sizeGold):
     p = precision(correct, sizeSeg)
     r = recall(correct, sizeGold)
-    return [p, r, fscore(r, p)]
+    return [r, p, fscore(r, p)]
 
 def get_tokens_score(segmentation, gold):
     trueTokens = gold.strip("\n").split(" ")
@@ -71,13 +74,13 @@ def tokens_intersection(segmentation, gold): #Intersection on sentence level to 
 def types_intersection(segmentation, gold):
     return len([t for t in segmentation if t in gold])
 
-def tokens_eval(segmentation, gold):
+def token_eval(segmentation, gold):
     tokensGold = len(get_tokens(gold))
     tokensSeg = len(get_tokens(segmentation))
     correctTokens = tokens_intersection(segmentation, gold) #INTERSECTION ON SENTENCE LEVEL! 
     return score(correctTokens, tokensSeg, tokensGold)
 
-def types_eval(segmentation, gold):
+def type_eval(segmentation, gold):
     typesGold = get_types(gold)
     typesSeg = get_types(segmentation)
     correctTypes = types_intersection(typesSeg, typesGold)
@@ -89,9 +92,9 @@ def boundary_eval(segmentation, gold):
     return score(correctBoundaries, boundariesSeg, boundariesGold)
 
 def evaluate(segmentation, gold):
-    types_score = types_eval(segmentation,gold)
-    tokens_score = types_eval(segmentation,gold)
-    boundaries_score = types_eval(segmentation,gold)
+    types_score = type_eval(segmentation,gold)
+    tokens_score = token_eval(segmentation,gold)
+    boundaries_score = boundary_eval(segmentation,gold)
     return [types_score, tokens_score, boundaries_score]
 
 def main():
