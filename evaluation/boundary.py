@@ -51,11 +51,11 @@ class Sentence:
         s_list = []
         for i in range(0,len(s_unseg)):
             assert s_unseg[i] == s[index]
-            print s_unseg[i]
             if index +1 < len(s) and s[index+1] == " ": #if the next thing is a boundary
                 t = Token(s_unseg[i], True, order)
                 order+=1
                 index+=2 #keeps aligned
+                print "token!"
             else:
                 t = Token(s_unseg[i], False, order)
                 s_list.append(t)
