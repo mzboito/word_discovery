@@ -37,7 +37,10 @@ class Sentence:
 
         if len(self.gold) != len(self.segmentation):
             print len(self.gold), len(self.segmentation)
-            print s1, s2
+            print s1
+            print s2
+            print s1_unseg
+            print s2_unseg
             exit(1)
 
         self.create_alignment() 
