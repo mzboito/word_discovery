@@ -34,6 +34,7 @@ def smooth(paths, target, outputPath):
 def main():
 	if len(sys.argv) < 4:
 		print "USAGE:\n\t[1] matrices folder\n\t[2] output folder\n\t[3] boolean, true for target\n"
+		exit(1)
 	paths = glob.glob(sys.argv[1]+"*.txt")
 	outputPath = sys.argv[2]
 	target = bool(sys.argv[3])
