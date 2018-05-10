@@ -28,6 +28,8 @@ def main():
         exit(1)
     log_file = sys.argv[1]
     folder_output = sys.argv[2]
+    if folder_output == ".":
+        folder_output+="/"
     try:
         dev_and_train = int(sys.argv[3])
     except Exception:
