@@ -18,6 +18,7 @@ def smooth(paths, target, outputPath):
 		matrix = read_file(filem)
 		if not target:
 			matrix = [list(i) for i in zip(*matrix)]
+		print len(matrix), len(matrix[0]), filem
 		s_matrix = numpy.zeros(len(matrix), len(matrix[0]))
 		for line in range(1,len(matrix)):
 			for column in range(1,len(matrix[line])):
