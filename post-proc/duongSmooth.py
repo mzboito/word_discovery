@@ -19,7 +19,7 @@ def smooth(paths, target, outputPath):
 		if not target:
 			matrix = [list(i) for i in zip(*matrix)]
 		print len(matrix), len(matrix[0]), filem
-		s_matrix = numpy.zeros(len(matrix), len(matrix[0]))
+		s_matrix = numpy.zeros((len(matrix), len(matrix[0])))
 		for line in range(1,len(matrix)):
 			for column in range(1,len(matrix[line])):
 				if len(matrix[line]) == 2:
