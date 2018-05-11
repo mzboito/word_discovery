@@ -22,7 +22,7 @@ def smooth(paths, target, outputPath):
 		s_matrix = [[0.0 for col in range(len(matrix[0]))] for row in range(len(matrix))]
 		print matrix[0]
 		s_matrix[0] = matrix[0]
-		print s_matrix
+		print s_matrix[0]
 		print len(matrix), len(s_matrix)
 		for line in range(1,len(matrix)):
 			for column in range(1,len(matrix[line])):
@@ -34,6 +34,7 @@ def smooth(paths, target, outputPath):
 					s_matrix[line][column] = str((float(matrix[line][column]) + float(matrix[line][column-1]))/2)
 				else:
 					s_matrix[line][column] = str((float(matrix[line][column-1]) + float(matrix[line][column]) + float(matrix[line][column+1]))/3)
+		print s_matrix
 		write_output(s_matrix, outputPath + filem.split("/")[-1])
 
 def main():
