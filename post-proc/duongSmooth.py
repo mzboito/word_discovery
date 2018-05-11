@@ -11,6 +11,7 @@ def read_file(path):
 def write_output(matrix, path):
 	with codecs.open(path,"w","UTF-8") as outputFile:
 		for line in matrix:
+			print line
 			outputFile.write("\t".join(line) + "\n")
 
 def smooth(paths, target, outputPath):
@@ -18,7 +19,6 @@ def smooth(paths, target, outputPath):
 		matrix = read_file(filem)
 		if not target:
 			matrix = [list(i) for i in zip(*matrix)]
-		print len(matrix), len(matrix[0]), filem
 		s_matrix = numpy.zeros((len(matrix), len(matrix[0])))
 		for line in range(1,len(matrix)):
 			for column in range(1,len(matrix[line])):
@@ -30,7 +30,6 @@ def smooth(paths, target, outputPath):
 					s_matrix[line][column] = str((float(matrix[line][column]) + float(matrix[line][column-1]))/2)
 				else:
 					s_matrix[line][column] = str((float(matrix[line][column-1]) + float(matrix[line][column]) + float(matrix[line][column+1]))/3)
-		s_matrix = numpy.array_str(s_matrix)
 		write_output(s_matrix, outputPath + filem.split("/")[-1])
 
 def main():
