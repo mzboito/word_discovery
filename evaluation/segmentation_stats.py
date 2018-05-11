@@ -70,6 +70,9 @@ def write_vocab(path, stats):
             outputFile.write("\t".join([key, str(stats.words_dict[key])]) + "\n")
 
 def main():
+    if len(sys.argv) < 4:
+        print "USAGE:\n python segmentation_stats.py <segmentation> <gold-standard> <output-folder>\n"
+        exit(1)
     stats_folder = sys.argv[3]
     generated = Stats(sys.argv[1],"generated")
     gold = Stats(sys.argv[2], "gold_standard")
