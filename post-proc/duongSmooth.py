@@ -22,6 +22,8 @@ def smooth(paths, target, outputPath):
 		s_matrix = [[0.0 for col in range(len(matrix[0]))] for row in range(len(matrix))]
 		print matrix[0]
 		s_matrix[0] = matrix[0]
+		print s_matrix
+		print len(matrix), len(s_matrix)
 		for line in range(1,len(matrix)):
 			for column in range(1,len(matrix[line])):
 				if len(matrix[line]) == 2:
