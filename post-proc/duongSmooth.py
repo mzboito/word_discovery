@@ -20,11 +20,12 @@ def smooth(paths, target, outputPath):
 		if not target:
 			matrix = [list(i) for i in zip(*matrix)]
 		s_matrix = [[0.0 for col in range(len(matrix[0]))] for row in range(len(matrix))]
-		print matrix[0]
+		#print matrix[0]
 		s_matrix[0] = matrix[0]
-		print s_matrix[0]
-		print len(matrix), len(s_matrix)
+		#print s_matrix[0]
+		#print len(matrix), len(s_matrix)
 		for line in range(1,len(matrix)):
+			s_matrix[line][0] = matrix[line][0]
 			for column in range(1,len(matrix[line])):
 				if len(matrix[line]) == 2:
 					pass
