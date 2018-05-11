@@ -35,7 +35,7 @@ def smooth(paths, target, outputPath):
 					s_matrix[line][column] = str((float(matrix[line][column]) + float(matrix[line][column-1]))/2)
 				else:
 					s_matrix[line][column] = str((float(matrix[line][column-1]) + float(matrix[line][column]) + float(matrix[line][column+1]))/3)
-		print s_matrix
+		#print s_matrix
 		write_output(s_matrix, outputPath + filem.split("/")[-1])
 
 def main():
