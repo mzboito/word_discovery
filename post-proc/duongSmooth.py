@@ -11,6 +11,7 @@ def read_file(path):
 def write_output(matrix, path):
 	with codecs.open(path,"w","UTF-8") as outputFile:
 		for line in matrix:
+			print line
 			outputFile.write("\t".join(line) + "\n")
 
 
