@@ -11,7 +11,9 @@ def read_file(path):
 def write_output(matrix, path):
 	with codecs.open(path,"w","UTF-8") as outputFile:
 		for line in matrix:
-			print line
+			for element in line:
+				print element
+				element = str(element)
 			outputFile.write("\t".join(line) + "\n")
 
 def smooth(paths, target, outputPath):
