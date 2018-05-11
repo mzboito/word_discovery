@@ -11,17 +11,16 @@ def read_file(path):
 def write_output(matrix, path):
 	with codecs.open(path,"w","UTF-8") as outputFile:
 		for line in matrix:
-			for element in line:
-				print element
-				element = str(element)
 			outputFile.write("\t".join(line) + "\n")
+
 
 def smooth(paths, target, outputPath):
 	for filem in paths:
 		matrix = read_file(filem)
 		if not target:
 			matrix = [list(i) for i in zip(*matrix)]
-		s_matrix = numpy.zeros((len(matrix), len(matrix[0])))
+		s_matrix = [[0.0 for col in len(matrix)] for row in len(matrix[0])]
+		#s_matrix = numpy.zeros((len(matrix), len(matrix[0])))
 		for line in range(1,len(matrix)):
 			for column in range(1,len(matrix[line])):
 				if len(matrix[line]) == 2:
