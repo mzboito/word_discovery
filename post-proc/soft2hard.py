@@ -65,7 +65,7 @@ def readFile(path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--matrices-folder', type=str, nargs='?', help='matrices folder')
+    parser.add_argument('--matrices-prefix', type=str, nargs='?', help='matrices prefix')
     parser.add_argument('--output-file', type=str, nargs='?', help='name for the output name')
     parser.add_argument('target',type=bool, default=False, nargs='?', help='default considers that the source is to segment, include this option to segment the target')
     parser.add_argument('--individual-files', type=str, nargs='?', help='list of names for generating individual files')
@@ -76,8 +76,8 @@ def main():
         parser.print_help()
         sys.exit(1)
 
-    if args.matrices_folder and args.output_file:
-        sentencesPaths = glob.glob(args.matrices_folder+"*.txt") #the seq2seq always produces matrices ending with .txt
+    if args.matrices_prefix and args.output_file:
+        sentencesPaths = glob.glob(args.matrices_prefix+"*.txt") #the seq2seq always produces matrices ending with .txt
         outputPath = args.output_file
 
         for index in range(1, len(sentencesPaths)+1):
@@ -85,8 +85,8 @@ def main():
             finalstr = segment(filePath, [], args.target).replace(" </S>","").replace("</S>","") #removing EOS
             writeOutput(finalstr, outputPath)
 
-    if args.matrices_folder and args.individual_files and args.output_folder:
-        sentencesPaths = glob.glob(args.matrices_folder+"*.txt") #the seq2seq always produces matrices ending with .txt
+    if args.matrices_prefix and args.individual_files and args.output_folder:
+        sentencesPaths = glob.glob(args.matrices_prefix+"*.txt") #the seq2seq always produces matrices ending with .txt
         files_output_list = readFile(args.individual_files)
         folder = args.output_folder
         if folder[-1] != "/":
