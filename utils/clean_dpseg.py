@@ -26,10 +26,6 @@ def main():
 
     assert len(dpseg_clean) == len(segmentation)
 
-
-    print segmentation[0]
-    print dpseg_clean[0]
-
     for j in range(len(segmentation)):
         line = segmentation[j]
         dpseg_line = dpseg_clean[j]
@@ -42,9 +38,7 @@ def main():
             new_line += line[i] #adds the characters
             index+=1
         segmentation[j] = new_line
-    
-    print segmentation[0]
-    print dpseg_clean[0]
+
 
     with codecs.open(output_file, "w", "UTF-8") as output:
         for line in segmentation:
