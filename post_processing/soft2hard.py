@@ -96,9 +96,12 @@ def main():
         for index in range(1, len(sentencesPaths)+1):
             filePath = getPath(index, sentencesPaths)
             finalstr = segment(filePath, [], args.target).replace(" </S>","").replace("</S>","") #removing EOS
-            file_name = ".".join(files_output_list[index-1].split("/")[-1].split(".")[:-1]) + ".hardseg"
+            file_name = files_output_list[index-1].split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
             #writeOutput(finalstr, outputPath)
+    else:
+	parser.print_help()
+	sys.exit(1)
 
 if __name__ == "__main__":
     main()
