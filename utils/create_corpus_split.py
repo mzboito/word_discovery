@@ -1,10 +1,9 @@
 import sys
 import codecs
-import math
 from random import shuffle
 
 PERCENTAGE = 10
-SUFFIXES = ["id", "gr", "it"]
+SUFFIXES = ["id", "gold", "it"]
 
 def write_file(output_path, l_range, l_lists, index):
     with codecs.open(output_path + SUFFIXES[index], "w", "UTF-8") as output_path:
@@ -13,7 +12,7 @@ def write_file(output_path, l_range, l_lists, index):
 
 
 def write_files(output_path, l_range, l_lists):
-    for index in range(len(l_lists)):
+    for index in range(len(SUFFIXES)):
         write_file(output_path, l_range, l_lists, index)
 
     
@@ -35,16 +34,16 @@ def main():
     for index in range(len(ids)):
         parallel_list.append( [ids[index], lang1[index], lang2[index]] )
     
-    parallel_list = shuffle(parallel_list)
+    shuffle(parallel_list)
 
     total_size = len(ids)
-    dev_size = math.floor(PERCENTAGE * total_size / 100.0)
+    dev_size = int(PERCENTAGE * total_size / 100.0)
 
     #for index in range(dev_size):
-    write_files(output_path + "dev", [0, dev_size], parallel_list)
+    write_files(output_path + "dev.", [0, dev_size], parallel_list)
     
     #for index in range(dev_size, total_size):
-    write_files(output_path + "train", [dev_size, total_size], parallel_list)
+    write_files(output_path + "train.", [dev_size, total_size], parallel_list)
 
 
 
