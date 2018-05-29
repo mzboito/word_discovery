@@ -9,7 +9,7 @@ def main():
     output_file = sys.argv[3]
 
     dpseg_out = [line for line in codecs.open(dpseg_out_path, "r", "UTF-8", errors="replace")] #dpseg out file introduces char errors
-    segmentation = [line.replace(" ","") for line in codecs.open(segmentation_path, "r", "UTF-8")]
+    segmentation = [line for line in codecs.open(segmentation_path, "r", "UTF-8")] #.replace(" ","")
 
 
     flag = False
@@ -22,12 +22,12 @@ def main():
         if "State:" in dpseg_out[i]:
             flag = True
 
-    
+    #segmentation: a20 a31 a37 a31 
 
     assert len(dpseg_clean) == len(segmentation)
 
     for j in range(len(segmentation)):
-        line = segmentation[j]
+        line = segmentation[j].split(" ")
         dpseg_line = dpseg_clean[j]
         index = 0
         new_line = ""
