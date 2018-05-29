@@ -7,6 +7,6 @@ This repository is passing through heavy changes. :)
 
 # Reference:
 
-Marcely Zanon Boito,  Laurent Besacier,  and Aline Villavicencio. **Unsupervised worddiscovery using attentional encoder-decoder models**.   In WiNLP (Women and Underrepresented Minorities in Natural Language Processing) Workshop ACL 2017, Vancouver, Canada.
+Marcely Zanon Boito,  Laurent Besacier,  and Aline Villavicencio. **Unsupervised word discovery using attentional encoder-decoder models**.   In WiNLP (Women and Underrepresented Minorities in Natural Language Processing) Workshop ACL 2017, Vancouver, Canada.
 
 Marcely Zanon Boito, Aléxandre Berard, Laurent Besacier and Aline Villavicencio. **Unwritten Languages Demand Attention Too! Word Discovery with Encoder-Decoder Models**, In ASRU (Automatic Speech Recognition and Undestanding), IEEE Workshop 2017, Okinawa, Japan.
