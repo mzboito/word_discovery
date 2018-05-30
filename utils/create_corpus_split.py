@@ -46,7 +46,7 @@ def main():
 
     parallel_list = []
     for index in range(len(ids)):
-        parallel_list.append( [ids[index], lang1[index], lang2[index]], lang1_unseg[index] )
+        parallel_list.append( [ids[index], lang1[index], lang2[index], lang1_unseg[index]] )
     
     shuffle(parallel_list)
 
