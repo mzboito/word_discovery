@@ -45,7 +45,7 @@ def segment(filePath, controlSeg, target):
         finalString = finalString[:-1]
     if finalString[0] == " ":
         finalString = finalString[1:]
-    return finalString
+    return cleanLine(finalString)
 
 def writeOutput(finalString, output):
     with codecs.open(output, "a", "UTF-8") as outputFile:
@@ -62,6 +62,12 @@ def readControlFile(inputPath):
 
 def readFile(path):
     return [line.strip("\n") for line in codecs.open(path, "r","UTF-8")]
+
+def cleanLine(inputStr):
+    inputStr = inputStr.replace("</S>","").replace("<UNK>","")
+    while("  " in inputStr):
+        inputStr = inputStr.replace("  "," ")
+    return inputStr
 
 def main():
     parser = argparse.ArgumentParser()
@@ -82,7 +88,7 @@ def main():
 
         for index in range(1, len(sentencesPaths)+1):
             filePath = getPath(index, sentencesPaths)
-            finalstr = segment(filePath, [], args.target).replace(" </S>","").replace("</S>","") #removing EOS
+            finalstr = segment(filePath, [], args.target)
             writeOutput(finalstr, outputPath)
 
     if args.matrices_prefix and args.individual_files and args.output_folder:
@@ -95,7 +101,7 @@ def main():
 
         for index in range(1, len(sentencesPaths)+1):
             filePath = getPath(index, sentencesPaths)
-            finalstr = segment(filePath, [], args.target).replace(" </S>","").replace("</S>","") #removing EOS
+            finalstr = segment(filePath, [], args.target)
             file_name = files_output_list[index-1].split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
             #writeOutput(finalstr, outputPath)
