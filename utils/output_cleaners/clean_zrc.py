@@ -64,11 +64,12 @@ def write_output(output_prefix, output_list):
             output_file.write("%s\t%2.2f\t%2.2f\t%2.2f\n" % (evalu.name, evalu.precision.mean, evalu.recall.mean, evalu.fscore.mean))
 
 def main():
-    if len(sys.argv) < 4:
+    '''if len(sys.argv) < 4:
         print "USAGE: python clean_zrc.py BOUNDARY TOKEN-TYPE output-prefix\n"
-    boundary_file = sys.argv[1]
-    t_file = sys.argv[2]
-    output_prefix = sys.argv[3]
+    '''
+    boundary_file = "boundary"#sys.argv[1]
+    t_file = "token_type"#sys.argv[2]
+    output_prefix = "RESULTS"#sys.argv[3]
 
     output_list = parse_files(boundary_file, t_file)
     write_output(output_prefix, output_list)
