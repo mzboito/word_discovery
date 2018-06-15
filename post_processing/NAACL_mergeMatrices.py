@@ -4,6 +4,9 @@ import sys
 import codecs
 import glob
 
+att_matrices_folder = "att_matrices/"
+train_max = 4616 
+
 def read_matrix(path):
 	return [line.strip("\n").split("\t") for line in codecs.open(path,"r","UTF-8")]
 
@@ -74,7 +77,7 @@ def find_matrices(path_folders, folders, files_dict, file_name):
 	for folder in folders:
 		f_id = get_index_from_file(files_dict, folder, file_name)
 		print f_id
-		matrix_file = glob.glob(path_folders + folder + "att_model/" + f_id +".txt")
+		matrix_file = glob.glob(path_folders + folder + att_matrices_folder + f_id +".txt")
 		matrix = read_matrix(matrix_file[0])
 		matrices.append(matrix)
 	if len(matrices) != len(folders):
@@ -107,7 +110,6 @@ def main():
 		if len(files_dict[folders[i]]) != size:
 			print "PROBLEM READING THE LISTS (INDEX = " + str(i) + ")\n"
 			sys.exit(1)
-	train_max = 4616 #FIX THIS UGLY THINGY
 	for i in range(1, size+1):
 		if i > train_max:
 			file_i = get_file_from_index(files_dict, folders[0], "dev." + str(i - train_max))
