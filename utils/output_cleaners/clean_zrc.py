@@ -60,10 +60,10 @@ def parse_files(boundary_file, t_file):
 def write_output(output_prefix, output_list):
     with open(output_prefix, "w") as output_file:
         output_file.write("Evaluation\tP\tR\tF\n")
-        print "Evaluation\tP\tR\tF\n"
+        print "Evaluation\tP\tR\tF"
         for evalu in output_list:
             output_file.write("%s\t%2.2f\t%2.2f\t%2.2f\n" % (evalu.name, evalu.precision.mean, evalu.recall.mean, evalu.fscore.mean))
-            print "%s\t%2.2f\t%2.2f\t%2.2f\n" % (evalu.name, evalu.precision.mean, evalu.recall.mean, evalu.fscore.mean)
+            print "%s\t%2.2f\t%2.2f\t%2.2f" % (evalu.name, evalu.precision.mean, evalu.recall.mean, evalu.fscore.mean)
 
 def main():
     '''if len(sys.argv) < 4:
