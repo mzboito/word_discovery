@@ -113,10 +113,10 @@ def main():
             folder+= "/"
         assert len(files_output_list) == len(sentencesPaths)
 
-        for index in range(1, len(sentencesPaths)+1):
-            filePath = getPath(index, sentencesPaths)
-            finalstr = segment(filePath, [], args.target)
-            file_name = filePath[index-1].split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
+        for sentencePath in sentencesPaths:
+            #filePath = #getPath(index, sentencesPaths)
+            finalstr = segment(sentencePath, [], args.target)
+            file_name = sentencePath.split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
             #writeOutput(finalstr, outputPath)
 
