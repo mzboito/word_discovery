@@ -78,7 +78,7 @@ def find_matrices(path_folders, folders, files_dict, file_name):
 	matrices = []
 	for folder in folders:
 		f_id = get_index_from_file(files_dict, folder, file_name)
-		print f_id
+		#print f_id
 		matrix_file = glob.glob(path_folders + folder + att_matrices_folder + f_id +".txt")
 		matrix = read_matrix(matrix_file[0])
 		matrices.append(matrix)
@@ -88,8 +88,8 @@ def find_matrices(path_folders, folders, files_dict, file_name):
 	else:
 		size = len(matrices[0])
 		for i in range(1, len(folders)):
-			print matrices[0][0]
-			print matrices[i][0]
+			#print matrices[0][0]
+			#print matrices[i][0]
 			if len(matrices[i]) != size:
 				print "PROBLEM WITH MATRIX SIZE: " + file_name + " folder: " + str(i+1) + "\n"
 				sys.exit(1)
@@ -117,7 +117,7 @@ def main():
 			file_i = get_file_from_index(files_dict, folders[0], "dev." + str(i - train_max))
 		else:
 			file_i = get_file_from_index(files_dict, folders[0], "train." + str(i))
-		print file_i, i
+		#print file_i, i
 		matrices = find_matrices(path_folders, folders, files_dict, file_i)
 		avg_matrix = merge_matrices(matrices)
 		write_output(output_folder + file_i, avg_matrix)
