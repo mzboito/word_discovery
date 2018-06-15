@@ -6,6 +6,7 @@ import glob
 
 att_matrices_folder = "att_matrices/"
 train_max = 4616 
+id_suffix = ".ids"
 
 def read_matrix(path):
 	return [line.strip("\n").split("\t") for line in codecs.open(path,"r","UTF-8")]
@@ -43,17 +44,17 @@ def load_files(path_folders, folders):
 	for folder in folders:
 		count = 1
 		files_dict[folder] = []
-		file_name = "train" + "." + folder[:-1] + ".list"
+		file_name = "train" + "." + folder[:-1] + id_suffix
 		with open(path_folders + folder + file_name, "r") as inputFile: #read train
 			intern_dict = dict(zip([],[]))
 			for line in inputFile:
-				intern_dict[line.strip()] = "train_att."+ str(count)
+				intern_dict[line.strip()] = "train."+ str(count)
 				count +=1
 			file_name = file_name.replace("train","dev")
 			with open(path_folders + folder + file_name, "r") as inputFile: #read dev
 				count = 1
 				for line in inputFile:
-					intern_dict[line.strip()] = "dev_att."+ str(count)
+					intern_dict[line.strip()] = "dev."+ str(count)
 					count +=1
 			files_dict[folder] = intern_dict
 	return files_dict
