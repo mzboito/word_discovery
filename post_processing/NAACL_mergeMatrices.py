@@ -110,9 +110,9 @@ def main():
 	train_max = 4616 #FIX THIS UGLY THINGY
 	for i in range(1, size+1):
 		if i > train_max:
-			file_i = get_file_from_index(files_dict, folders[0], "dev_att." + str(i - train_max))
+			file_i = get_file_from_index(files_dict, folders[0], "dev." + str(i - train_max))
 		else:
-			file_i = get_file_from_index(files_dict, folders[0], "train_att." + str(i))
+			file_i = get_file_from_index(files_dict, folders[0], "train." + str(i))
 		print file_i, i
 		matrices = find_matrices(path_folders, folders, files_dict, file_i)
 		avg_matrix = merge_matrices(matrices)
