@@ -105,9 +105,22 @@ def main():
             file_name = files_output_list[index-1].split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
             #writeOutput(finalstr, outputPath)
-    else:
-	parser.print_help()
-	sys.exit(1)
+
+    if args.matrices_prefix and args.output_folder:
+        sentencesPaths = glob.glob(args.matrices_prefix+"*.txt") #the seq2seq always produces matrices ending with .txt
+        folder = args.output_folder
+        if folder[-1] != "/":
+            folder+= "/"
+        assert len(files_output_list) == len(sentencesPaths)
+
+        for index in range(1, len(sentencesPaths)+1):
+            filePath = getPath(index, sentencesPaths)
+            finalstr = segment(filePath, [], args.target)
+            file_name = filePath[index-1].split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
+            writeOutput(finalstr, folder + file_name)
+            #writeOutput(finalstr, outputPath)
+
+
 
 if __name__ == "__main__":
     main()
