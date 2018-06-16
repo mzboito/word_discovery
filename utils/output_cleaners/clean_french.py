@@ -3,9 +3,9 @@ import codecs
 
 
 with codecs.open(sys.argv[1], "r","UTF-8") as inputFile:
-    with codecs.open(sys.argv[1]+".clean", "r", "UTF-8") as outputFile:
+    with codecs.open(sys.argv[1]+".clean", "w", "UTF-8") as outputFile:
         for line in inputFile:
-            line = line.strip("\n").replace("&apos;"," ").replace("."," ").replace(";"," ").replace(","," ")
+            line = line.strip("\n").replace("&apos;"," ").replace("."," ").replace(";"," ").replace(","," ").replace("-"," ")
             while "  " in line:
                 line = line.replace("  "," ")
             if len(line) > 0:

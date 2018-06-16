@@ -111,7 +111,7 @@ def main():
         folder = args.output_folder
         if folder[-1] != "/":
             folder+= "/"
-        assert len(files_output_list) == len(sentencesPaths)
+        #assert len(files_output_list) == len(sentencesPaths)
 
         for sentencePath in sentencesPaths:
             #filePath = #getPath(index, sentencesPaths)

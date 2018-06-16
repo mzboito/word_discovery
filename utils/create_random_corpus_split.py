@@ -45,7 +45,7 @@ def write_random_files(sentences, output_folder):
 def main():
     if len(sys.argv) < 5:
         print "USAGE: python create_random_corpus_split.py <corpus lang1> <corpus lang2> <list of files names> <output_folder>\n\n"
-    
+	sys.exit(1)
     sentences = read_parallel_data(sys.argv[1], sys.argv[2], sys.argv[3])
     write_random_files(sentences, sys.argv[4] if sys.argv[4][-1] == '/' else sys.argv[4]+'/')
 
