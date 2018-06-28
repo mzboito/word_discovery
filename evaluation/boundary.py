@@ -30,6 +30,7 @@ class Sentence:
     def parse(self, s1, s2):
         s1_unseg = s1.replace(" ","")
         s2_unseg = s2.replace(" ","")
+	print s1, s2
         assert len(s1_unseg) == len(s2_unseg)
 
         self.gold = self.create_list(s1, s1_unseg)

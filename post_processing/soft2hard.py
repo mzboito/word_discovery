@@ -47,8 +47,8 @@ def segment(filePath, controlSeg, target):
         finalString = finalString[1:]
     return cleanLine(finalString)
 
-def writeOutput(finalString, output):
-    with codecs.open(output, "a", "UTF-8") as outputFile:
+def writeOutput(finalString, output, mode="w"):
+    with codecs.open(output, mode, "UTF-8") as outputFile:
         outputFile.write(finalString + "\n")
 
 def readControlFile(inputPath):
@@ -89,14 +89,12 @@ def main():
         for index in range(1, len(sentencesPaths)+1):
             filePath = getPath(index, sentencesPaths)
             finalstr = segment(filePath, [], args.target)
-            writeOutput(finalstr, outputPath)
+            writeOutput(finalstr, outputPath, "a")
 
     if args.matrices_prefix and args.individual_files and args.output_folder:
         sentencesPaths = glob.glob(args.matrices_prefix+"*.txt") #the seq2seq always produces matrices ending with .txt
         files_output_list = readFile(args.individual_files)
-        folder = args.output_folder
-        if folder[-1] != "/":
-            folder+= "/"
+        folder = args.output_folder if args.output_folder[-1] == '/' else args.output_folder + '/'
         assert len(files_output_list) == len(sentencesPaths)
 
         for index in range(1, len(sentencesPaths)+1):
@@ -104,21 +102,16 @@ def main():
             finalstr = segment(filePath, [], args.target)
             file_name = files_output_list[index-1].split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
-            #writeOutput(finalstr, outputPath)
 
-    if args.matrices_prefix and args.output_folder:
+    elif args.matrices_prefix and args.output_folder:
         sentencesPaths = glob.glob(args.matrices_prefix+"*.txt") #the seq2seq always produces matrices ending with .txt
-        folder = args.output_folder
-        if folder[-1] != "/":
-            folder+= "/"
+        folder = args.output_folder if args.output_folder[-1] == '/' else args.output_folder + '/'
         #assert len(files_output_list) == len(sentencesPaths)
 
         for sentencePath in sentencesPaths:
-            #filePath = #getPath(index, sentencesPaths)
             finalstr = segment(sentencePath, [], args.target)
             file_name = sentencePath.split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
-            #writeOutput(finalstr, outputPath)
 
 
 
