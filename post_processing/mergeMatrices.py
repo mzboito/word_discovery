@@ -6,6 +6,7 @@ import glob
 
 att_matrices_folder = "att_matrices/"
 files_folder = "files/"
+folders_prefix = "rand"
 train_max = 4616 
 id_suffix = ".ids"
 
@@ -101,9 +102,9 @@ def main():
 	#list_type = sys.argv[2]#files_list = [line.strip("\n") for line in open(sys.argv[2],"r")]
 	output_folder = sys.argv[2]
 	rand_num = int(sys.argv[3])
-	folders = []#folders = ["rand1/", "rand2/", "rand3/", "rand4/", "rand5/"]
+	folders = []
 	for i in range(1,rand_num+1):
-		folders.append("rand"+str(i)+"/")
+		folders.append(folders_prefix +str(i)+"/")
 	#print folders
 	files_dict = load_files(path_folders, folders)
 	#print len(files_dict), len(files_dict[folders[0]])
