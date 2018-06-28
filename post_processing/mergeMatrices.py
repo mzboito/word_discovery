@@ -5,10 +5,11 @@ import codecs
 import glob
 
 att_matrices_folder = "att_matrices/"
-files_folder = "files/"
-folders_prefix = "rand"
-train_max = 4616 
-id_suffix = ".ids"
+files_folder = "../files/"
+folders_prefix = "exp"
+train_max = 297 
+id_suffix = ".id"
+different_split = False
 
 def read_matrix(path):
 	return [line.strip("\n").split("\t") for line in codecs.open(path,"r","UTF-8")]
@@ -31,7 +32,7 @@ def merge_matrices(matrices_list):
 	return output
 
 def write_output(path, matrix):
-    output_path = path.replace(".lab", ".avgatt.txt")
+    output_path = path.replace(".lab", ".avgatt") + ".txt"
     #print output_path
     with codecs.open(output_path, "w", "UTF-8") as outputFile:
         for line in matrix:
@@ -46,7 +47,7 @@ def load_files(path_folders, folders):
 	for folder in folders:
 		count = 1
 		files_dict[folder] = []
-		file_name = "train" + "." + folder[:-1] + id_suffix
+		file_name = "train." + folder[:-1] + id_suffix if different_split else "train" + id_suffix 
 		with open(path_folders + files_folder + file_name, "r") as inputFile: #read train
 			intern_dict = dict(zip([],[]))
 			for line in inputFile:
