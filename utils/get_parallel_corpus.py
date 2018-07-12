@@ -24,8 +24,8 @@ def main():
     lang2 = []
     for file_name in ids_list:
         prefix = file_name.split(".")[0].split("/")[-1]
-        lang1.append(read_file(folder_lang1 + prefix + suffix_lang1))
-        lang2.append(read_file(folder_lang2 + prefix + suffix_lang2))
+        lang1.append(read_file(folder_lang1 + prefix + suffix_lang1)[0])
+        lang2.append(read_file(folder_lang2 + prefix + suffix_lang2)[0])
     
     write_file(sys.argv[6] + suffix_lang1, lang1)
     write_file(sys.argv[6] + suffix_lang2, lang2)
