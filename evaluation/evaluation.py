@@ -14,18 +14,20 @@ def write_file(outputPath, scores):
     tokens = scores[1]
     boundaries = scores[2]
     with open(outputPath, "w") as outputFile:
-        outputFile.write("TYPES\n")
-        outputFile.write("R\tP\tF\n")
-        outputFile.write("-"*20 + "\n")
-        outputFile.write("%2.2f\t%2.2f\t%2.2f\n\n" % (types[0], types[1], types[2]))
         outputFile.write("TOKENS\n")
-        outputFile.write("R\tP\tF\n")
         outputFile.write("-"*20 + "\n")
-        outputFile.write("%2.2f\t%2.2f\t%2.2f\n\n" % (tokens[0], tokens[1], tokens[2]))
+        outputFile.write("P\tR\tF\n")
+        outputFile.write("%2.2f\t%2.2f\t%2.2f\n\n" % (tokens[1], tokens[0], tokens[2]))
+
+        outputFile.write("TYPES\n")
+        outputFile.write("P\tR\tF\n")
+        outputFile.write("-"*20 + "\n")
+        outputFile.write("%2.2f\t%2.2f\t%2.2f\n\n" % (types[1], types[0], types[2]))
+
         outputFile.write("BOUNDARIES\n")
-        outputFile.write("R\tP\tF\n")
+        outputFile.write("P\tR\tF\n")
         outputFile.write("-"*20 + "\n")
-        outputFile.write("%2.2f\t%2.2f\t%2.2f\n\n" % (boundaries[0], boundaries[1], boundaries[2]))
+        outputFile.write("%2.2f\t%2.2f\t%2.2f\n\n" % (boundaries[1], boundaries[0], boundaries[2]))
 
 def recall(correct, sizeGold):
     return (float(correct) / sizeGold) * 100
