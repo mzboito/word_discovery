@@ -23,7 +23,7 @@ def segment_and_write(ph, fr, output_name):
     rest = ph_number - ph_per_grapheme*gr_number
     ph_per_word = 0
     if ph_per_grapheme == 0: #no way of creating an alignment
-        return ph.replace(" ","")
+        return ph.strip("\n")
     if(rest > 0): #if we cannot separate in equal parts
         fr_words = len(fr.split(" "))
         #print fr_words, rest, rest > fr_words, rest/fr_words
