@@ -7,7 +7,7 @@ import itertools
 from boundary import Sentences, Sentence, Token
 
 def read_file(inputPath):
-    return [line.strip("\n") for line in codecs.open(inputPath, "r", "UTF-8")]
+    return [line.strip("\n") if line[0]!=" " else line[1:].strip("\n") for line in codecs.open(inputPath, "r", "UTF-8")]
 
 def write_file(outputPath, scores):
     types = scores[0]
