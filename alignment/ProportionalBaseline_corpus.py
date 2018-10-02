@@ -22,6 +22,8 @@ def segment(ph, target):
     #check the remain
     rest = ph_number - ph_per_grapheme*gr_number
     ph_per_word = 0
+    if ph_per_grapheme == 0: #no way of creating an alignment
+        return ph.replace(" ","")
     if(rest > 0): #if we cannot separate in equal parts
         target_words = len(target.split(" "))
         #print target_words, rest, rest > target_words, rest/target_words
