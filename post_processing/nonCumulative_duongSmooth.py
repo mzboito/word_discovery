@@ -18,20 +18,20 @@ def smooth(paths, target, outputPath):
 		matrix = read_file(filem)
 		if not target:
 			matrix = [list(i) for i in zip(*matrix)]
-		#s_matrix = [[0.0 for col in range(len(matrix[0]))] for row in range(len(matrix))]
-		#s_matrix[0] = matrix[0]
+		s_matrix = [[0.0 for col in range(len(matrix[0]))] for row in range(len(matrix))]
+		s_matrix[0] = matrix[0]
 		for line in range(1,len(matrix)):
-			#s_matrix[line][0] = matrix[line][0]
+			s_matrix[line][0] = matrix[line][0]
 			for column in range(1,len(matrix[line])):
 				if len(matrix[line]) == 2:
 					pass
 				elif column == 1: #first line
-					matrix[line][column] = str((float(matrix[line][column]) + float(matrix[line][column+1]))/2)
+					s_matrix[line][column] = str((float(matrix[line][column]) + float(matrix[line][column+1]))/2)
 				elif matrix[line][column] == matrix[line][-1]: #last line
-					matrix[line][column] = str((float(matrix[line][column]) + float(matrix[line][column-1]))/2)
+					s_matrix[line][column] = str((float(matrix[line][column]) + float(matrix[line][column-1]))/2)
 				else:
-					matrix[line][column] = str((float(matrix[line][column-1]) + float(matrix[line][column]) + float(matrix[line][column+1]))/3)
-		write_output(matrix, outputPath + filem.split("/")[-1])
+					s_matrix[line][column] = str((float(matrix[line][column-1]) + float(matrix[line][column]) + float(matrix[line][column+1]))/3)
+		write_output(s_matrix, outputPath + filem.split("/")[-1])
 
 def main():
 	if len(sys.argv) < 4:
