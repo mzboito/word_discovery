@@ -17,10 +17,10 @@ def call_R(log_out_path, output, dev_and_train):
     os.system("Rscript --vanilla %s/createGraphics.r %s %s %d" % (script_path, log_out_path, output, dev_and_train))
 
 def print_usage():
-    print "python generateImages.py <log path> <output folder> <dev and train>\n"
-    print "\t<log path> path to the log file\n"
-    print "\t<output folder> path to the folder where the images will be stored\n"
-    print "\t<dev and train> 1: only dev, 2: dev and train\n"
+    print ("python generateImages.py <log path> <output folder> <dev and train>\n")
+    print ("\t<log path> path to the log file\n")
+    print ("\t<output folder> path to the folder where the images will be stored\n")
+    print ("\t<dev and train> 1: only dev, 2: dev and train\n")
 
 def main():
     if len(sys.argv) < 4:
@@ -33,7 +33,7 @@ def main():
     try:
         dev_and_train = int(sys.argv[3])
     except Exception:
-        print "Problem converting <dev and train> parameter \n"
+        print ("Problem converting <dev and train> parameter \n")
         print_usage()
         exit(1)
 

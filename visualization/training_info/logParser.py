@@ -15,7 +15,7 @@ class LogParser:
         elif dev_and_train == 2:
             return self.parse_dev_train()
         else:
-            print "ERROR"
+            print ("ERROR")
             exit(1)
 
     def read_file(self):
