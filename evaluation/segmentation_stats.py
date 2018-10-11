@@ -68,7 +68,7 @@ def write_vocab(segmentation):
             outputFile.write("\t".join([key, str(segmentation.words_dict[key])]) + "\n")
 
 def main():
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 2:
         print "USAGE:\n python segmentation_stats.py <list of files>\n"
         exit(1)
     
