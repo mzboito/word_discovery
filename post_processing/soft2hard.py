@@ -23,7 +23,13 @@ def getMaxProbCol(line, sentenceMatrix):
             maxValue = float(sentenceMatrix[line][i])
     return col
 
-def segment(filePath, controlSeg, target):
+def segment(filePath, controlSeg, target, translation):
+    if translation:
+        return segmentWithTranslation(filePath, controlSeg, target)
+    else:
+        return segmentFile(filePath, controlSeg, target)
+
+def segmentFile(filePath, controlSeg, target):
     matrix = readMatrixFile(filePath)
     if not target:
         matrix = [list(i) for i in zip(*matrix)]
@@ -46,6 +52,35 @@ def segment(filePath, controlSeg, target):
     if finalString[0] == " ":
         finalString = finalString[1:]
     return cleanLine(finalString)
+
+def segmentWithTranslation(filePath, controlSeg, target):
+    print (filePath, controlSeg, target)
+    matrix = readMatrixFile(filePath)
+    if not target:
+        matrix = [list(i) for i in zip(*matrix)]
+    finalString = ""
+    translation = []
+    lastCol = -1
+    for i in range(1, len(matrix)): #for each element
+        col = getMaxProbCol(i, matrix)
+        aligned_word = matrix[0][col]
+        #if matrix[i][0] in controlSeg: #this parameter is not being used for the moment (semi-supervised setup)
+        #    finalString += " " + matrix[i][0]  + " "
+        if lastCol == -1: #first character
+            finalString += matrix[i][0] #put the character in the beginning
+        elif lastCol == col: # if the current character and the last one are not separated
+            finalString += matrix[i][0]
+        else:
+            finalString += " " + matrix[i][0]
+        if aligned_word != translation[-1]:
+            translation.append(aligned_word)
+        lastCol = col
+    finalString = finalString.replace("  "," ")
+    if finalString[-1] == " ":
+        finalString = finalString[:-1]
+    if finalString[0] == " ":
+        finalString = finalString[1:]
+    return cleanLine(finalString) + "\t" + " ".join(translation)
 
 def writeOutput(finalString, output, mode="w"):
     with codecs.open(output, mode, "UTF-8") as outputFile:
@@ -74,6 +109,7 @@ def main():
     parser.add_argument('--matrices-prefix', type=str, nargs='?', help='matrices prefix')
     parser.add_argument('--output-file', type=str, nargs='?', help='name for the output name')
     parser.add_argument('target',type=bool, default=False, nargs='?', help='default considers that the source is to segment, include this option to segment the target')
+    parser.add_argument('translation', type=bool, default=False, help='Includes the french alignment to the segmentation')
     parser.add_argument('--individual-files', type=str, nargs='?', help='list of names for generating individual files')
     parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
     args = parser.parse_args()
@@ -88,7 +124,7 @@ def main():
 
         for index in range(1, len(sentencesPaths)+1):
             filePath = getPath(index, sentencesPaths)
-            finalstr = segment(filePath, [], args.target)
+            finalstr = segment(filePath, [], args.target, args.translation)
             writeOutput(finalstr, outputPath, "a")
 
     if args.matrices_prefix and args.individual_files and args.output_folder:
@@ -99,7 +135,7 @@ def main():
 
         for index in range(1, len(sentencesPaths)+1):
             filePath = getPath(index, sentencesPaths)
-            finalstr = segment(filePath, [], args.target)
+            finalstr = segment(filePath, [], args.target, args.translation)
             file_name = files_output_list[index-1].split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
 
@@ -109,7 +145,7 @@ def main():
         #assert len(files_output_list) == len(sentencesPaths)
 
         for sentencePath in sentencesPaths:
-            finalstr = segment(sentencePath, [], args.target)
+            finalstr = segment(sentencePath, [], args.target, args.translation)
             file_name = sentencePath.split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
 
