@@ -54,7 +54,6 @@ def segmentFile(filePath, controlSeg, target):
     return cleanLine(finalString)
 
 def segmentWithTranslation(filePath, controlSeg, target):
-    print (filePath, controlSeg, target)
     matrix = readMatrixFile(filePath)
     if not target:
         matrix = [list(i) for i in zip(*matrix)]
