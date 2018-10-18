@@ -71,7 +71,7 @@ def segmentWithTranslation(filePath, controlSeg, target):
             finalString += matrix[i][0]
         else:
             finalString += " " + matrix[i][0]
-        if aligned_word != translation[-1]:
+        if not translation or aligned_word != translation[-1]:
             translation.append(aligned_word)
         lastCol = col
     finalString = finalString.replace("  "," ")
@@ -79,7 +79,7 @@ def segmentWithTranslation(filePath, controlSeg, target):
         finalString = finalString[:-1]
     if finalString[0] == " ":
         finalString = finalString[1:]
-    return cleanLine(finalString) + "\t" + " ".join(translation)
+    return (cleanLine(finalString) + "\t" + " ".join(translation))
 
 def writeOutput(finalString, output, mode="w"):
     with codecs.open(output, mode, "UTF-8") as outputFile:
