@@ -26,20 +26,28 @@ def read_silence(file_path):
                 silence_dict[start] = [end, symbol]
     return silence_dict
 
+def print_dict(l_dict):
+    keys = sorted(l_dict.keys())
+    for key in keys:
+        print(key, l_dict[key])
+
 def get_target(labs_dict, s_start, s_end):
     target = []
     keys = sorted(labs_dict.keys())
     for key in keys:
         if key >= s_start and key <= s_end:
             target.append(key)
-        elif key <= s_start and labs_dict[key][0] >= s_start:
+        elif key <= s_start and labs_dict[key][0] > s_start:
             target.append(key)
     return target
 
-
 def left_adjustment(labs_dict, key, s_start, s_end):
+    #print_dict(labs_dict)
+    #print("\nLEFT")
+    #print(s_start,s_end)
+    end = labs_dict[key][0]
+    #print(key, s_start, s_end, end)
     if key == s_start:
-        end = labs_dict[key][0]
         if end == s_end:
             labs_dict[key][1] == SIL_token
         elif end < s_end:
@@ -50,14 +58,30 @@ def left_adjustment(labs_dict, key, s_start, s_end):
             labs_dict[key] = [s_end, SIL_token]
             labs_dict[s_end] = content
     elif key < s_start:
+        content = labs_dict[key]
         labs_dict[key][0] = s_start
         labs_dict[s_start] = [s_end, SIL_token]
+        if end > s_end: #split phone in twp
+            labs_dict[s_end] = [end, content[1]] # I hate python pointers
+    elif key > s_start and s_end < end:
+        content = labs_dict[key]
+        del labs_dict[key]
+        labs_dict[s_start] = [s_end, SIL_token]
+        labs_dict[s_end] = content
     else:
+        print("--------------")
         print("ERROR AT LEFT ADJUSTMENT")
+        print(s_start, s_end)
+        print(key, labs_dict[key])
+        sys.exit(1)
+    #print_dict(labs_dict)
     return labs_dict
 
 def right_adjustment(labs_dict, key, s_start, s_end):
+    #print("\nRIGHT")
     end = labs_dict[key][0]
+    #print(end > s_end)
+    #print(key, end, s_start, s_end)
     if end == s_start: #fixed on left adjustment
         return labs_dict
     if end == s_end:
@@ -67,17 +91,22 @@ def right_adjustment(labs_dict, key, s_start, s_end):
         content = labs_dict[key]
         del labs_dict[key]
         labs_dict[s_end] = content
+    elif end > s_start and end < s_end: #last target is smaller than the time window in the true phones
+        assert labs_dict[s_start][1] == SIL_token
+        del labs_dict[key]
     else:
+        print("--------------")
         print("ERROR AT RIGHT ADJUSTMENT")
+        print(s_start, s_end)
+        print(key, labs_dict[key])
+        sys.exit(1)
     return labs_dict
 
-def print_dict(l_dict):
-    keys = sorted(l_dict.keys())
-    for key in keys:
-        print(key, l_dict[key])
-
+def perfect_match(labs_dict, key, s_start, s_end):
+    return labs_dict[key][0] == s_end and key == s_start
 
 def merge(labs_dict, silence_dict, s_key):
+    print("\n")
     #print_dict(labs_dict)
     s_ending = silence_dict[s_key][0]
     target_keys = get_target(labs_dict, s_key, s_ending)
@@ -97,10 +126,16 @@ def merge(labs_dict, silence_dict, s_key):
         labs_dict = left_adjustment(labs_dict, target_keys[0], s_key, s_ending)
         labs_dict = right_adjustment(labs_dict, target_keys[1], s_key, s_ending)
     else:
-        labs_dict = left_adjustment(labs_dict, target_keys[0], s_key, s_ending)
-        labs_dict = right_adjustment(labs_dict, target_keys[0], s_key, s_ending)
-    #print_dict(labs_dict)
-    #print("\n")
+        key = target_keys[0]
+        if not perfect_match(labs_dict, key, s_key, s_ending):
+            labs_dict = left_adjustment(labs_dict, key, s_key, s_ending)
+            if key in labs_dict:
+                labs_dict = right_adjustment(labs_dict, key, s_key, s_ending)
+        else: #perfect match
+            labs_dict[key][1] = SIL_token
+
+    print_dict(labs_dict)
+    print("END\n")
     #sys.exit(1)    
     return labs_dict
 
@@ -123,6 +158,7 @@ def main():
     output_folder = sys.argv[3]
     for file_path in pseudo_path:
         name = file_path.split("/")[-1]
+        print (name)
         labs_dict = read_lab(file_path)
         silence_dict = read_silence(silence_folder + name)
         new_dict = merge_labs(labs_dict, silence_dict)
