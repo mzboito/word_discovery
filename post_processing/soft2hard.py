@@ -114,7 +114,7 @@ def main():
     parser.add_argument('--matrices-prefix', type=str, nargs='?', help='matrices prefix')
     parser.add_argument('--output-file', type=str, nargs='?', help='name for the output name')
     parser.add_argument('target',type=bool, default=False, nargs='?', help='default considers that the source is to segment, include this option to segment the target')
-    parser.add_argument('translation', type=bool, default=False, help='Creates a parallel file with the generated translation')
+    #parser.add_argument('translation', type=bool, default=False, help='Creates a parallel file with the generated translation')
     parser.add_argument('--individual-files', type=str, nargs='?', help='list of names for generating individual files')
     parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
     args = parser.parse_args()
@@ -124,14 +124,16 @@ def main():
         sys.exit(1)
 
     sentencesPaths = glob.glob(args.matrices_prefix+"*.txt") #the seq2seq always produces matrices ending with .txt
+    #print(args.target)
+    #print(args.translation)
 
     if args.output_file: #segmentation on a single file
         outputPath = args.output_file
         for index in range(1, len(sentencesPaths)+1):
             filePath = getPath(index, sentencesPaths)
-            finalstr, translation = segment(filePath, args.target, args.translation)
+            finalstr, translation = segment(filePath, args.target, False)#args.translation)
             writeOutput(finalstr, outputPath, "a")
-            if args.translation:
+            if False:#args.translation:
                 writeOutput(translation, outputPath+".translation","a")
 
     if args.individual_files and args.output_folder: #segmentation in individual files (with ID)
@@ -140,19 +142,19 @@ def main():
         assert len(files_output_list) == len(sentencesPaths)
         for index in range(1, len(sentencesPaths)+1):
             filePath = getPath(index, sentencesPaths)
-            finalstr, translation = segment(filePath, args.target, args.translation)
+            finalstr, translation = segment(filePath, args.target, False)#args.translation)
             file_name = files_output_list[index-1].split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
-            if args.translation:
+            if False:#args.translation:
                 writeOutput(translation, folder + file_name +".translation")
 
     elif args.output_folder: #segmentation in individual files (without ID)
         folder = args.output_folder if args.output_folder[-1] == '/' else args.output_folder + '/'
         for sentencePath in sentencesPaths:
-            finalstr, translation = segment(sentencePath, args.target, args.translation)
+            finalstr, translation = segment(sentencePath, args.target, False)#args.translation)
             file_name = sentencePath.split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
-            if args.translation:
+            if False:#args.translation:
                 writeOutput(translation, folder + file_name +".translation")
 
 

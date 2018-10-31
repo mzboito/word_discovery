@@ -19,7 +19,8 @@ def main():
     output_dir = sys.argv[4]
     assert len(source) == len(target) and len(target) == len(labs)
     for i in range(len(labs)):
-        name = output_dir + (labs[i].strip("\n").split(".")[0])
+        name = (labs[i].strip("\n").split(".")[0])
+        name = output_dir + '0'*(5-len(name)) + name
         write_file(name + SRC_EXT, source[i])
         write_file(name + TGT_EXT, target[i])
 
