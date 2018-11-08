@@ -9,7 +9,7 @@ import argparse
 IDS_suffix = ".ids"
 seg_suffix = ".hs"
 sets = ["dev", "train"]
-#target = True
+BUCKETS = 10
 
 
 '''
@@ -93,10 +93,7 @@ class Corpus():
         return new_buckets
 
     def get_average(self):
-        acc = 0.0
-        for m in self.matrices:
-            acc += m.average_entropy()
-        return acc / len(self.matrices)
+        return self.average_from_group(self.matrices, Matrix.average_entropy)
 
     def print_average(self):
         print(self.get_average())
@@ -143,10 +140,15 @@ class Corpus():
     def write_zrc_buckets(self, zrc_path, f_name, number_buckets, precision=2):
         d = self.reduce_buckets(self.generate_buckets(precision), number_buckets)
         keys = sorted(d.keys())
+        summary = []
         for key in keys:
             with open(f_name + "_" + str(key),"w") as output_file:
                 for element in d[key]:
                     output_file.write(zrc_path + element.id + seg_suffix + "\n")
+            summary.append([str(key), str(self.average_from_group(d[key], Matrix.average_entropy))])
+        with open(f_name + ".summary", "w") as output_file:
+            for element in summary:
+                output_file.write("\t".join(element) + "\n")
 
 def main(args):
     matrices_path = glob.glob(utils.folder(args.matrices_folder) + "*.txt")
@@ -165,7 +167,7 @@ def main(args):
     #c.write_buckets(output_file + ".classes")
     #c.write_buckets(output_file + ".classes.verbose", verbose=True)
     if ids_path:
-        c.write_zrc_buckets(utils.folder(args.segmentation_path), output_file, 10)
+        c.write_zrc_buckets(utils.folder(args.segmentation_path), output_file, BUCKETS)
     
     #c.print_average()
 
