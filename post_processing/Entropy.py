@@ -3,10 +3,7 @@ import sys
 import glob
 from math import log, e
 import numpy as np
-
-
-def read_matrix(path):
-    return [line.strip("\n").split("\t") for line in codecs.open(path,"r","utf-8")]
+import utils
 
 def KL_divergence(P,Q): #P true Q observed
     assert len(P) == len(Q)
@@ -51,10 +48,10 @@ def format_distribution(line):
     #print(np.sum(new_dist))
     return new_dist
 
-def test(matrix):
-    flat_dist = generate_flat_distribution(len(matrix[0])-1)
-    peak_dist = generate_one_peak_distribution(len(matrix[0])-1)
-    two_peak_dist = generate_two_peak_distribution(len(matrix[0])-1)
+def test(size):
+    flat_dist = generate_flat_distribution(size)
+    peak_dist = generate_one_peak_distribution(size)
+    two_peak_dist = generate_two_peak_distribution(size)
     print(flat_dist)
     print("entropy: " + str(entropy(flat_dist,2)))
     print(peak_dist)
@@ -73,12 +70,14 @@ def entropy(P, base=None):
     return ent / log(n_classes,base)
 
 def main():
+    test(50)
+    '''
     matrices_folder = sys.argv[1]
     output_file = sys.argv[2]
     output_folder = sys.argv[3] if sys.argv[3][-1] == '/' else sys.argv[3] + '/'
     matrices_path = glob.glob(matrices_folder + "*.txt")
     for matrix_path in matrices_path:
-        matrix = read_matrix(matrix_path)
+        matrix = utils.read_matrix_file(matrix_path)
         acc = 0.0
         with codecs.open(output_folder + matrix_path.split("/")[-1],"w","utf-8") as individual_file:
             for i in range(1,len(matrix)): #for each line (first one is the list of words)
@@ -88,7 +87,7 @@ def main():
                 individual_file.write("\n")
                 acc += ent
             avg_kl = acc / (len(matrix)-1)
-        write_result(output_file, matrix_path, avg_kl)
+        write_result(output_file, matrix_path, avg_kl)'''
 
 
 if __name__ == '__main__':
