@@ -137,15 +137,24 @@ class Corpus():
                         output_file.write("\t{}\t{}\n".format(m.file_name, m.average_entropy()))
                     output_file.write("\n")
     
-    def write_zrc_buckets(self, zrc_path, f_name, number_buckets, precision=2):
+    def write_sublab_file(self, f_name, m_list, labs_path):
+        with open(f_name, "w") as output_file:
+            for element in m_list:
+                output_file.write(labs_path + element.id + "\n")
+            
+
+    def write_zrc_buckets(self, zrc_path, labs_path, f_name, number_buckets, precision=2):
         d = self.reduce_buckets(self.generate_buckets(precision), number_buckets)
         keys = sorted(d.keys())
         summary = []
         for key in keys:
-            with open(f_name + "_" + str(key),"w") as output_file:
+            name = f_name + "_" + str(key)
+            with open(name,"w") as output_file:
                 for element in d[key]:
                     output_file.write(zrc_path + element.id + seg_suffix + "\n")
+            self.write_sublab_file(name + "_labs",d[key], labs_path)            
             summary.append([str(key), str(self.average_from_group(d[key], Matrix.average_entropy))])
+
         with open(f_name + ".summary", "w") as output_file:
             for element in summary:
                 output_file.write("\t".join(element) + "\n")
@@ -167,7 +176,7 @@ def main(args):
     #c.write_buckets(output_file + ".classes")
     #c.write_buckets(output_file + ".classes.verbose", verbose=True)
     if ids_path:
-        c.write_zrc_buckets(utils.folder(args.segmentation_path), output_file, BUCKETS)
+        c.write_zrc_buckets(utils.folder(args.segmentation_path), utils.folder(args.labs_path) output_file, BUCKETS)
     
     #c.print_average()
 
@@ -179,6 +188,7 @@ if __name__ == '__main__':
     parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
     parser.add_argument('--ids-path', type=str, nargs='?', help='Path for (train,dev).ids')
     parser.add_argument('--segmentation-path', type=str, nargs='?', help='Path for ZRC segmentation')
+    parser.add_argument('--labs-path', type=str, nargs='?', help='Path for labs')
     args = parser.parse_args()
     if not (args.matrices_folder and args.output_file):
         parser.print_help()
