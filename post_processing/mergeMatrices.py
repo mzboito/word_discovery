@@ -5,10 +5,10 @@ import codecs
 import glob
 
 att_matrices_folder = "att_matrices/"
-files_folder = "../files/"
-folders_prefix = "exp"
-train_max = 297 
-id_suffix = ".id"
+files_folder = "files/"
+folders_prefix = "run"
+train_max = 4616 
+id_suffix = ".ids"
 different_split = False
 
 def read_matrix(path):
