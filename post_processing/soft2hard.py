@@ -6,6 +6,16 @@ import glob
 import argparse
 import utils
 
+def get_soft2hard_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--matrices-prefix', type=str, nargs='?', help='matrices prefix')
+    parser.add_argument('--output-file', type=str, nargs='?', help='name for the output name')
+    parser.add_argument('target',type=bool, default=False, nargs='?', help='default considers that the source is to segment, include this option to segment the target')
+    parser.add_argument('--individual-files', type=str, nargs='?', help='list of names for generating individual files')
+    parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
+    parser.add_argument('--translation', type=str, nargs='?', help='Creates a parallel file with the generated translation. It requires a suffix')
+    return parser
+
 def get_path(number, paths):
     for path in paths:
         if "." + str(number) + "." in path:
@@ -87,9 +97,9 @@ def writeOutput(finalString, output, mode="w"):
     with codecs.open(output, mode, "UTF-8") as outputFile:
         outputFile.write(finalString + "\n")
 
-def main(args):
+def soft2hard(args):
     sentencesPaths = glob.glob(args.matrices_prefix+"*.txt") #the seq2seq always produces matrices ending with .txt
-    
+    #print(sentencesPaths)
     if args.output_file: #segmentation on a single file
         outputPath = args.output_file
         for index in range(1, len(sentencesPaths)+1):
@@ -121,17 +131,10 @@ def main(args):
                 writeOutput(translation, folder + file_name +args.translation)
 
 
-
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--matrices-prefix', type=str, nargs='?', help='matrices prefix')
-    parser.add_argument('--output-file', type=str, nargs='?', help='name for the output name')
-    parser.add_argument('target',type=bool, default=False, nargs='?', help='default considers that the source is to segment, include this option to segment the target')
-    parser.add_argument('--individual-files', type=str, nargs='?', help='list of names for generating individual files')
-    parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
-    parser.add_argument('--translation', type=str, nargs='?', help='Creates a parallel file with the generated translation. It requires a suffix')
+    parser = get_soft2hard_parser()
     args = parser.parse_args()
     if len(sys.argv) < 3 or not args.matrices_prefix:
         parser.print_help()
         sys.exit(1)
-    main(args)
+    soft2hard(args)

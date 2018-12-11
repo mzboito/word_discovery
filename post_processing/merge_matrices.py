@@ -125,7 +125,6 @@ def main():
 	folders = [folders_prefix+ str(i) + "/" for i in range(1,f_number+1)] #list folders
 
 	files_dict = load_files(root_folder, folders) #load files
-	#print(files_dict)
 	size = len(files_dict[folders[0]])
 
 	for i in range(1, f_number):
