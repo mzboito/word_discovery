@@ -29,6 +29,7 @@ def wrapper(args):
                 for head in range(int(args.heads)):
                     input_path = "/".join([args.input_root_folder, leaf]) + "/" + prefix + "*_head" + str(head+1)
                     args.matrices_prefix = input_path
+                    args.transformer = True
                     #print(args.output_folder, args.matrices_prefix)
                     soft2hard.soft2hard(args)
                 
@@ -38,6 +39,7 @@ if __name__ == "__main__":
     parser.add_argument('--heads', type=str, nargs='?', help='number of heads')
     parser.add_argument('--layers', type=str, nargs='?', help='number of layers')
     parser.add_argument('--output-root-folder', type=str, nargs='?', help='root folder for storing the attention matrices')
+    parser.add_argument('--transformer', type=bool, nargs='?', help='internal flag')
     args = parser.parse_args()
     if len(sys.argv) < 3 or not args.input_root_folder:
         parser.print_help()

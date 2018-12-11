@@ -16,10 +16,15 @@ def get_soft2hard_parser():
     parser.add_argument('--translation', type=str, nargs='?', help='Creates a parallel file with the generated translation. It requires a suffix')
     return parser
 
-def get_path(number, paths):
-    for path in paths:
-        if "." + str(number) + "." in path:
-            return path
+def get_path(number, paths, transformer):
+    if transformer:
+        for path in paths:
+            if str(number) + "_" in path:
+                return path
+    else:
+        for path in paths:
+            if "." + str(number) + "." in path:
+                return path
     return None
 
 def get_max_prob_col(line, sentenceMatrix):
@@ -103,8 +108,8 @@ def soft2hard(args):
     if args.output_file: #segmentation on a single file
         outputPath = args.output_file
         for index in range(1, len(sentencesPaths)+1):
-            filePath = get_path(index, sentencesPaths)
-            finalstr, translation = segment(filePath, args.target, False)#args.translation)
+            filePath = get_path(index, sentencesPaths, args.transformer)
+            finalstr, translation = segment(filePath, args.target, args.translation)
             writeOutput(finalstr, outputPath, "a")
             if args.translation:
                 writeOutput(translation, outputPath+args.translation,"a")
@@ -114,8 +119,8 @@ def soft2hard(args):
         folder = args.output_folder if args.output_folder[-1] == '/' else args.output_folder + '/'
         assert len(files_output_list) == len(sentencesPaths)
         for index in range(1, len(sentencesPaths)+1):
-            filePath = get_path(index, sentencesPaths)
-            finalstr, translation = segment(filePath, args.target, False)#args.translation)
+            filePath = get_path(index, sentencesPaths, args.transformer)
+            finalstr, translation = segment(filePath, args.target, args.translation)
             file_name = files_output_list[index-1].split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
             if args.translation:
@@ -124,7 +129,7 @@ def soft2hard(args):
     elif args.output_folder: #segmentation in individual files (without ID)
         folder = args.output_folder if args.output_folder[-1] == '/' else args.output_folder + '/'
         for sentencePath in sentencesPaths:
-            finalstr, translation = segment(sentencePath, args.target, False)#args.translation)
+            finalstr, translation = segment(sentencePath, args.target, args.translation)
             file_name = sentencePath.split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
             if args.translation:
