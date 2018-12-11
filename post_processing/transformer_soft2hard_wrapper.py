@@ -16,22 +16,20 @@ def wrapper(args):
         prefix = args.matrices_prefix
     else:
         prefix = ""
-    
+
     for coder in coders.keys():
         leaf = coder
-        check_root("/".join([args.output_root_folder, leaf]))
         for layer in range(int(args.layers)):
-            leaf = coder + "/" + str(layer+1)
-            check_root("/".join([args.output_root_folder, leaf]))
+            #leaf = coder + "/" + str(layer+1)
             for attention_type in coders[coder]:
                 leaf = "/".join([coder, str(layer+1), attention_type])
-                output_folder = "/".join([args.output_root_folder, leaf])
+                output_folder = "/".join([args.output_root_folder, str(layer+1)])
                 check_root(output_folder)
                 args.output_folder = output_folder
                 for head in range(int(args.heads)):
                     input_path = "/".join([args.input_root_folder, leaf]) + "/" + prefix + "*_head" + str(head+1)
                     args.matrices_prefix = input_path
-                    print(args.output_folder, args.matrices_prefix)
+                    #print(args.output_folder, args.matrices_prefix)
                     soft2hard.soft2hard(args)
                 
 if __name__ == "__main__":
