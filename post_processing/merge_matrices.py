@@ -6,7 +6,7 @@ import glob
 
 ###################### SETTINGS ######################
 att_matrices_folder = "att_matrices/"
-files_folder = "files/"
+files_folder = "../../../english_5k/seq2seq/true_phones/files/"
 folders_prefix = "run"
 matrices_train_prefix = "train+dev" # "train"
 matrices_dev_prefix = "dev"
@@ -49,7 +49,7 @@ def merge_matrices(matrices_list):
 	num_lines = len(matrices_list[0])
 	num_columns = len(matrices_list[0][0]) #+ 1
 	num_matrices = len(matrices_list)
-	output = [[0 for i in xrange(num_columns)] for j in xrange(num_lines)]
+	output = [[0 for i in range(num_columns)] for j in range(num_lines)]
 	output[0] = matrices_list[0][0]
 	for line in range(1, num_lines):
 		output[line][0] = matrices_list[0][line][0]
@@ -125,7 +125,6 @@ def main():
 	folders = [folders_prefix+ str(i) + "/" for i in range(1,f_number+1)] #list folders
 
 	files_dict = load_files(root_folder, folders) #load files
-	print(files_dict)
 	size = len(files_dict[folders[0]])
 
 	for i in range(1, f_number):
@@ -148,3 +147,4 @@ if __name__ == '__main__':
 		print("/!\\ REMEMBER TO RE-SET INFORMATION AT THE HEADER OF THIS SCRIPT")
 		sys.exit(1)
 	main()
+
