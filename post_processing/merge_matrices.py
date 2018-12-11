@@ -23,6 +23,7 @@ def read_ids_file(f_path, intern_dict):
 		for line in input_file:
 			intern_dict[line.strip()] = matrices_train_prefix +"."+ str(count) #{id name, file name on that folder}
 			count +=1
+	return intern_dict
 
 def get_file_name(folder):
 	return matrices_train_prefix + "." + folder[:-1] + id_suffix if different_split else matrices_train_prefix + id_suffix 
@@ -33,11 +34,11 @@ def load_files(root_folder, folders):
 		files_dict[folder] = [] #creates entry for folder
 		file_name = get_file_name(folder)
 		intern_dict = dict() #creates intern dict
-		prefix_dir = root_folder + files_folder
-		read_ids_file(prefix_dir + file_name, intern_dict)
+		prefix_dir = "/".join([root_folder,files_folder]) if not different_split else "/".join([root_folder,folder,files_folder])
+		intern_dict = read_ids_file("/".join([prefix_dir,file_name]), intern_dict)
 		if dev_exists:
 			file_name = file_name.replace(matrices_train_prefix,matrices_dev_prefix)
-			read_ids_file(prefix_dir + file_name, intern_dict)
+			intern_dict = read_ids_file("/".join([prefix_dir,file_name]), intern_dict)
 		files_dict[folder] = intern_dict
 	return files_dict
 
@@ -124,7 +125,7 @@ def main():
 	folders = [folders_prefix+ str(i) + "/" for i in range(1,f_number+1)] #list folders
 
 	files_dict = load_files(root_folder, folders) #load files
-
+	print(files_dict)
 	size = len(files_dict[folders[0]])
 
 	for i in range(1, f_number):

@@ -1,7 +1,9 @@
 import sys, os
 import argparse
 import soft2hard
-coders = {"TransformerEncoder":["SelfAttention"], "TransformerDecoder":["SelfAttention", "EncoderDecoderAttention"]}
+#coders = {"TransformerEncoder":["SelfAttention"], "TransformerDecoder":["SelfAttention", "EncoderDecoderAttention"]}
+
+coders = {"TransformerDecoder":["EncoderDecoderAttention"]}
 def check_root(root_directory):
     try:
         os.stat(root_directory)
@@ -27,9 +29,9 @@ def wrapper(args):
                 check_root(output_folder)
                 args.output_folder = output_folder
                 for head in range(int(args.heads)):
-                    input_path = "/".join([args.input_root_folder, leaf]) + "/" + prefix + "*_head" + str(head)
+                    input_path = "/".join([args.input_root_folder, leaf]) + "/" + prefix + "*_head" + str(head+1)
                     args.matrices_prefix = input_path
-                    #print(args.matrices_prefix, args.output_folder)
+                    print(args.output_folder, args.matrices_prefix)
                     soft2hard.soft2hard(args)
                 
 if __name__ == "__main__":
