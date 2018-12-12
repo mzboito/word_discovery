@@ -13,6 +13,8 @@ def read_matrix_file(path):
 
 def clean_line(inputStr):
     inputStr = inputStr.replace(UNK_symbol,"").replace(EOS_symbol,"").replace(BOS_symbol,"")
+    while inputStr and inputStr[0] == " ":
+        inputStr = inputStr[1:]
     while("  " in inputStr):
         inputStr = inputStr.replace("  "," ")
     return inputStr

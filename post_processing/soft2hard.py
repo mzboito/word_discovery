@@ -14,18 +14,20 @@ def get_soft2hard_parser():
     parser.add_argument('--individual-files', type=str, nargs='?', help='list of names for generating individual files')
     parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
     parser.add_argument('--translation', type=str, nargs='?', help='Creates a parallel file with the generated translation. It requires a suffix')
+    parser.add_argument('--transformer', type=bool, default=False, nargs='?', help='set for transformer path getter')
     return parser
 
 def get_path(number, paths, transformer):
     if transformer:
         for path in paths:
-            if str(number) + "_" in path:
+            if str(number) == path.split("/")[-1].split("_")[0]:
                 return path
     else:
         for path in paths:
             if "." + str(number) + "." in path:
                 return path
-    return None
+    print(number)
+    raise Exception("Path not found")
 
 def get_max_prob_col(line, sentenceMatrix):
     maxValue = float(sentenceMatrix[line][1]) #start from the first line after the characters
@@ -103,8 +105,7 @@ def writeOutput(finalString, output, mode="w"):
         outputFile.write(finalString + "\n")
 
 def soft2hard(args):
-    sentencesPaths = glob.glob(args.matrices_prefix+"*.txt") #the seq2seq always produces matrices ending with .txt
-    #print(sentencesPaths)
+    sentencesPaths = glob.glob(args.matrices_prefix+"*.txt") 
     if args.output_file: #segmentation on a single file
         outputPath = args.output_file
         for index in range(1, len(sentencesPaths)+1):
