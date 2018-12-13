@@ -19,6 +19,21 @@ BUCKETS = 10
 4) generate classes (entropy buckets) files listing the files inside and count 
 '''
 
+flag_id_none=False
+
+def get_entropy_args(parser):
+    parser.add_argument('--matrices-folder', type=str, nargs='?', help='soft-alignment probability matrices folder')
+    parser.add_argument('--output-file', type=str, nargs='?', help='prefix name for the output name')
+    #/!\
+    parser.add_argument('target',type=bool, default=False, nargs='?', help='default considers that the source is to segment, include this option to segment the target')
+    #optional: ids path for labeling and output folder for individual results
+    parser.add_argument('--ids-path', type=str, nargs='?', help='Path for (train,dev).ids')
+    parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
+    #stuff for generating ZRC subsets
+    parser.add_argument('--segmentation-path', type=str, nargs='?', help='Path for ZRC segmentation')
+    parser.add_argument('--labs-path', type=str, nargs='?', help='Path for labs')
+    return parser
+
 class Matrix():
     def __init__(self, filepath, target, ids_dictionary):
         self.lines = utils.read_matrix_file(filepath)
@@ -26,12 +41,18 @@ class Matrix():
         self.entropies = self.calculate_entropies(self.lines)
         self.file_name = filepath.split("/")[-1]
         self.set = self.file_name.split(".")[0]
-        self.index = int(self.file_name.split(".")[1])
+        try:
+            self.index = int(self.file_name.split(".")[1])
+        except ValueError: #transformer case
+            self.index = int(self.file_name.split("_")[0])
         try:
             self.id = ids_dictionary[self.set][self.index-1]
         except KeyError:
             self.id = None
-            print("Problem with id file, setting id to None")
+            global flag_id_none
+            if not flag_id_none:
+                print("Problem with id file, setting id to None")
+                flag_id_none=True
     
     @staticmethod
     def calculate_entropies(matrix):
@@ -42,7 +63,6 @@ class Matrix():
                 entropies.append(ent)
         return entropies
     
-
     def average_entropy(self):
         return sum(self.entropies) / len(self.entropies)
     
@@ -61,7 +81,6 @@ class Matrix():
             for i in range(1,len(self.lines)):
                 output_file.write("\t".join(self.lines[i] + [str(self.entropies[i-1])]) + "\n")
     
-
 class Corpus():
     def __init__(self, matrices_path, target, ids_path):
         self.matrices = []
@@ -142,7 +161,6 @@ class Corpus():
             for element in m_list:
                 output_file.write(labs_path + element.id + "\n")
             
-
     def write_zrc_buckets(self, zrc_path, labs_path, f_name, number_buckets, precision=2):
         d = self.reduce_buckets(self.generate_buckets(precision), number_buckets)
         keys = sorted(d.keys())
@@ -160,8 +178,7 @@ class Corpus():
                 output_file.write("\t".join(element) + "\n")
 
 def main(args):
-    matrices_path = glob.glob(utils.folder(args.matrices_folder) + "*.txt")
-    output_file = args.output_file
+    matrices_path = glob.glob(utils.folder(args.matrices_folder) + "*head*.txt")
     ids_path = None
     if args.ids_path:
         ids_path = utils.folder(args.ids_path)
@@ -172,7 +189,8 @@ def main(args):
         output_folder = utils.folder(args.output_folder)
         c.write_invidual_files(output_folder)
 
-    #c.write_summary(output_file + ".summary")
+    c.write_summary(args.output_file + ".summary")
+    c.print_average()
     #c.write_buckets(output_file + ".classes")
     #c.write_buckets(output_file + ".classes.verbose", verbose=True)
     if ids_path:
@@ -181,14 +199,7 @@ def main(args):
     #c.print_average()
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--matrices-folder', type=str, nargs='?', help='soft-alignment probability matrices folder')
-    parser.add_argument('--output-file', type=str, nargs='?', help='prefix name for the output name')
-    parser.add_argument('target',type=bool, default=False, nargs='?', help='default considers that the source is to segment, include this option to segment the target')
-    parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
-    parser.add_argument('--ids-path', type=str, nargs='?', help='Path for (train,dev).ids')
-    parser.add_argument('--segmentation-path', type=str, nargs='?', help='Path for ZRC segmentation')
-    parser.add_argument('--labs-path', type=str, nargs='?', help='Path for labs')
+    parser = get_entropy_args(argparse.ArgumentParser())
     args = parser.parse_args()
     if not (args.matrices_folder and args.output_file):
         parser.print_help()

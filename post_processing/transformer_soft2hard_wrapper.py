@@ -1,6 +1,7 @@
 import sys, os
 import argparse
 import soft2hard
+from utils import generate_heads
 #coders = {"TransformerEncoder":["SelfAttention"], "TransformerDecoder":["SelfAttention", "EncoderDecoderAttention"]}
 
 coders = {"TransformerDecoder":["EncoderDecoderAttention"]}
@@ -12,7 +13,10 @@ def check_root(root_directory):
         os.makedirs(root_directory)
 
 def generate_heads(number):
-    return ["head"+str(i+1) for i in range(number)] + ["avg"]
+    if number == 1:
+        return ["head"+str(i+1) for i in range(number)] 
+    else:
+        return ["head"+str(i+1) for i in range(number)] + ["avg"]
 
 def wrapper(args):
     if args.matrices_prefix:
