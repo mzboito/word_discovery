@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import sys
-import codecs
-import glob
+import sys, codecs, glob
+from utils import write_output_matrix, read_matrix_file
 
 ###################### SETTINGS ######################
 att_matrices_folder = "att_matrices/"
@@ -42,9 +41,6 @@ def load_files(root_folder, folders):
 		files_dict[folder] = intern_dict
 	return files_dict
 
-def read_matrix(path):
-	return [line.strip("\n").split("\t") for line in codecs.open(path,"r","UTF-8")]
-
 def merge_matrices(matrices_list):
 	num_lines = len(matrices_list[0])
 	num_columns = len(matrices_list[0][0]) #+ 1
@@ -59,15 +55,6 @@ def merge_matrices(matrices_list):
 					output[line][column] += float(matrices_list[i][line][column])
 			output[line][column] = str(output[line][column] / num_matrices)
 	return output
-
-def write_output(path, matrix):
-    output_path = path.replace(".lab", ".avgatt") + ".txt"
-    with codecs.open(output_path, "w", "UTF-8") as outputFile:
-        for line in matrix:
-            try:
-                outputFile.write("\t".join(line) + "\n")
-            except TypeError:
-                pass
 
 def get_file_from_index(files_dict, folder, f_id):
 	for key in files_dict[folder].keys():
@@ -88,7 +75,7 @@ def find_matrices(root_folder, folders, files_dict, file_name):
 	for folder in folders:
 		f_id = get_index_from_file(files_dict, folder, file_name)
 		matrix_file = glob.glob(root_folder + folder + att_matrices_folder + f_id +".txt")
-		matrix = read_matrix(matrix_file[0])
+		matrix = read_matrix_file(matrix_file[0])
 		matrices.append(matrix)
 	if len(matrices) != len(folders):
 		print("COULD NOT READ ALL THE MATRICES FOR FILE: " + file_name + "\n")
@@ -138,7 +125,9 @@ def main():
 			file_i = get_file_from_index(files_dict, folders[0],  matrices_train_prefix + "." + str(i))
 		matrices = find_matrices(root_folder, folders, files_dict, file_i)
 		avg_matrix = merge_matrices(matrices)
-		write_output(output_folder + file_i, avg_matrix)
+		output_path = output_folder + file_i
+		output_path = output_path.replace(".lab", ".avgatt") + ".txt"
+		write_output_matrix(output_path, avg_matrix)
 
 
 if __name__ == '__main__':

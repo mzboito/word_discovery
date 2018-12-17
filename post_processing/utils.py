@@ -4,6 +4,8 @@ import codecs
 EOS_symbol = "</S>"
 BOS_symbol = "<S>"
 UNK_symbol = "<UNK>"
+transformer_decoder = {"TransformerDecoder":["EncoderDecoderAttention"]}
+transformer_coders = {"TransformerEncoder":["SelfAttention"], "TransformerDecoder":["SelfAttention", "EncoderDecoderAttention"]}
 
 def read_file(path):
     return [line.strip("\n") for line in codecs.open(path, "r","UTF-8")]
@@ -27,3 +29,13 @@ def generate_heads(number):
         return ["head"+str(i+1) for i in range(number)] 
     else:
         return ["head"+str(i+1) for i in range(number)] + ["avg"]
+
+
+def write_output_matrix(path, matrix):
+	with codecs.open(path, "w", "UTF-8") as outputFile:
+		for line in matrix:
+			try:
+				outputFile.write("\t".join(line) + "\n")
+			except TypeError:
+				sys.exit(1)
+			   	#pass

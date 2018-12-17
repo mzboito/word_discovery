@@ -1,16 +1,14 @@
 import sys, glob
 import argparse
 from entropy_gen import get_entropy_args, Corpus
-from utils import generate_heads, folder
-
-coders = {"TransformerDecoder":["EncoderDecoderAttention"]}
+from utils import generate_heads, folder, transformer_decoder
 
 def wrapper(args):
     heads = generate_heads(int(args.heads))
 
-    for coder in coders.keys():
+    for coder in transformer_decoder.keys():
         for layer in range(1,int(args.layers)+1):
-            for attention_type in coders[coder]:
+            for attention_type in transformer_decoder[coder]:
                 path = "/".join([args.input_root_folder, coder, str(layer), attention_type]) + "/"
                 for head in heads:
                     matrices_path = glob.glob(path +"*"+ head +".txt")
