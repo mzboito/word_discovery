@@ -26,7 +26,7 @@ def get_path(number, paths, transformer):
         for path in paths:
             if "." + str(number) + "." in path:
                 return path
-    print(number)
+    #print(number)
     raise Exception("Path not found")
 
 def get_max_prob_col(line, sentenceMatrix):
