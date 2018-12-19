@@ -194,7 +194,7 @@ def main(args):
     #c.write_buckets(output_file + ".classes")
     #c.write_buckets(output_file + ".classes.verbose", verbose=True)
     if ids_path:
-        c.write_zrc_buckets(utils.folder(args.segmentation_path), utils.folder(args.labs_path), output_file, BUCKETS)
+        c.write_zrc_buckets(utils.folder(args.segmentation_path), utils.folder(args.labs_path), args.output_file, BUCKETS)
     
     #c.print_average()
 

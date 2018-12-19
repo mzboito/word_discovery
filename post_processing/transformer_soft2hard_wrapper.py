@@ -11,10 +11,6 @@ def check_root(root_directory):
         os.makedirs(root_directory)
 
 def wrapper(args):
-    if args.matrices_prefix:
-        prefix = args.matrices_prefix
-    else:
-        prefix = ""
     if args.output_file:
         out_prefix = args.output_file
 
@@ -31,7 +27,7 @@ def wrapper(args):
                         args.output_folder = output_folder
                     else:
                         args.output_file = "_".join(["layer"+str(layer),head,out_prefix])
-                    input_path = "/".join([args.input_root_folder, leaf]) + "/" + prefix + "*_" + head
+                    input_path = "/".join([args.input_root_folder, leaf]) + "/" + "*_" + head # + prefix + "*_" + head
                     args.matrices_prefix = input_path
                     args.transformer = True
                     #print(args.output_folder, args.matrices_prefix)

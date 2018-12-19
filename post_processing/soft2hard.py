@@ -15,12 +15,17 @@ def get_soft2hard_parser():
     parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
     parser.add_argument('--translation', type=str, nargs='?', help='Creates a parallel file with the generated translation. It requires a suffix')
     parser.add_argument('--transformer', type=bool, default=False, nargs='?', help='set for transformer path getter')
+    parser.add_argument('--pervasive', type=bool, default=False, nargs='?', help='set for transformer path getter')
     return parser
 
-def get_path(number, paths, transformer):
+def get_path(number, paths, transformer=False, pervasive=False):
     if transformer:
         for path in paths:
-            if str(number) == path.split("/")[-1].split("_")[0]:
+            if str(number) == path.split("/")[-1].split("_")[0]: 
+                return path
+    elif pervasive:
+        for path in paths:
+            if str(number) == path.split("/")[-1].split(".")[0]: 
                 return path
     else:
         for path in paths:
@@ -109,7 +114,7 @@ def soft2hard(args):
     if args.output_file: #segmentation on a single file
         outputPath = args.output_file
         for index in range(1, len(sentencesPaths)+1):
-            filePath = get_path(index, sentencesPaths, args.transformer)
+            filePath = get_path(index, sentencesPaths, transformer=args.transformer, pervasive=args.pervasive)
             finalstr, translation = segment(filePath, args.target, args.translation)
             writeOutput(finalstr, outputPath, "a")
             if args.translation:
@@ -120,7 +125,7 @@ def soft2hard(args):
         folder = args.output_folder if args.output_folder[-1] == '/' else args.output_folder + '/'
         assert len(files_output_list) == len(sentencesPaths)
         for index in range(1, len(sentencesPaths)+1):
-            filePath = get_path(index, sentencesPaths, args.transformer)
+            filePath = get_path(index, sentencesPaths, transformer=args.transformer, pervasive=args.pervasive)
             finalstr, translation = segment(filePath, args.target, args.translation)
             file_name = files_output_list[index-1].split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
