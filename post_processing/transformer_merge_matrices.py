@@ -6,13 +6,13 @@ from utils import transformer_decoder, generate_heads, read_matrix_file, write_o
 from merge_matrices import merge_matrices
 
 def get_folders(root_dir, layers):
-    return ["/".join([key, str(layer), transformer_decoder[key]]) for layer in range(1,int(args.layers)+1) for key in transformer_decoder.keys()]
+    return [["/".join([root_dir, key, str(layer), attention]) for layer in range(1,int(args.layers)+1) for attention in transformer_decoder[key]] for key in transformer_decoder.keys()][0]
 
 def get_file_names(folder, heads):  
     paths = glob.glob(folder + "/*")
-    if heads == 1:
-        return [path for path in paths if "avg" not in path]
-    return paths
+    if heads == '1':
+        return [path.split("/")[-1] for path in paths if "avg" not in path]
+    return [path.split("/")[-1] for path in paths]
 
 def get_matrices(folders, f_name):
     matrices = []
@@ -23,6 +23,7 @@ def get_matrices(folders, f_name):
 def merger(args):
     folders = get_folders(args.root_folder, args.layers)
     f_names = get_file_names(folders[0], args.heads)
+    #print(f_names)
     for f_name in f_names:
         matrices = get_matrices(folders, f_name)
         average_matrix = merge_matrices(matrices)
