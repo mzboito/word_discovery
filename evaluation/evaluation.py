@@ -6,10 +6,16 @@ import argparse
 import itertools
 from boundary import Sentences, Sentence, Token
 
+def get_evaluation_parser(parser):
+    parser.add_argument('--segmentation', type=str, nargs='?', help='path for generated segmentation')
+    parser.add_argument('--gold', type=str, nargs='?', help='path for gold standard file')
+    parser.add_argument('--output', type=str, nargs='?', help='name of the output file')
+    return parser
+
 def read_file(inputPath):
     return [line.strip("\n") if line[0]!=" " else line[1:].strip("\n") for line in codecs.open(inputPath, "r", "UTF-8")]
 
-def write_file(outputPath, scores):
+def write_evaluation_file(outputPath, scores):
     types = scores[0]
     tokens = scores[1]
     boundaries = scores[2]
@@ -86,28 +92,23 @@ def boundary_eval(segmentation, gold):
     correctBoundaries, boundariesSeg, boundariesGold = s.boundary_score()
     return score(correctBoundaries, boundariesSeg, boundariesGold)
 
-def evaluate(segmentation, gold):
+def _evaluate(segmentation, gold):
     types_score = type_eval(segmentation,gold)
     tokens_score = token_eval(segmentation,gold)
     boundaries_score = boundary_eval(segmentation,gold)
     return [types_score, tokens_score, boundaries_score]
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--segmentation', type=str, nargs='?', help='path for generated segmentation')
-    parser.add_argument('--gold', type=str, nargs='?', help='path for gold standard file')
-    parser.add_argument('--output', type=str, nargs='?', help='name of the output file')
-    args = parser.parse_args()
-
-    if len(sys.argv) < 3:
-        parser.print_help()
-        sys.exit(1)
-    
+def evaluate(args):
     segmentation = read_file(args.segmentation)
     gold = read_file(args.gold)
     assert len(segmentation) == len(gold)
-    scores = evaluate(segmentation, gold)
-    write_file(args.output, scores)
+    scores = _evaluate(segmentation, gold)
+    write_evaluation_file(args.output, scores)
 
 if __name__ == '__main__':
-    main()
+    parser = get_evaluation_parser(argparse.ArgumentParser())
+    args = parser.parse_args()
+    if len(sys.argv) < 3:
+        parser.print_help()
+        sys.exit(1)
+    evaluate(args)
