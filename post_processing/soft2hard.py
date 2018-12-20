@@ -19,13 +19,10 @@ def get_soft2hard_parser():
     return parser
 
 def get_path(number, paths, transformer=False, pervasive=False):
-    if transformer:
+    if transformer or pervasive:
+        token = "_" if transformer else "."
         for path in paths:
-            if str(number) == path.split("/")[-1].split("_")[0]: 
-                return path
-    elif pervasive:
-        for path in paths:
-            if str(number) == path.split("/")[-1].split(".")[0]: 
+            if str(number) == path.split("/")[-1].split(token)[0]: 
                 return path
     else:
         for path in paths:
