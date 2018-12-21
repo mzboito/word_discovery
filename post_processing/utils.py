@@ -28,7 +28,7 @@ def generate_heads(number):
     if number == 1:
         return ["head"+str(i+1) for i in range(number)] 
     else:
-        return ["head"+str(i+1) for i in range(number)] + ["avg"]
+        return ["avg"] + ["head"+str(i+1) for i in range(number)]
 
 
 def write_output_matrix(path, matrix):

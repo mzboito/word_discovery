@@ -106,6 +106,19 @@ def writeOutput(finalString, output, mode="w"):
     with codecs.open(output, mode, "UTF-8") as outputFile:
         outputFile.write(finalString + "\n")
 
+def shift_left(segmentation):
+    new_segmentation = ""
+    space_flag = False
+    for i in range(len(segmentation)):
+        if space_flag: #shift left for the first character after the space
+            space_flag = False
+            new_segmentation += segmentation[i] + " "
+        elif segmentation[i] == " ": #holds the space
+            space_flag = True
+        else:
+            new_segmentation += segmentation[i]
+    return new_segmentation
+
 def soft2hard(args):
     sentencesPaths = glob.glob(args.matrices_prefix+"*.txt") 
     if args.output_file: #segmentation on a single file
@@ -113,6 +126,8 @@ def soft2hard(args):
         for index in range(1, len(sentencesPaths)+1):
             filePath = get_path(index, sentencesPaths, transformer=args.transformer, pervasive=args.pervasive)
             finalstr, translation = segment(filePath, args.target, args.translation)
+            if args.pervasive:
+                finalstr = shift_left(finalstr)
             writeOutput(finalstr, outputPath, "a")
             if args.translation:
                 writeOutput(translation, outputPath+args.translation,"a")
@@ -124,6 +139,8 @@ def soft2hard(args):
         for index in range(1, len(sentencesPaths)+1):
             filePath = get_path(index, sentencesPaths, transformer=args.transformer, pervasive=args.pervasive)
             finalstr, translation = segment(filePath, args.target, args.translation)
+            if args.pervasive:
+                finalstr = shift_left(finalstr)
             file_name = files_output_list[index-1].split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
             if args.translation:
@@ -133,6 +150,8 @@ def soft2hard(args):
         folder = args.output_folder if args.output_folder[-1] == '/' else args.output_folder + '/'
         for sentencePath in sentencesPaths:
             finalstr, translation = segment(sentencePath, args.target, args.translation)
+            if args.pervasive:
+                finalstr = shift_left(finalstr)
             file_name = sentencePath.split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
             writeOutput(finalstr, folder + file_name)
             if args.translation:
