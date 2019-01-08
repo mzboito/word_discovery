@@ -26,9 +26,9 @@ def folder(f_str):
 
 def generate_heads(number):
     if number == 1:
-        return ["head"+str(i+1) for i in range(number)] 
+        return ["output"] + ["head"+str(i+1) for i in range(number)] 
     else:
-        return ["avg"] + ["head"+str(i+1) for i in range(number)]
+        return ["output", "avg"] + ["head"+str(i+1) for i in range(number)]
 
 
 def write_output_matrix(path, matrix):
