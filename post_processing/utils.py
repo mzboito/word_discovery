@@ -26,9 +26,16 @@ def folder(f_str):
 
 def generate_heads(number):
     if number == 1:
-        return ["output"] + ["head"+str(i+1) for i in range(number)] 
+        return ["head"+str(i+1) for i in range(number)] 
     else:
-        return ["output", "avg"] + ["head"+str(i+1) for i in range(number)]
+        return ["avg"] + ["head"+str(i+1) for i in range(number)]
+
+
+def generate_attn2d_folders(number):
+    folders = ["final"]
+    for i in range(1,number):
+        folders.append("raw_attn_layer_" + str(i))
+    return folders
 
 
 def write_output_matrix(path, matrix):

@@ -31,7 +31,7 @@ def wrapper(args):
                     args.matrices_prefix = input_path
                     args.transformer = True
                     #print(args.output_folder, args.matrices_prefix)
-                    soft2hard.soft2hard(args)
+                    soft2hard.run(args)
                 
                 
 if __name__ == "__main__":

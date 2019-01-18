@@ -15,7 +15,7 @@ def get_soft2hard_parser():
     parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
     parser.add_argument('--translation', type=str, nargs='?', help='Creates a parallel file with the generated translation. It requires a suffix')
     parser.add_argument('--transformer', type=bool, default=False, nargs='?', help='set for transformer path getter')
-    parser.add_argument('--pervasive', type=bool, default=False, nargs='?', help='set for transformer path getter')
+    parser.add_argument('--pervasive', type=bool, default=False, nargs='?', help='set for pervasive path getter')
     return parser
 
 def get_path(number, paths, transformer=False, pervasive=False):
@@ -119,7 +119,7 @@ def shift_left(segmentation):
             new_segmentation += segmentation[i]
     return new_segmentation
 
-def soft2hard(args):
+def run(args):
     sentencesPaths = glob.glob(args.matrices_prefix+"*.txt") 
     if args.output_file: #segmentation on a single file
         outputPath = args.output_file
@@ -164,4 +164,4 @@ if __name__ == "__main__":
     if len(sys.argv) < 3 or not args.matrices_prefix:
         parser.print_help()
         sys.exit(1)
-    soft2hard(args)
+    run(args)
