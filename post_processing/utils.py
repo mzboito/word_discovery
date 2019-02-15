@@ -24,8 +24,8 @@ def clean_line(inputStr):
 def folder(f_str):
     return f_str if f_str[-1] == "/" else f_str + "/"
 
-def generate_heads(number):
-    if number == 1:
+def generate_heads(number, avg_flag):
+    if not avg_flag or number == 1:
         return ["head"+str(i+1) for i in range(number)] 
     else:
         return ["avg"] + ["head"+str(i+1) for i in range(number)]

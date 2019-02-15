@@ -14,16 +14,23 @@ def main():
 
     flag = False
     dpseg_clean =[]
+    #print(dpseg_out)
     for i in range(len(dpseg_out)):
-        if "_nstrings=xxx" in dpseg_out[i]:
+        #print(dpseg_out[i])
+        if u'_nstrings=xxx\n' == dpseg_out[i]:
+            #print(dpseg_out[i],i)
             break
         if flag:
             dpseg_clean.append(dpseg_out[i])
+            #print(dpseg_out[i])
         if "State:" in dpseg_out[i]:
+            #print(dpseg_out[i],i)
             flag = True
 
     #segmentation: a20 a31 a37 a31 
-
+    #print(len(dpseg_clean))
+    #print(dpseg_clean[33185:])
+    #print(segmentation)
     assert len(dpseg_clean) == len(segmentation)
 
     for j in range(len(segmentation)):

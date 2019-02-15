@@ -107,7 +107,7 @@ def writeOutput(finalString, output, mode="w"):
         outputFile.write(finalString + "\n")
 
 def shift_left(segmentation):
-    new_segmentation = ""
+    '''new_segmentation = ""
     space_flag = False
     for i in range(len(segmentation)):
         if space_flag: #shift left for the first character after the space
@@ -116,8 +116,8 @@ def shift_left(segmentation):
         elif segmentation[i] == " ": #holds the space
             space_flag = True
         else:
-            new_segmentation += segmentation[i]
-    return new_segmentation
+            new_segmentation += segmentation[i]'''
+    return segmentation
 
 def run(args):
     sentencesPaths = glob.glob(args.matrices_prefix+"*.txt") 
