@@ -22,11 +22,12 @@ def wrapper(args):
                 for head in heads:
                     if not args.output_file:
                         check_root(args.output_root_folder)
-                        output_folder = "/".join([args.output_root_folder, str(layer)])
+                        output_folder = "/".join([args.output_root_folder, "layer"+str(layer), head])
                         check_root(output_folder)
                         args.output_folder = output_folder
                     else:
                         args.output_file = args.dir +  "/" + "_".join(["layer"+str(layer),head,out_prefix]) if args.dir else "_".join(["layer"+str(layer),head,out_prefix])
+                        print(args.output_file)
                     input_path = "/".join([args.input_root_folder, leaf]) + "/" + "*_" + head # + prefix + "*_" + head
                     args.matrices_prefix = input_path
                     args.transformer = True
