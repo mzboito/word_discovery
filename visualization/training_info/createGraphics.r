@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-
+print("AAA")
 library("ggplot2")
 
 args = commandArgs(trailingOnly=TRUE)

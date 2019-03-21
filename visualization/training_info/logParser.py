@@ -29,6 +29,7 @@ class LogParser:
                 outputFile.write("\t".join(["step","dev_loss", "dev_bleu\n"]))
             for line in self.data:
                 outputFile.write("\t".join(line) + "\n")
+        print("wth")
 
     def parse_dev(self):
         data = []

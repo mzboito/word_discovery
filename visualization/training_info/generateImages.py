@@ -14,6 +14,7 @@ def get_script_path():
 
 def call_R(log_out_path, output, dev_and_train):
     script_path = get_script_path()
+    print(script_path, log_out_path, output, dev_and_train)
     os.system("Rscript --vanilla %s/createGraphics.r %s %s %d" % (script_path, log_out_path, output, dev_and_train))
 
 def print_usage():
@@ -41,13 +42,14 @@ def main():
     log_out_name =  prefix + ".out"
     log_out_path = folder_output + log_out_name
     p = LogParser(log_file, log_out_path, dev_and_train)
+    print(log_out_path)
     p.write_out()
-
     if folder_output[-1] == "/":
         folder_output = folder_output + prefix
     else:
         folder_output = folder_output + "/" + prefix
 
+    print("calling r")
     call_R(log_out_path, folder_output, dev_and_train)
 
 
