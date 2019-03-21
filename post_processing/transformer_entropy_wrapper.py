@@ -1,7 +1,8 @@
 import sys, glob
 import argparse
-from entropy_gen import get_entropy_args, Corpus
+from entropy_gen import get_entropy_args, BaseMatrix
 from utils import generate_heads, folder, transformer_decoder
+
 
 def write_log(f_path, dictionary, header):
     with open(f_path, "w") as output_file:
