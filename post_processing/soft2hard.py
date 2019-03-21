@@ -10,12 +10,12 @@ def get_soft2hard_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--matrices-prefix', type=str, nargs='?', help='matrices prefix')
     parser.add_argument('--output-file', type=str, nargs='?', help='name for the output name')
-    parser.add_argument('target',type=bool, default=False, nargs='?', help='default considers that the source is to segment, include this option to segment the target')
+    parser.add_argument('target',type=bool, default=True, nargs='?', help='default considers that the source is to segment, include this option to segment the target')
     parser.add_argument('--individual-files', type=str, nargs='?', help='list of names for generating individual files')
     parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
-    parser.add_argument('--translation', type=str, nargs='?', help='Creates a parallel file with the generated translation. It requires a suffix')
-    parser.add_argument('--transformer', type=bool, default=False, nargs='?', help='set for transformer path getter')
-    parser.add_argument('--pervasive', type=bool, default=False, nargs='?', help='set for pervasive path getter')
+    parser.add_argument('--translation', default=False, action='store_true', help='Creates a parallel file with the generated translation. It requires a suffix')
+    parser.add_argument('--transformer', default=False, action='store_true', help='set for transformer path getter')
+    parser.add_argument('--pervasive', default=False, action='store_true', help='set for pervasive path getter')
     return parser
 
 def get_path(number, paths, transformer=False, pervasive=False):
