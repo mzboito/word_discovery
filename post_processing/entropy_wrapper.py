@@ -4,7 +4,7 @@ from entropy_gen import Corpus
 
 runs = 5
 key_run = "run"
-versions = ["true", "pseudo"]
+versions = ["true"]#, "pseudo"]
 
 
 def wrapper():
