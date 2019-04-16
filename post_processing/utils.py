@@ -24,7 +24,7 @@ def clean_line(inputStr):
 def folder(f_str):
     return f_str if f_str[-1] == "/" else f_str + "/"
 
-def generate_heads(number, avg_flag):
+def generate_heads(number, avg_flag=False):
     if not avg_flag or number == 1:
         return ["head"+str(i+1) for i in range(number)] 
     else:
@@ -44,5 +44,4 @@ def write_output_matrix(path, matrix):
 			try:
 				outputFile.write("\t".join(line) + "\n")
 			except TypeError:
-				sys.exit(1)
-			   	#pass
+				exit(1)
