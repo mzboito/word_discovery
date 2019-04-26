@@ -30,18 +30,45 @@ def generate_heads(number, avg_flag=False):
     else:
         return ["avg"] + ["head"+str(i+1) for i in range(number)]
 
-
 def generate_attn2d_folders(number):
     folders = ["final"]
     for i in range(1,number):
         folders.append("raw_attn_layer_" + str(i))
     return folders
 
+def get_path(number, paths, transformer=False, pervasive=False):
+    if transformer or pervasive:
+        token = "_" if transformer else "."
+        for path in paths:
+            if str(number) == path.split("/")[-1].split(token)[0]: 
+                return path
+    else:
+        for path in paths:
+            if "." + str(number) + "." in path:
+                return path
+    raise Exception("Path not found")
 
 def write_output_matrix(path, matrix):
 	with codecs.open(path, "w", "UTF-8") as outputFile:
 		for line in matrix:
-			try:
-				outputFile.write("\t".join(line) + "\n")
-			except TypeError:
-				exit(1)
+			outputFile.write("\t".join(line) + "\n")
+
+def write_output(finalString, output, mode="w"):
+    with codecs.open(output, mode, "UTF-8") as outputFile:
+        outputFile.write(finalString + "\n")
+
+
+def write_file(f_name, lst):
+    with codecs.open(f_name,"w",'utf-8') as output_file:
+        for element in lst:
+            output_file.write(element + "\n")
+
+def write_dictionary(f_path, dictionary):
+    with open(f_path, "w") as output_file:
+        for key in dictionary.keys():
+            for entry in dictionary[key]:
+                str_entry = [str(element) for element in entry]
+                output_file.write("\t".join([key] + str_entry) + "\n")
+        '''for token in dictionary.keys():
+            average = sum([info[0] for info in dictionary[token]]) / len(dictionary[token])
+            output_file.write("\t".join([token, str(average)]) + "\n")'''

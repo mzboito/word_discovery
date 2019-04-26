@@ -13,30 +13,20 @@ def get_soft2hard_parser():
     parser.add_argument('--output-file', type=str, nargs='?', help='name for the output name')
     parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
     parser.add_argument('--individual-files', type=str, nargs='?', help='list of names for generating individual files')
-    #This target option is fixed because I do not experiment in the other direction anymore
+    # This target option is fixed because I do not experiment in the other direction anymore
     parser.add_argument('target',type=bool, default=True, nargs='?', help='default considers that the source is to segment, include this option to segment the target')
+    # This changes the ids
     parser.add_argument('--translation', default=False, action='store_true', help='Creates a parallel file with the generated translation. It requires a suffix')
     parser.add_argument('--transformer', default=False, action='store_true', help='set for transformer path getter')
     parser.add_argument('--pervasive', default=False, action='store_true', help='set for pervasive path getter')
-    #entropy stuff
+    # entropy stuff
     parser.add_argument('--type-entropy', default=False, action='store_true', help='computes the average entropy for each discovered type')
     parser.add_argument('--translation-entropy', default=False, action='store_true', help='computes the average entropy for each (type, translation) pair')
     parser.add_argument('--ngram-entropy', type=int, nargs='?', help='computes the average entropy for discovered ngram in the corpus')
-    #TO IMPLEMENT
-    parser.add_argument('--entropy-study', type=int, nargs='?', help='generates token, translation and ngram entropy on a single table (sorted by text_id)')
+    # TO IMPLEMENT
+    parser.add_argument('--entropy-study', default=False, action='store_true', help='generates token, translation and ngram entropy on a single table (sorted by text_id)')
     return parser
 
-def get_path(number, paths, transformer=False, pervasive=False):
-    if transformer or pervasive:
-        token = "_" if transformer else "."
-        for path in paths:
-            if str(number) == path.split("/")[-1].split(token)[0]: 
-                return path
-    else:
-        for path in paths:
-            if "." + str(number) + "." in path:
-                return path
-    raise Exception("Path not found")
 
 def get_max_prob_col(line, sentenceMatrix):
     col = 1
@@ -60,10 +50,6 @@ def segment_target(matrix, target):
         discovered_translation = discovered_translation[:-1]
     sentence = utils.clean_line(" ".join(discovered_words))
     return sentence, " ".join(discovered_translation)
-
-def write_output(finalString, output, mode="w"):
-    with codecs.open(output, mode, "UTF-8") as outputFile:
-        outputFile.write(finalString + "\n")
 
 def get_distributions(matrix, target=True):
     if not target:
@@ -93,27 +79,80 @@ def get_distributions(matrix, target=True):
     discovered_tokens[-1] = discovered_tokens[-1].replace("</S>","")
     return discovered_tokens, index_list, discovered_translation
 
-def types_entropy(f_path, dictionary):
+def get_matrix_entropy(f_path, dictionary):
+    matrix = utils.read_matrix_file(f_path)
+    discovered_tokens, index_list, discovered_translation = get_distributions(matrix)
+    key = f_path.split("/")[-1].split(".")[0]
+    dictionary[key] = list()
+    for i in range(len(discovered_tokens)):
+        token = discovered_tokens[i].replace("</S>","")
+        translation = discovered_translation[i]
+        if len(token) > 0:
+            avg_entropy = get_average_entropy(matrix, index_list[i])
+            dictionary[key] += [(token, translation, avg_entropy)]
+    return dictionary
+
+def get_average_entropy(matrix, index_list):
+    return sum([entropy(format_distribution(matrix[index])) for index in index_list]) / len(index_list)
+
+def generate_types_dictionary(dictionary):
+    types_dict = dict()
+    for key in dictionary.keys():
+        for token, translation, entropy in dictionary[key]:
+            if token not in types_dict:
+                types_dict[token] = list()
+            types_dict[token].append(entropy)
+    for element in types_dict.keys():
+        avg_entropy = sum(value for value in types_dict[element]) / len(types_dict[element])
+        types_dict[element] = avg_entropy
+    return types_dict
+
+def generate_translation_dictionary(dictionary):
+    translation_dict = dict()
+    for key in dictionary.keys():
+        for token, translation, entropy in dictionary[key]:
+            entry = "_".join([token, translation])
+            if entry not in translation_dict:
+                translation_dict[entry] = list()
+            translation_dict[entry].append(entropy)
+    for element in translation_dict.keys():
+        avg_entropy = sum(value for value in translation_dict[element]) / len(translation_dict[element])
+        translation_dict[element] = avg_entropy
+    return translation_dict
+
+'''def translation_entropy(f_path, dictionary):
+    matrix = utils.read_matrix_file(f_path)
+    discovered_tokens, index_list, discovered_translation = get_distributions(matrix)
+    for i in range(len(discovered_tokens)):
+        token = discovered_tokens[i].replace("</S>","")
+        translation = discovered_translation[i]
+        key = "_".join([token, translation])
+        if len(token) > 0:
+            if key not in dictionary:
+                dictionary[key] = list()
+            avg_entropy = get_average_entropy(matrix, index_list[i])
+            dictionary[key].append((avg_entropy, f_path.split("/")[-1]))
+    return dictionary'''
+'''def types_entropy(f_path, dictionary):
     matrix = utils.read_matrix_file(f_path)
     discovered_tokens, index_list, _ = get_distributions(matrix)
     for i in range(len(discovered_tokens)):
         token = discovered_tokens[i].replace("</S>","")
         if len(token) > 0:
-            avg_entropy = 0.0
             if token not in dictionary:
                 dictionary[token] = list()
-            for index in index_list[i]:
-                avg_entropy += entropy(format_distribution(matrix[index])) #matrix[index], 
-            avg_entropy /= len(index_list[i])
+            avg_entropy = get_average_entropy(matrix, index_list[i])
             dictionary[token].append((avg_entropy, f_path.split("/")[-1]))
-    return dictionary
+    return dictionary'''
+
 
 def generate_ngrams(dictionary, N):
     tokens = list(dictionary.keys()) #/!\ will not work correctly with python version < 3.6 (sorted dictionary)
     return list(zip(*[tokens[i:] for i in range(N)]))
 
 def ngrams_entropy(f_path, dictionary, N=2):
-    temp_dict = types_entropy(f_path, dict())
+    temp_dict = get_matrix_entropy(f_path, dict())
+    temp_dict = generate_types_dictionary(temp_dict)
     sets = generate_ngrams(temp_dict, N)
     for ngram in sets:
         avg_entropy = 0.0
@@ -127,86 +166,74 @@ def ngrams_entropy(f_path, dictionary, N=2):
             dictionary[key].append((avg_entropy,f_path.split("/")[-1]))
     return dictionary
 
-def translation_entropy(f_path, dictionary):
-    matrix = utils.read_matrix_file(f_path)
-    discovered_tokens, index_list, discovered_translation = get_distributions(matrix)
-    for i in range(len(discovered_tokens)):
-        token = discovered_tokens[i].replace("</S>","")
-        translation = discovered_translation[i]
-        key = "_".join([token, translation])
-        if len(token) > 0:
-            avg_entropy = 0.0
-            if key not in dictionary:
-                dictionary[key] = list()
-            for index in index_list[i]:
-                avg_entropy += entropy(format_distribution(matrix[index])) #matrix[index], 
-            avg_entropy /= len(index_list[i])
-            dictionary[key].append((avg_entropy, f_path.split("/")[-1]))
-    return dictionary
-
-def write_dictionary(f_path, dictionary):
-    with open(f_path, "w") as output_file:
-        for token in dictionary.keys():
-            average = sum([info[0] for info in dictionary[token]]) / len(dictionary[token])
-            output_file.write("\t".join([token, str(average)]) + "\n")
-
 def run(args):
     sentencesPaths = glob.glob(args.matrices_prefix+"*.txt") 
 
-    if args.type_entropy:
+    if args.entropy_study or args.type_entropy or args.translation_entropy:
         output_path = args.output_file
-        TYPES = dict()
+        CORPUS = dict()
         for index in range(1, len(sentencesPaths)+1):
             file_path = sentencesPaths[index-1]
-            TYPES = types_entropy(file_path, TYPES)
-        write_dictionary(output_path, TYPES)
-
-    elif args.translation_entropy:
-        output_path = args.output_file
-        ALIGNED = dict()
-        for index in range(1, len(sentencesPaths)+1):
-            file_path = sentencesPaths[index-1]
-            ALIGNED = translation_entropy(file_path, ALIGNED)
-        write_dictionary(output_path, ALIGNED)
-
+            CORPUS = get_matrix_entropy(file_path, CORPUS)
+        if args.type_entropy:
+            CORPUS = generate_types_dictionary(CORPUS)
+        elif args.translation_entropy:
+            CORPUS = generate_translation_dictionary(CORPUS)
+        utils.write_dictionary(output_path, CORPUS)
+        '''#TO DO FIX ME
+        elif args.type_entropy:
+            output_path = args.output_file
+            CORPUS = dict()
+            for index in range(1, len(sentencesPaths)+1):
+                file_path = sentencesPaths[index-1]
+                CORPUS = get_matrix_entropy(file_path, CORPUS)
+            utils.write_dictionary(output_path, TYPES)
+        #TO DO FIX ME
+        elif args.translation_entropy:
+            output_path = args.output_file
+            ALIGNED = dict()
+            for index in range(1, len(sentencesPaths)+1):
+                file_path = sentencesPaths[index-1]
+                ALIGNED = translation_entropy(file_path, ALIGNED)
+            utils.write_dictionary(output_path, ALIGNED)''' 
+    #TO DO FIX ME
     elif args.ngram_entropy:
         output_path = args.output_file
         NGRAMS = dict()
         for index in range(1, len(sentencesPaths)+1):
             file_path = sentencesPaths[index-1]
             NGRAMS = ngrams_entropy(file_path, NGRAMS, args.ngram_entropy)
-        write_dictionary(output_path, NGRAMS)
+        utils.write_dictionary(output_path, NGRAMS)
 
     elif args.output_file: #segmentation on a single file
         output_path = args.output_file
         for index in range(1, len(sentencesPaths)+1):
-            file_path = get_path(index, sentencesPaths, transformer=args.transformer, pervasive=args.pervasive)
+            file_path = utils.get_path(index, sentencesPaths, transformer=args.transformer, pervasive=args.pervasive)
             finalstr, translation = segment(file_path, args.target)
-            write_output(finalstr, output_path, "a")
+            utils.write_output(finalstr, output_path, "a")
             if args.translation:
-                write_output(translation, output_path+args.translation,"a")
+                utils.write_output(translation, output_path+args.translation,"a")
 
     if args.individual_files and args.output_folder: #segmentation in individual files (with ID)
         files_output_list = utils.read_file(args.individual_files)
         folder = args.output_folder if args.output_folder[-1] == '/' else args.output_folder + '/'
         assert len(files_output_list) == len(sentencesPaths)
         for index in range(1, len(sentencesPaths)+1):
-            file_path = get_path(index, sentencesPaths, transformer=args.transformer, pervasive=args.pervasive)
+            file_path = utils.get_path(index, sentencesPaths, transformer=args.transformer, pervasive=args.pervasive)
             finalstr, translation = segment(file_path, args.target)
             file_name = files_output_list[index-1].split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
-            write_output(finalstr, folder + file_name)
+            utils.write_output(finalstr, folder + file_name)
             if args.translation:
-                write_output(translation, folder + file_name +args.translation)
+                utils.write_output(translation, folder + file_name +args.translation)
 
     elif args.output_folder: #segmentation in individual files (without ID)
         folder = args.output_folder if args.output_folder[-1] == '/' else args.output_folder + '/'
         for sentencePath in sentencesPaths:
             finalstr, translation = segment(sentencePath, args.target)
             file_name = sentencePath.split("/")[-1] + ".hs" #split(".")[:-1]) + ".hardseg"
-            write_output(finalstr, folder + file_name)
+            utils.write_output(finalstr, folder + file_name)
             if args.translation:
-                write_output(translation, folder + file_name +args.translation)
-
+                utils.write_output(translation, folder + file_name +args.translation)
 
 if __name__ == "__main__":
     parser = get_soft2hard_parser()
