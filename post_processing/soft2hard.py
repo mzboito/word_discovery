@@ -82,7 +82,7 @@ def get_distributions(matrix, target=True):
 def get_matrix_entropy(f_path, dictionary):
     matrix = utils.read_matrix_file(f_path)
     discovered_tokens, index_list, discovered_translation = get_distributions(matrix)
-    key = f_path.split("/")[-1].split(".")[0]
+    key = f_path.split("/")[-1]#.split(".")[0]
     dictionary[key] = list()
     for i in range(len(discovered_tokens)):
         token = discovered_tokens[i].replace("</S>","")
@@ -111,6 +111,7 @@ def generate_translation_dictionary(dictionary):
     translation_dict = dict()
     for key in dictionary.keys():
         for token, translation, entropy in dictionary[key]:
+            #print(token, translation, entropy)
             entry = "_".join([token, translation])
             if entry not in translation_dict:
                 translation_dict[entry] = list()
@@ -132,7 +133,8 @@ def generate_translation_dictionary(dictionary):
                 dictionary[key] = list()
             avg_entropy = get_average_entropy(matrix, index_list[i])
             dictionary[key].append((avg_entropy, f_path.split("/")[-1]))
-    return dictionary'''
+    return dictionary
+'''
 '''def types_entropy(f_path, dictionary):
     matrix = utils.read_matrix_file(f_path)
     discovered_tokens, index_list, _ = get_distributions(matrix)

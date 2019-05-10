@@ -66,9 +66,13 @@ def write_file(f_name, lst):
 def write_dictionary(f_path, dictionary):
     with open(f_path, "w") as output_file:
         for key in dictionary.keys():
-            for entry in dictionary[key]:
-                str_entry = [str(element) for element in entry]
-                output_file.write("\t".join([key] + str_entry) + "\n")
+            #print(dictionary)
+            if isinstance(dictionary[key], list):
+                for entry in dictionary[key]:
+                    str_entry = [str(element) for element in entry]
+                    output_file.write("\t".join([key] + str_entry) + "\n")
+            else:
+                output_file.write("\t".join([key, str(dictionary[key])]) + "\n")
         '''for token in dictionary.keys():
             average = sum([info[0] for info in dictionary[token]]) / len(dictionary[token])
             output_file.write("\t".join([token, str(average)]) + "\n")'''

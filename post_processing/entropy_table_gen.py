@@ -1,4 +1,4 @@
-import sys, glob, argparse
+import sys, glob, argparse, codecs
 
 RANKS =  [50, 200, 500, 1000, 2000, 3000, 5000]
 
@@ -52,24 +52,18 @@ class NgramElement(TableElement):
         flag = "_".join([str(element.flag) for element in self.objs])
         return "\t".join([clean, encoded, entropy, gold_freq, flag, str(self.flag)])
 
-def generate_gold(path_raw, path_clean):
-    labs_path = glob.glob(path_raw + "/*")
-    types_list = []
-    frequency_dict = dict()
-    for f_path in labs_path:
-        #read same sentence twice (encoded and clean)
-        tokens = [line.strip().split(" ")[2] for line in open(f_path, "r")] 
-        tokens_clean = [line.strip().split(" ")[2] for line in open(f_path.replace(path_raw, path_clean).replace(".encoded","") , "r")]
-        for i in range(len(tokens)): #for every token in the sentence
-            if tokens[i] != "SIL" and tokens[i] not in types_list:
-                types_list.append((tokens[i],tokens_clean[i]))
-        for element in tokens_clean: #adds frequencies for list
-            element = element.lower()
-            if element in frequency_dict:
-                frequency_dict[element] += 1
-            elif element != "sil":
-                frequency_dict[element] = 1
-    return types_list, frequency_dict
+def read_vocab(path_vocab):
+    types = list()
+    frequency = dict()
+    with codecs.open(path_vocab,"r","utf-8") as vocab_file:
+        for line in vocab_file:
+            elements = line.strip().split("\t")
+            phn_type = elements[0]
+            wrd_type = elements[1]
+            freq = int(elements[2])
+            types.append((phn_type, wrd_type))
+            frequency[phn_type] = freq
+    return types, frequency
 
 def in_types(token, types_list):
     for encoded, clean in types_list:
@@ -85,6 +79,7 @@ def generate_types_table(f_path, types_list, frequency_dict):
             discovered_token = elements[0]
             entropy = elements[1]
             element, flag = check_token(discovered_token, types_list)
+            
             gold_freq = frequency_dict[element] if flag == 1 else 0
             obj = TableElement(element, discovered_token, entropy, gold_freq, flag)
             table.append(obj)
@@ -99,7 +94,8 @@ def generate_translation_table(f_path, types_list, frequency_dict):
             discovered_translation = elements[0].split("_")[1]
             entropy = elements[1]
             element, flag = check_token(discovered_token, types_list)
-            gold_freq = frequency_dict[element] if flag == 1 else 0
+            #print(frequency_dict.keys())
+            gold_freq = frequency_dict[discovered_token] if flag == 1 else 0#frequency_dict[element] if flag == 1 else 0
             obj = TranslationElement(element, discovered_token, discovered_translation, entropy, gold_freq, flag)
             table.append(obj)
     return table
@@ -168,9 +164,7 @@ def write_table(f_path, table, threshold=None):
                 output_file.write(element.toString() + "\n")
 
 def generate(args):
-    wrd_clean = args.clean_wrd
-    wrd = args.wrd
-    types_list, frequency_dict = generate_gold(wrd, wrd_clean)
+    types_list, frequency_dict = read_vocab(args.vocab)
     if args.type_entropy:
         f_path = args.type_entropy
         table = generate_types_table(f_path, types_list, frequency_dict)
@@ -190,8 +184,8 @@ def generate(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--clean-wrd', type=str, nargs='?', help='path for clean .wrd labs')
-    parser.add_argument('--wrd', type=str, nargs='?', help='path for raw (encoded) .wrd labs')
+    #parser.add_argument('--clean-wrd', type=str, nargs='?', help='path for clean .wrd labs')
+    parser.add_argument('--vocab', type=str, nargs='?', help='vocab file')
     parser.add_argument('--type-entropy', type=str, nargs='?', help='path for generated ranking')
     parser.add_argument('--translation-entropy', type=str, nargs='?', help='path for generated ranking')
     parser.add_argument('--ngram-entropy', type=str, nargs='?', help='path for generated ranking')

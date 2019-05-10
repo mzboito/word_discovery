@@ -19,20 +19,37 @@ def read_cluster(f_path):
                 clusters[last_key].append([elements[0], float(elements[1]), int(elements[2])])
     return clusters
 
-
 def filter_members(lst, threshold):
     return [element for element in lst if element[1] <= threshold]
 
-def cluster_voting(members, N, threshold, key):
+def get_votes(members, N):
     votes = list()
-    if threshold:
-        members = filter_members(members, threshold)
-    members.sort(key=lambda x: x[2]) #sorts per frequency
-    for i in range(N):
-        if i >= len(members):
-            break
-        votes.append("\t".join([members[i][0], key]))
+    buckets = dict()
+    for token, entropy, frequency in members:
+        if frequency not in buckets:
+            buckets[frequency] = list()
+        buckets[frequency].append([token, entropy])
+    for key in buckets.keys():
+        buckets[key].sort(key=lambda x: x[1], reverse=False)
+    sorted_keys = list(buckets.keys())
+    sorted_keys.sort(reverse=True)
+    for key in sorted_keys:
+        for i in range(len(buckets[key])):
+            if N == 0:
+                break
+            votes.append(buckets[key][i][0])
+            N -= 1
     return votes
+
+def cluster_voting(members, N, threshold, key):
+    if threshold < 1:
+        print(len(members))
+        members = filter_members(members, threshold)
+        print(len(members))
+    members.sort(key=lambda x: x[2],reverse=True) #sorts per frequency
+    if N == -1:
+        return [element[0] for element in members]
+    return get_votes(members, N)
 
 def generate_lexicon(clusters, N, threshold):
     lexicon = list()
@@ -44,9 +61,20 @@ def generate_lexicon(clusters, N, threshold):
 def generate():
     clusters = read_cluster(sys.argv[1])
     N = int(sys.argv[2])
-    threshold = None if len(sys.argv) < 4 else float(sys.argv[3])
+    threshold = float(sys.argv[3])
     lexicon = generate_lexicon(clusters, N, threshold)
-    utils.write_file(sys.argv[1] + ".lexicon", lexicon)
+    lexicon = list(set(lexicon))
+    utils.write_file(sys.argv[4], lexicon)
+
+
+'''
+
+things to change
+
+1) filter clusters per entropy
+2) 
+
+'''
 
 if __name__ == "__main__":
     generate()

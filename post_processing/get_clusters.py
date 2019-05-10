@@ -2,13 +2,14 @@ import sys, codecs, utils
 
 def read_table(f_path):
     dictionary = dict()
-    with codecs.open(f_path,"r","utf-8") as input_table:
+    with codecs.open(f_path,"r","utf-8") as input_table: # file, phonemes, translation, entropy
         for line in input_table:
             line = line.strip().split("\t")
             key = line[2]
             word = line[1]
             entropy = float(line[3])
             freq =  1
+            #if key != "</S>":
             if key not in dictionary:
                 dictionary[key] = dict()
                 dictionary[key][word] = [entropy, freq]
@@ -41,10 +42,10 @@ def write_clusters(table, keys, f_name):
             output_test.write("\n")
 
 
-def write_lexicon(lst, f_name):
+def write_lexicon(keys, f_name):
     with codecs.open(f_name,"w","utf-8") as output_file:
-        for element in lst:
-            output_file.write(element + "\n")
+        for key, value in keys:
+            output_file.write("\t".join([key, str(value)]) + "\n")
 
 def process():
     #generate clusters
@@ -56,8 +57,7 @@ def process():
 
     #write clusters
     write_clusters(table, sorted_keys, clusters_f+".csv") 
-    utils.write_file(clusters_f+".lst", list(table.keys()))
-
+    write_lexicon(sorted_keys, clusters_f+".lst")
 
 
 
