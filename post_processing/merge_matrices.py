@@ -4,13 +4,13 @@ import sys, codecs, glob
 from utils import write_output_matrix, read_matrix_file
 
 ###################### SETTINGS ######################
-att_matrices_folder = "att_matrices/"
-files_folder = "../../../english_5k/seq2seq/true_phones/files/"
+att_matrices_folder = "attention_matrices/"
+files_folder = "../../files/5k/"
 folders_prefix = "run"
 matrices_train_prefix = "train+dev" # "train"
 matrices_dev_prefix = "dev"
 dev_exists = False
-train_max = 5130 #4616 
+train_max = 5324 #4616 
 id_suffix = ".ids"
 different_split = False
 ######################################################
@@ -126,8 +126,7 @@ def main():
 		matrices = find_matrices(root_folder, folders, files_dict, file_i)
 		avg_matrix = merge_matrices(matrices)
 		output_path = output_folder + file_i
-		output_path = output_path.replace(".lab", ".avgatt") + ".txt"
-		write_output_matrix(output_path, avg_matrix)
+		output_path = output_path.replace(".lab", ".avgatt") + ".txt"; write_output_matrix(output_path, avg_matrix )
 
 
 if __name__ == '__main__':

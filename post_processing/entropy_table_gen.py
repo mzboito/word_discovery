@@ -1,6 +1,6 @@
 import sys, glob, argparse, codecs
 
-RANKS =  [50, 200, 500, 1000, 2000, 3000, 5000]
+RANKS =  [50, 200, 500, 1000, 2000, 3000, 4000, 5000]
 
 class TableElement():
     def __init__(self, clean_type, d_type, entropy, frequency, flag):
@@ -79,25 +79,30 @@ def generate_types_table(f_path, types_list, frequency_dict):
             discovered_token = elements[0]
             entropy = elements[1]
             element, flag = check_token(discovered_token, types_list)
-            
-            gold_freq = frequency_dict[element] if flag == 1 else 0
+            gold_freq = frequency_dict[discovered_token] if flag == 1 else 0
             obj = TableElement(element, discovered_token, entropy, gold_freq, flag)
             table.append(obj)
+    print(len(table))
     return table
 
 def generate_translation_table(f_path, types_list, frequency_dict):
     table = list()
+    types = list()
     with open(f_path,"r") as csv_file:
         for line in csv_file:
             elements = line.strip().split("\t")
-            discovered_token = elements[0].split("_")[0]
-            discovered_translation = elements[0].split("_")[1]
+            discovered_token = elements[0].split("#")[0]
+            if discovered_token not in types:
+                types.append(discovered_token)
+            discovered_translation = elements[0].split("#")[1]
             entropy = elements[1]
             element, flag = check_token(discovered_token, types_list)
             #print(frequency_dict.keys())
             gold_freq = frequency_dict[discovered_token] if flag == 1 else 0#frequency_dict[element] if flag == 1 else 0
             obj = TranslationElement(element, discovered_token, discovered_translation, entropy, gold_freq, flag)
             table.append(obj)
+    print(len(types))
+    print(len(table))
     return table
 
 def generate_ngram_table(f_path, types_list, frequency_dict):
@@ -163,21 +168,35 @@ def write_table(f_path, table, threshold=None):
             for element in table:
                 output_file.write(element.toString() + "\n")
 
+def filter_translation_table(table):
+    table.sort(key=lambda x: x.entropy) #keep only the lowest entropy entry
+    new_table = list()
+    keys = list()
+    for i in range(len(table)):
+        element = table[i]
+        if not element.type in keys:
+            keys.append(element.type)
+            new_table.append(element)
+    return new_table
+
 def generate(args):
     types_list, frequency_dict = read_vocab(args.vocab)
     if args.type_entropy:
         f_path = args.type_entropy
         table = generate_types_table(f_path, types_list, frequency_dict)
+        table.sort(key=lambda x: x.entropy)
     elif args.translation_entropy:
         f_path = args.translation_entropy
         table = generate_translation_table(f_path, types_list, frequency_dict)
+        table = filter_translation_table(table)
     elif args.ngram_entropy:
         f_path = args.ngram_entropy
         table = generate_ngram_table(f_path, types_list, frequency_dict)
+        table.sort(key=lambda x: x.entropy)
     else:
         raise Exception("MISSING ENTROPY TABLE")
     
-    table.sort(key=lambda x: x.entropy)
+    
     write_table(f_path, table)
     for threshold in RANKS:
         write_table(f_path, table, threshold=threshold)

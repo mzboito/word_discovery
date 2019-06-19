@@ -6,10 +6,10 @@ from utils import write_output_matrix, read_matrix_file
 
 def get_merger_parser():
 	parser = argparse.ArgumentParser()
-	parser.add_argument('--lang1-matrices-folder', type=str, nargs='?', help='name of the matrix folder in each model folder')
-	parser.add_argument('--lang2-matrices-folder', type=str, nargs='?', help='name of the matrix folder in each model folder')
-	parser.add_argument('--lang3-matrices-folder', type=str, nargs='?', help='name of the matrix folder in each model folder')
-	parser.add_argument('--lang4-matrices-folder', type=str, nargs='?', help='name of the matrix folder in each model folder')
+	parser.add_argument('-lang1','--lang1-matrices-folder', type=str, nargs='?', help='name of the matrix folder in each model folder')
+	parser.add_argument('-lang2','--lang2-matrices-folder', type=str, nargs='?', help='name of the matrix folder in each model folder')
+	parser.add_argument('-lang3','--lang3-matrices-folder', type=str, nargs='?', help='name of the matrix folder in each model folder')
+	parser.add_argument('-lang4','--lang4-matrices-folder', type=str, nargs='?', help='name of the matrix folder in each model folder')
 	parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
 	return parser
 
@@ -66,7 +66,7 @@ def merger(args):
 			print("Matrices should have the same number of lines")
 			exit(1)
 		
-		print(len(matrices))
+		#print(len(matrices))
 		
 		min_matrix = get_min_entropy(matrices)
 		output_path = "/".join([args.output_folder,  element.split("/")[-1]])

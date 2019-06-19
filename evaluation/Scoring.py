@@ -14,8 +14,6 @@ class Sentences:
             correct += sentence.boundary_hits() 
             totalSeg += Sentence.boundary_count(sentence.segmentation)
             totalGold += Sentence.boundary_count(sentence.gold)
-        print("boundary")
-        print(correct, totalSeg, totalGold)
         return [correct, totalSeg, totalGold] 
 
     def tokens_score(self):
@@ -26,8 +24,6 @@ class Sentences:
             correct += sentence.token_hits()
             totalSeg += Sentence.token_count(sentence.segmentation)
             totalGold += Sentence.token_count(sentence.gold)
-        print("tokens")
-        print(correct, totalSeg, totalGold)
         return [correct, totalSeg, totalGold] 
     
     def types_score(self):
@@ -35,8 +31,6 @@ class Sentences:
         correct = len(Sentences.intersection(seg, gold)) * 1.0
         totalSeg = len(seg) *1.0
         totalGold = len(gold) *1.0
-        print("types")
-        print(correct, totalSeg, totalGold)
         return [correct, totalSeg, totalGold] 
 
 

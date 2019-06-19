@@ -79,13 +79,14 @@ def get_distributions(matrix, target=True):
     discovered_tokens[-1] = discovered_tokens[-1].replace("</S>","")
     return discovered_tokens, index_list, discovered_translation
 
-def get_matrix_entropy(f_path, dictionary):
+def get_matrix_entropy(f_path, dictionary, str_id=None):
     matrix = utils.read_matrix_file(f_path)
     discovered_tokens, index_list, discovered_translation = get_distributions(matrix)
-    key = f_path.split("/")[-1]#.split(".")[0]
+    key = f_path.split("/")[-1] if not str_id else str_id #uses individual id if available
+    #.split(".")[0]
     dictionary[key] = list()
     for i in range(len(discovered_tokens)):
-        token = discovered_tokens[i].replace("</S>","")
+        token = discovered_tokens[i].replace("</S>","").replace("#","")
         translation = discovered_translation[i]
         if len(token) > 0:
             avg_entropy = get_average_entropy(matrix, index_list[i])
@@ -105,20 +106,29 @@ def generate_types_dictionary(dictionary):
     for element in types_dict.keys():
         avg_entropy = sum(value for value in types_dict[element]) / len(types_dict[element])
         types_dict[element] = avg_entropy
+    print(len(types_dict.keys()))
     return types_dict
 
 def generate_translation_dictionary(dictionary):
+    print("generating translation dictionary")
     translation_dict = dict()
+    types = list()
     for key in dictionary.keys():
         for token, translation, entropy in dictionary[key]:
-            #print(token, translation, entropy)
-            entry = "_".join([token, translation])
+            if token not in types:
+                types.append(token)
+            entry = "##".join([token, translation])
             if entry not in translation_dict:
                 translation_dict[entry] = list()
             translation_dict[entry].append(entropy)
+    teste = list()
     for element in translation_dict.keys():
+        teste.append(element.split("##")[0])
         avg_entropy = sum(value for value in translation_dict[element]) / len(translation_dict[element])
         translation_dict[element] = avg_entropy
+    print(len(types))
+    print(len(translation_dict.keys()))
+    print(len(set(teste)))
     return translation_dict
 
 '''def translation_entropy(f_path, dictionary):
@@ -174,9 +184,13 @@ def run(args):
     if args.entropy_study or args.type_entropy or args.translation_entropy:
         output_path = args.output_file
         CORPUS = dict()
+        if args.individual_files:
+            files_output_list = utils.read_file(args.individual_files)
+            assert len(files_output_list) == len(sentencesPaths)
         for index in range(1, len(sentencesPaths)+1):
             file_path = sentencesPaths[index-1]
-            CORPUS = get_matrix_entropy(file_path, CORPUS)
+            file_name = files_output_list[index-1].split("/")[-1] if args.individual_files else None
+            CORPUS = get_matrix_entropy(file_path, CORPUS, str_id=file_name)
         if args.type_entropy:
             CORPUS = generate_types_dictionary(CORPUS)
         elif args.translation_entropy:

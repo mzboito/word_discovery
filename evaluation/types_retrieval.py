@@ -1,7 +1,7 @@
 import sys, glob
 import argparse
 
-N_set = ["50", "200", "500", "1000", "2000", "3000", "5000"]
+N_set = ["50", "200", "500", "1000", "2000", "3000", "4000","5000"]
 
 def read_set(f_file):
     dictionary = dict()

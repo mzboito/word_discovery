@@ -9,7 +9,7 @@ import argparse
 #### STUFF I'M LAZY TO TYPE ON THE COMMAND LINE BUT I DON'T WANT TO LEAVE HARDCODED
 IDS_suffix = ".ids"
 seg_suffix = ".hs"
-sets = ["dev", "train"]
+sets = ["train+dev"]#["dev", "train"]
 flag_id_none=False #just to avoid multiples print of the same information when the id crashes
 
 '''
@@ -41,7 +41,7 @@ class BaseMatrix():
         self.entropies = self.entropy(self.lines)
         self.file_name = self.get_file_name(filepath)
         if segmentation: #segmentation only necessary when producing buckets
-            self.tokens = segment_target(self.lines, target).split(" ")
+            self.tokens = segment_target(self.lines, target)[0].split(" ")
         else:
             self.tokens = []
 

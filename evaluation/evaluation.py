@@ -19,11 +19,15 @@ def write_evaluation_file(outputPath, scores):
     types, tokens, boundaries = scores
     with open(outputPath, "w") as outputFile:
         outputFile.write("\tP\tR\tF\n")
+        print("\tP\tR\tF")
         outputFile.write("TOKENS\t")
+        print("TOKENS\t%2.2f\t%2.2f\t%2.2f" % (tokens[1], tokens[0], tokens[2]))
         outputFile.write("%2.2f\t%2.2f\t%2.2f\n" % (tokens[1], tokens[0], tokens[2]))
         outputFile.write("TYPES\t")
+        print("TYPES\t%2.2f\t%2.2f\t%2.2f" % (types[1], types[0], types[2]))
         outputFile.write("%2.2f\t%2.2f\t%2.2f\n" % (types[1], types[0], types[2]))
         outputFile.write("BOUNDARIES\t")
+        print("BOUNDARIES\t%2.2f\t%2.2f\t%2.2f" % (boundaries[1], boundaries[0], boundaries[2]))
         outputFile.write("%2.2f\t%2.2f\t%2.2f\n" % (boundaries[1], boundaries[0], boundaries[2]))
 
 def recall(correct, sizeGold):
