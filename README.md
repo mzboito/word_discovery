@@ -1,13 +1,10 @@
-# Unsupervised Word Discovery Using Encoder-Decoder Neural Machine Translation Models
+# Unwritten Languages Demand Attention Too! Word Discovery with Encoder-Decoder Models
 
-This repository is passing through heavy changes. :)
-
+A slightly messy repository containing most of my scripts for word segmentation from S2S soft-alignment probability matrices and ANE entropy selection and filtering.
 
 
 
 # References:
-
-Marcely Zanon Boito,  Laurent Besacier,  and Aline Villavicencio. **Unsupervised word discovery using attentional encoder-decoder models**.   In WiNLP (Women and Underrepresented Minorities in Natural Language Processing) Workshop ACL 2017, Vancouver, Canada.
 
 Marcely Zanon Boito, Aléxandre Berard, Aline Villavicencio and Laurent Besacier. **Unwritten Languages Demand Attention Too! Word Discovery with Encoder-Decoder Models**, In ASRU (Automatic Speech Recognition and Undestanding), IEEE Workshop 2017, Okinawa, Japan.
 
