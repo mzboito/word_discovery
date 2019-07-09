@@ -1,6 +1,6 @@
 import sys, codecs, glob, argparse
-from entropy_gen import BaseMatrix
-from utils import write_output_matrix, read_matrix_file
+from entropy_gen import Matrix
+#from utils import write_output_matrix, read_matrix_file
 
 def get_matrix_file(f_id, matrices_folder, pervasive, transformer):
 	if pervasive:
@@ -22,19 +22,20 @@ def get_index_from_file(files_dict, folder, f_name):
 			return files_dict[folder][key]
 	raise Exception("PROBLEM GETTING ID FROM DICTIONARY:\nfile: " + f_name + " folder: " + folder)
 
-def find_matrices(root_folder, folders, files_dict, file_name):
+def find_matrices(root_folder, folders, files_dict, file_name, dispersion):
 	matrices = []
 	for folder in folders:
 		f_id = get_index_from_file(files_dict, folder, file_name)
 		#print(f_id)
 		path = "/".join([args.root_folder, folder, args.matrices_folder])
 		matrix_file = get_matrix_file(f_id, path, args.pervasive, args.transformer)
-		matrix = read_matrix_file(matrix_file)
+		matrix = Matrix(matrix_file, dispersion=dispersion)
+		#matrix = read_matrix_file(matrix_file)
 		matrices.append(matrix)
 	assert len(matrices) == len(folders), "COULD NOT READ ALL THE MATRICES FOR FILE: " + file_name
-	size = len(matrices[0])
+	'''size = len(matrices[0])
 	for i in range(1, len(folders)):
-		assert len(matrices[i]) == size, "PROBLEM WITH MATRIX SIZE: " + file_name
+		assert len(matrices[i]) == size, "PROBLEM WITH MATRIX SIZE: " + file_name'''
 	return matrices
 
 def get_file_from_index(files_dict, folder, f_id):
@@ -64,19 +65,30 @@ def load_files(args):
 def generate_folders(prefix, number):
 	return [prefix+str(i) for i in range(1, (number+1))]
 
-def get_entropy(matrix):
-	entropies = BaseMatrix.entropy(matrix)
-	return sum(entropies) / (len(entropies)*1.0)
+'''def get_entropy(matrix, dispersion):
+	entropies, sum_align = BaseMatrix.entropy(matrix)
+	avg_entropy = sum(entropies) / (len(entropies)*1.0)
+	if dispersion > 0:
+		coverage = 1 - (len(sum_align)*1.0) / (len(matrix[0]) - 1)
+		return (((1 - dispersion) * avg_entropy) + (dispersion * coverage))
+	else:
+		return avg_entropy '''
 
 def get_min_entropy(matrices):
-	min_e = get_entropy(matrices[0])
+	min_e = matrices[0].average_entropy() #get_entropy(matrices[0])
 	min_matrix = matrices[0]
 	for i in range(1, len(matrices)):
-		this_e = get_entropy(matrices[i])
+		this_e = matrices[i].average_entropy() #get_entropy(matrices[i])
 		if this_e < min_e:
 			min_matrix = matrices[i]
 			min_e = this_e
+	print(min_e)
 	return min_matrix
+
+def write_output_matrix(path, matrix):
+	with codecs.open(path, "w", "UTF-8") as outputFile:
+		for line in matrix.lines:
+			outputFile.write("\t".join(line) + "\n")
 
 def wrapper(args):
 	print(args)
@@ -90,7 +102,7 @@ def wrapper(args):
 	for i in range(1, size+1):
 
 		file_i = get_file_from_index(FILES_DICT, folders[0], i)
-		matrices = find_matrices(args.root_folder, folders, FILES_DICT, file_i)
+		matrices = find_matrices(args.root_folder, folders, FILES_DICT, file_i, args.dispersion)
 		min_matrix = get_min_entropy(matrices)
 		output_path = "/".join([args.output_folder, file_i + ".txt"])
 		write_output_matrix(output_path, min_matrix)
@@ -104,6 +116,7 @@ if __name__ == "__main__":
 	parser.add_argument('--model-prefix', type=str, default="run", nargs='?', help='prefix name for the models folders')
 	parser.add_argument('--number', type=int, default=5, nargs='?', help='number of models to average')
 	parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
+	parser.add_argument('--dispersion', type=float, nargs='?', help='ANE with penalization')
 	parser.add_argument('--ids-file', type=str, nargs='?', help='id files')
 	parser.add_argument('--transformer', default=False, action='store_true', help='set for transformer path getter')
 	parser.add_argument('--pervasive', default=False, action='store_true', help='set for pervasive path getter')

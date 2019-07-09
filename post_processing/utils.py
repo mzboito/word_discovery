@@ -1,14 +1,32 @@
 import sys
-import codecs
+import codecs, glob
 
 EOS_symbol = "</S>"
 BOS_symbol = "<S>"
 UNK_symbol = "<UNK>"
+SIL_symbol = "SIL"
 transformer_decoder = {"TransformerDecoder":["EncoderDecoderAttention"]}
 transformer_coders = {"TransformerEncoder":["SelfAttention"], "TransformerDecoder":["SelfAttention", "EncoderDecoderAttention"]}
 
 def read_file(path):
     return [line.strip("\n") for line in codecs.open(path, "r","UTF-8")]
+
+def read_lab_files(path):
+    '''
+    returns a dictionary containing the indexes of the phones that come before a silence
+    '''
+    dictionary = dict()
+    f_paths = glob.glob(path + "/*")
+    for f_path in f_paths:
+        labs = read_file(f_path)
+        s_id = ".".join(f_path.split("/")[-1].split(".")[:-1])
+        dictionary[s_id] = list()
+        for element in labs:
+            #input example: 1.5400 1.7200 phn2\n1.7200 2.1400 SIL\n
+            phone = element.split(" ")[-1]
+            duration = element.split(" ")[:-1]
+            dictionary[s_id].append([phone, duration])
+    return dictionary
 
 def read_matrix_file(path):
     return [line.strip("\n").split("\t") for line in codecs.open(path,"r","UTF-8")]
@@ -67,8 +85,7 @@ def write_dictionary(f_path, dictionary):
     with open(f_path, "w") as output_file:
         for key in dictionary.keys():
             if isinstance(dictionary[key], list):
-                for entry in dictionary[key]:
-                    str_entry = [str(element) for element in entry]
-                    output_file.write("\t".join([key] + str_entry) + "\n")
+                str_entry = ["\t".join([str(dictionary[key][0]), dictionary[key][1]])]
+                output_file.write("\t".join([key] + str_entry) + "\n")
             else:
                 output_file.write("\t".join([key, str(dictionary[key])]) + "\n")

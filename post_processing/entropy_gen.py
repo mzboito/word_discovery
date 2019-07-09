@@ -2,11 +2,12 @@ import sys, utils
 import codecs, glob, math
 import Entropy
 import numpy as np
-from soft2hard import segment_target
+from segment import segment_target
+import soft2hard as s2h
 import argparse
 
 
-#### STUFF I'M LAZY TO TYPE ON THE COMMAND LINE BUT I DON'T WANT TO LEAVE HARDCODED
+#### STUFF I'M LAZY TO TYPE ON THE COMMAND LINE
 IDS_suffix = ".ids"
 seg_suffix = ".hs"
 sets = ["train+dev"]#["dev", "train"]
@@ -31,31 +32,41 @@ def get_entropy_args(parser):
     #stuff for generating ZRC subsets
     parser.add_argument('--segmentation-path', type=str, nargs='?', help='Path for ZRC segmentation')
     parser.add_argument('--labs-path', type=str, nargs='?', help='Path for labs')
+    parser.add_argument('--dispersion', type=float, nargs='?', help='Dispersion degree for ANE penalization')
     return parser
 
 
 class BaseMatrix():
-    def __init__(self, filepath, target=True, segmentation=None):
+    def __init__(self, filepath, target=True, segmentation=None, dispersion=0):
         self.filepath = filepath
         self.lines = utils.read_matrix_file(filepath)
-        self.entropies = self.entropy(self.lines)
+        self.alignments = list()
+        self.entropies, self.alignments = self.entropy(self.lines)
+        self.dispersion = dispersion
         self.file_name = self.get_file_name(filepath)
+        print(dispersion)
         if segmentation: #segmentation only necessary when producing buckets
             self.tokens = segment_target(self.lines, target)[0].split(" ")
         else:
-            self.tokens = []
+            self.tokens = list()
 
     @staticmethod
     def entropy(matrix):
-        entropies = []
+        entropies = list()
+        alignments = list()
         for i in range(1,len(matrix)): #for each line (first one is the list of words)
                 phone_dist = Entropy.format_distribution(matrix[i])
                 ent = Entropy.entropy(phone_dist)
+                alignments.append(s2h.get_max_prob_col(i, matrix))
                 entropies.append(ent)
-        return entropies
+        return entropies, set(alignments)
 
     def average_entropy(self):
-        return sum(self.entropies) / (len(self.entropies)*1.0)
+        avg_entropy = sum(self.entropies) / (len(self.entropies)*1.0)
+        #if self.dispersion > 0:
+        coverage = 1 - (len(self.alignments)*1.0) / (len(self.lines[0]) - 1)
+        return (((1 - self.dispersion) * avg_entropy) + (self.dispersion * coverage))
+        #return avg_entropy
 
     def number_tokens(self):
         return len(self.tokens)
@@ -67,18 +78,21 @@ class BaseMatrix():
         return filepath.split("/")[-1]
 
 class Matrix(BaseMatrix):
-    def __init__(self, filepath, target=True, segmentation=True, ids_dictionary=None):
-        super().__init__(filepath, target=target, segmentation=segmentation)
+    def __init__(self, filepath, target=True, segmentation=True, ids_dictionary=None, dispersion=0):
+        super().__init__(filepath, target=target, segmentation=segmentation, dispersion=dispersion)
         self.file_name = self.get_file_name(filepath)
 
-        try: #seq2seq
-            self.index = int(self.file_name.split(".")[1])
-            self.set = self.file_name.split(".")[0]
-        except ValueError: #pervasive case
-            self.index = int(self.file_name.split(".")[0].split("_")[0]) 
-            self.set = "all"
-                
         if ids_dictionary:
+            try: #seq2seq
+                self.index = int(self.file_name.split(".")[1])
+                self.set = self.file_name.split(".")[0]
+            except ValueError: #pervasive case
+                try:
+                    self.set = "all"
+                    self.index = int(self.file_name.split(".")[0].split("_")[0]) 
+                except: #en-fr ids
+                    self.index = int(self.file_name.split(".")[0].split("_")[1]) 
+                    
             try:
                 self.id = ids_dictionary[self.set][self.index-1]
             except KeyError:
@@ -89,11 +103,11 @@ class Matrix(BaseMatrix):
                     flag_id_none=True
 
 class BaseCorpus():
-    def __init__(self, matrices_path, matrix_class, target=True, ids_dictionary=None):
+    def __init__(self, matrices_path, matrix_class, target=True, ids_dictionary=None, dispersion=0):
         self.matrices = []
         self.matrix_class = matrix_class
         for matrix_path in matrices_path:
-            self.matrices.append(matrix_class(matrix_path, target=target, ids_dictionary=ids_dictionary))
+            self.matrices.append(matrix_class(matrix_path, target=target, ids_dictionary=ids_dictionary, dispersion=dispersion))
 
     def get_average(self):
         return self.average_from_group(self.matrices, self.matrix_class.average_entropy)
@@ -108,9 +122,9 @@ class BaseCorpus():
         return acc / len(m_list)
 
 class Corpus(BaseCorpus):
-    def __init__(self, matrices_path, target=True, ids_path=None):
+    def __init__(self, matrices_path, target=True, ids_path=None, dispersion=0):
         ids_dictionary = self.read_ids(ids_path)
-        super().__init__(matrices_path, Matrix, target, ids_dictionary)
+        super().__init__(matrices_path, Matrix, target, ids_dictionary, dispersion)
     
     def read_ids(self, ids_path):
         if ids_path:
@@ -223,7 +237,7 @@ def main(args):
     print(len(matrices_path))
 
     
-    c = Corpus(matrices_path)
+    c = Corpus(matrices_path, dispersion=args.dispersion)
     if args.output_folder:
         
         output_folder = utils.folder(args.output_folder)

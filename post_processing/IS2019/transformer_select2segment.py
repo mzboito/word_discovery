@@ -5,14 +5,14 @@ from utils import generate_heads, folder, transformer_decoder
 from multiprocessing import Process
 
 class MultiHead_Matrix():
-    def __init__(self, matrices_root, layers, heads, id_matrix, target=True, segmentation=None):
+    def __init__(self, matrices_root, layers, heads, id_matrix, target=True, segmentation=None, dispersion=0):
         self.index = id_matrix
         self.matrices = []
         self.filepath = []
         for layer in range(1,(layers+1)):
             for head in heads:
                 matrix_path = MultiHead_Matrix.transformer_path(matrices_root, layer, head).replace("/*_", "/" + str(id_matrix) + "_").replace("*",".txt")
-                self.matrices += [BaseMatrix(matrix_path, target, segmentation)]
+                self.matrices += [BaseMatrix(matrix_path, target, segmentation, dispersion=dispersion)]
                 self.filepath += [matrix_path]
         self.min = self.get_min_entropy()
     
@@ -31,23 +31,23 @@ class MultiHead_Matrix():
         return "/".join([matrices_root, "TransformerDecoder", str(layer), "EncoderDecoderAttention"]) + "/*_" + head + "*"
 
 class Multi_entropy_selector():
-    def __init__(self, matrices_root, layers, heads, size, target=True):
+    def __init__(self, matrices_root, layers, heads, size, target=True, dispersion=0):
         self.matrices = []
         for i in range(1,(size+1)): 
-            self.matrices += [MultiHead_Matrix(matrices_root, layers,heads, str(i), target)]
+            self.matrices += [MultiHead_Matrix(matrices_root, layers,heads, str(i), dispersion=dispersion)]
 
     def wrapper(self):
         return [m.get_min_entropy() for m in self.matrices]
  
 class Single_entropy_selector():
-    def __init__(self, matrices_root, layers, heads, target=True):
+    def __init__(self, matrices_root, layers, heads, target=True, dispersion=0):
         self.matrices_root = matrices_root
         self.layers_entropy = dict()
         for layer in range(1,int(args.layers)+1):
             heads_entropy = []
             for head in heads:
                 matrices_path = glob.glob(MultiHead_Matrix.transformer_path(matrices_root, layer, head))
-                c = Corpus(matrices_path, target)
+                c = Corpus(matrices_path, target=target, dispersion=dispersion)
                 heads_entropy.append(c.get_average())
             print(layer, heads_entropy)
             self.layers_entropy[layer] = heads_entropy
@@ -81,12 +81,14 @@ class Output_writer():
     def write_single(path, f_name):
         with open(f_name,"w") as output_file:
             output_file.write(path + "\n")
-        
+
+    @staticmethod 
     def write_multiples(paths, f_name):
         with open(f_name,"w") as output_file:
             for path in paths:
                 output_file.write(path + "\n")
     
+    @staticmethod
     def write_summary(heads, wrapper, f_name):
         with open(f_name,"w") as output_file:
             output_file.write("\t".join([""] + heads) + "\n")
@@ -95,7 +97,7 @@ class Output_writer():
                 output_file.write("\t".join([str(layer)] + entropy_values) + "\n")
 
 def process_multi(args, heads):
-    corpus = Multi_entropy_selector(args.input_root_folder, args.layers, heads, args.size)
+    corpus = Multi_entropy_selector(args.input_root_folder, args.layers, heads, args.size, dispersion=args.dispersion)
     info = corpus.wrapper()
     average = sum([element[0] for element in info]) / len(info)
     paths = [element[1] for element in info]
@@ -104,7 +106,7 @@ def process_multi(args, heads):
     Output_writer.write_single(str(average), args.output_dir +  "/multihead_avg_entropy")
 
 def process_single(args, heads):
-    corpus = Single_entropy_selector(args.input_root_folder, args.layers, heads)
+    corpus = Single_entropy_selector(args.input_root_folder, args.layers, heads, dispersion=args.dispersion)
     value, path = corpus.wrapper(args.size)
     print(value)#, path)
     Output_writer.write_multiples(path, args.output_dir + "/singlehead_entropy_list")

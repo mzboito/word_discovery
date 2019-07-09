@@ -1,4 +1,4 @@
-import sys, glob
+import sys, glob, numpy
 import argparse
 
 N_set = ["50", "200", "500", "1000", "2000", "3000", "4000","5000"]
@@ -16,15 +16,19 @@ def read_set(f_file):
     return dictionary
             
 def read_N(f_file):
-    mono = dict()
-    bi = dict()
-    mono["base_file"] = f_file
-    for dictionary in [mono]:
-        for n_set in N_set:
-            dictionary[n_set] = read_set(dictionary["base_file"].replace(".cleaned","."+ n_set +".cleaned"))
-        dictionary["all"] = read_set(dictionary["base_file"])
-    del mono["base_file"]
-    return mono
+    dictionary = dict()
+    for n_set in N_set:
+        dictionary[n_set] = read_set(f_file.replace(".csv","."+ n_set +".csv"))
+    dictionary["all"] = read_set(f_file)
+    return dictionary
+
+def read_E(f_file):
+    dictionary = dict()
+    for i in numpy.arange(0.1,1.1,0.1):
+        i = str(numpy.around(i, decimals =1))
+        dictionary[i] = read_set(f_file.replace(".csv","."+ i +".csv"))
+    #dictionary["all"] = read_set(f_file)
+    return dictionary
 
 def precision(dictionary):
     correct = len(dictionary["1"])
@@ -79,10 +83,13 @@ def eval(args):
         dictionary = read_input(args.input, vocabulary)
         output_info = evaluate(dictionary, vocabulary)
         output_info = {"all": output_info}
-    elif args.ranking:
-        dictionary = read_N(args.input)
+    else:
+        if args.ranking:
+            dictionary = read_N(args.input)
+        if args.entropy_wall:
+            dictionary = read_E(args.input)
         output_info = evaluate_sets(dictionary, vocabulary)
-    write_output(output_info, args.output)
+        write_output(output_info, args.output)
     
 
 if __name__ == "__main__":
@@ -92,6 +99,7 @@ if __name__ == "__main__":
     parser.add_argument('--vocab', type=str, nargs='?', help='gold vocabulary')
     parser.add_argument('--input', type=str, nargs='?', help='generated vocabulary')
     parser.add_argument('--output', type=str, nargs='?', help='output file name')
+    parser.add_argument('--entropy-wall', default=False, action='store_true', help='uses entropy threshold for generating ranking, on its absence, uses correct types')
     args = parser.parse_args()
     if len(sys.argv) < 3:
         parser.print_help()
