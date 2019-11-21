@@ -18,7 +18,7 @@ def get_soft2hard_parser():
     # This target option is fixed because I do not experiment in the other direction anymore
     parser.add_argument('target',type=bool, default=True, nargs='?', help='default considers that the source is to segment, include this option to segment the target')
     # This changes the ids
-    parser.add_argument('--translation', default=False, action='store_true', help='Creates a parallel file with the generated translation. It requires a suffix')
+    parser.add_argument('--translation', type=str, nargs='?', help='Creates a parallel file with the generated translation. It requires a suffix')
     parser.add_argument('--transformer', default=False, action='store_true', help='set for transformer path getter')
     parser.add_argument('--pervasive', default=False, action='store_true', help='set for pervasive path getter')
     return parser
@@ -38,6 +38,7 @@ def segment_target(matrix, target, silence=None):
 
 
 def run(args):
+    print(args)
     sentencesPaths = glob.glob(args.matrices_prefix+"*.txt") 
     if args.output_file: #segmentation on a single file
         output_path = args.output_file
@@ -48,10 +49,13 @@ def run(args):
             if args.translation:
                 utils.write_output(translation, output_path+args.translation,"a")
 
+
     if args.individual_files and args.output_folder: #segmentation in individual files (with ID)
         files_output_list = utils.read_file(args.individual_files)
+        #print(files_output_list)
         folder = args.output_folder if args.output_folder[-1] == '/' else args.output_folder + '/'
         silence_dict = utils.read_lab_files(args.silence) if args.silence else None
+        #print(silence_dict)
         assert len(files_output_list) == len(sentencesPaths)
         for index in range(1, len(sentencesPaths)+1):
             file_path = utils.get_path(index, sentencesPaths, transformer=args.transformer, pervasive=args.pervasive)

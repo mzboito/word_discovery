@@ -8,10 +8,10 @@ import argparse
 
 
 #### STUFF I'M LAZY TO TYPE ON THE COMMAND LINE
-IDS_suffix = ".ids"
+'''
 seg_suffix = ".hs"
-sets = ["train+dev"]#["dev", "train"]
 flag_id_none=False #just to avoid multiples print of the same information when the id crashes
+'''
 
 '''
 1) generate matrices with entropy per line
@@ -24,15 +24,15 @@ flag_id_none=False #just to avoid multiples print of the same information when t
 def get_entropy_args(parser):
     parser.add_argument('--matrices-folder', type=str, nargs='?', help='soft-alignment probability matrices folder')
     parser.add_argument('--output-file', type=str, nargs='?', help='prefix name for the output name')
-    #/!\ I always work with target, so let's remove it for the moment
-    #parser.add_argument('target',type=bool, default=False, nargs='?', help='default considers that the source is to segment, include this option to segment the target')
+    parser.add_argument('--dispersion', type=float, nargs='?', help='Dispersion degree for ANE penalization')
     #optional: ids path for labeling and output folder for individual results
     parser.add_argument('--ids-path', type=str, nargs='?', help='Path for (train,dev).ids')
+    parser.add_argument('--buckets', default=False, action='store_true', help='folder for storing individual files')
     parser.add_argument('--output-folder', type=str, nargs='?', help='folder for storing individual files')
     #stuff for generating ZRC subsets
     parser.add_argument('--segmentation-path', type=str, nargs='?', help='Path for ZRC segmentation')
     parser.add_argument('--labs-path', type=str, nargs='?', help='Path for labs')
-    parser.add_argument('--dispersion', type=float, nargs='?', help='Dispersion degree for ANE penalization')
+    
     return parser
 
 
@@ -44,7 +44,6 @@ class BaseMatrix():
         self.entropies, self.alignments = self.entropy(self.lines)
         self.dispersion = dispersion
         self.file_name = self.get_file_name(filepath)
-        print(dispersion)
         if segmentation: #segmentation only necessary when producing buckets
             self.tokens = segment_target(self.lines, target)[0].split(" ")
         else:
@@ -85,16 +84,13 @@ class Matrix(BaseMatrix):
         if ids_dictionary:
             try: #seq2seq
                 self.index = int(self.file_name.split(".")[1])
-                self.set = self.file_name.split(".")[0]
             except ValueError: #pervasive case
                 try:
-                    self.set = "all"
                     self.index = int(self.file_name.split(".")[0].split("_")[0]) 
                 except: #en-fr ids
-                    self.index = int(self.file_name.split(".")[0].split("_")[1]) 
-                    
+                    self.index = int(self.file_name.split(".")[0].split("_")[1])      
             try:
-                self.id = ids_dictionary[self.set][self.index-1]
+                self.id = ids_dictionary[self.index-1]
             except KeyError:
                 self.id = None
                 global flag_id_none
@@ -128,29 +124,28 @@ class Corpus(BaseCorpus):
     
     def read_ids(self, ids_path):
         if ids_path:
-            ids = dict()
-            for id_set in sets:
-                id_list = utils.read_file(ids_path + id_set + IDS_suffix)
-                ids[id_set] = id_list
-            return ids
-        else:
-            return None
+            ids_dict = dict()
+            count = 1
+            with open(ids_path,"r") as input_ids:
+                for line in input_ids:
+                    ids_dict[count] = line.strip()
+                    count +=1
+            return ids_dict
+        return None
 
 class Buckets():
     def __init__(self, precision=2, number_buckets=10):
         self.precision = precision
         self.buckets = dict()
-        self.number_buckets = number
+        self.number_buckets = number_buckets
 
     def generate_buckets(self, corpus):
-        self.buckets = dict()
         for m in corpus.matrices:
             avg = round(m.average_entropy(), self.precision)
             if avg in self.buckets:
                 self.buckets[avg].append(m)
             else:
                 self.buckets[avg] = [m]
-        #return self.buckets
 
     def reduce_buckets(self, corpus):
         bucket = 1
@@ -199,6 +194,13 @@ class Output_writer():
             output_file.write(str(corpus.get_average()) + "\n")
 
     @staticmethod
+    def write_buckets(bucket_obj, f_name):
+        for key in bucket_obj.buckets.keys():
+            with open(f_name + "_" + str(key),"w") as output_bucket:
+                for element in bucket_obj.buckets[key]:
+                    output_bucket.write(element.filepath + "\n")
+        
+    @staticmethod
     def write_zrc_buckets(corpus, bucket_obj, zrc_path, labs_path, f_name):
         bucket_obj.generate_buckets(corpus)
         bucket_obj.reduce_buckets(corpus)
@@ -217,7 +219,7 @@ class Output_writer():
             for element in summary:
                 output_file.write("\t".join(element) + "\n")
     
-    @staticmethod
+    '''@staticmethod
     def write_buckets(f_name, corpus, bucket_obj, verbose=False):
         buckets.generate_buckets()
         d = bucket_obj.buckets
@@ -230,11 +232,11 @@ class Output_writer():
                 if verbose:
                     for m in d[key]:
                         output_file.write("\t{}\t{}\n".format(m.file_name, m.average_entropy()))
-                    output_file.write("\n")
+                    output_file.write("\n")'''
     
 def main(args):
     matrices_path = glob.glob(args.matrices_folder + "/*.txt")
-    print(len(matrices_path))
+    #print(len(matrices_path))
 
     
     c = Corpus(matrices_path, dispersion=args.dispersion)
@@ -248,6 +250,11 @@ def main(args):
         Output_writer.write_entropy(c,args.output_file)
 
     c.print_average()
+
+    if args.buckets:
+        b = Buckets(precision=1)
+        b.generate_buckets(c)
+        Output_writer.write_buckets(b, args.output_file)
 
     
     '''old bucket stuff

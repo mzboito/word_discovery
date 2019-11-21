@@ -34,7 +34,7 @@ def get_distributions(matrix, target=True, lab_lst=None):
             while index_labs < len(lab_lst) and lab_lst[index_labs][0] == utils.SIL_symbol:
                 index_labs +=1
         if lab_lst:
-            assert i +1 == len(matrix) or lab_lst[index_labs][0] == matrix[i][0]
+            assert (i+1) == len(matrix) or lab_lst[index_labs][0] == matrix[i][0]
         if last_col == -1: #first element
             index_list.append([i])
             discovered_tokens[-1] += matrix[i][0] #put the character in the beginning

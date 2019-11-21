@@ -29,7 +29,6 @@ class LogParser:
                 outputFile.write("\t".join(["step","dev_loss", "dev_bleu\n"]))
             for line in self.data:
                 outputFile.write("\t".join(line) + "\n")
-        print("wth")
 
     def parse_dev(self):
         data = []
@@ -82,8 +81,11 @@ class LogParser:
         '''
 
 def main():
-    pass
-
+    if len(sys.argv) < 4:
+        exit(1)
+    else:
+        log = LogParser(sys.argv[1], sys.argv[2], int(sys.argv[3]))
+        log.write_out()
 if __name__ == '__main__':
     main()
 

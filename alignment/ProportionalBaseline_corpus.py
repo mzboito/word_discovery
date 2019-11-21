@@ -9,20 +9,20 @@ import glob
 #FR = "je te remercie pour le bien que tu m&apos; as fait"
 
 def segment(ph, target):
-    #create two lists
     ph_list = ph.strip().split(" ")
-    target_list = target.replace("&apos;","\'").strip().split(" ")
+    target = target.replace("&apos;","\'").strip()
+    target_list = target.split(" ")
     target_list_size = len(target_list)
+
     #get proportion of number of phonemes per symbol
-    ph_number = len(ph_list) #phones number
-    gr_number = len(target.replace("&apos;","\'").strip().replace(" ","")) #graphemes number
-    #get proportion ph_number / gr_number
-    ph_per_grapheme = int(math.floor(ph_number/float(gr_number)))
-    #print ph_number, gr_number, ph_per_grapheme, ph_per_grapheme * gr_number
+    ph_number = len(ph_list)
+    gr_number = len(target.replace(" ",""))
+    ph_per_grapheme = int(math.floor(ph_number/float(gr_number))) #get proportion ph_number / gr_number
+    ph_per_word = int(math.floor(ph_number/float(target_list_size)))
+    #print(ph_number, gr_number, ph_per_grapheme, ph_per_grapheme * gr_number, ph_per_word)
     #check the remain
-    rest = ph_number - ph_per_grapheme*gr_number
-    ph_per_word = 0
-    if ph_per_grapheme == 0: #no way of creating an alignment
+    rest = ph_number - (ph_per_grapheme * gr_number)
+    if ph_per_grapheme == 0 and ph_per_word == 1: #no way of creating an alignment
         return ph.strip("\n")
     if(rest > 0): #if we cannot separate in equal parts
         target_words = len(target.split(" "))
@@ -57,8 +57,8 @@ def read_file(path):
     return [line for line in codecs.open(path,"r","uTF-8")]
 
 def print_usage():
-    print "Proportional baseline - corpus version \n"
-    print "arg1: unsegmented source (with blank spaces between the symbols)\narg2: aligned target translation\narg3: output file name\n"
+    print("Proportional baseline - corpus version \n")
+    print("arg1: unsegmented source (with blank spaces between the symbols)\narg2: aligned target translation\narg3: output file name\n")
 
 def main():
     if len(sys.argv) < 4:

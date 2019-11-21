@@ -35,8 +35,10 @@ def clean_line(inputStr):
     inputStr = inputStr.replace(UNK_symbol,"").replace(EOS_symbol,"").replace(BOS_symbol,"")
     while inputStr and inputStr[0] == " ":
         inputStr = inputStr[1:]
-    while("  " in inputStr):
+    while "  " in inputStr:
         inputStr = inputStr.replace("  "," ")
+    while inputStr and inputStr[-1] == " ":
+        inputStr = inputStr[:-1]
     return inputStr
 
 def folder(f_str):

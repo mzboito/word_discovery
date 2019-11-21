@@ -54,6 +54,7 @@ def type_eval(corpus):
 
 def boundary_eval(corpus):
     correctBoundaries, boundariesSeg, boundariesGold = corpus.boundary_score()
+    print(correctBoundaries, boundariesSeg, boundariesGold)
     return score(correctBoundaries, boundariesSeg, boundariesGold)
 
 def _evaluate(segmentation, gold):
