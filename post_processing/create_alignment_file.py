@@ -9,8 +9,17 @@ becomes
 '''
 
 
-def read_file(f_path):
-    return [line for line in codecs.open(f_path, "r","utf-8")]
+
+def create_aligned_sequence(src_index, tgt_index):
+    assert len(src_index) == len(tgt_index)
+    alignments = []
+    for i in range(len(src_index)): #words
+        s_i = src_index[i]
+        for t_i in tgt_index[i]: #list of phones
+            #for t_i in segmentation: #index of every phone
+            a = str(s_i)+"-"+str(t_i)
+            alignments.append(a)
+    return alignments
 
 
 def run(args):
@@ -24,37 +33,30 @@ def run(args):
         for index in range(1, len(sentencesPaths)+1):
             file_path = utils.get_path(index, sentencesPaths, transformer=args.transformer, pervasive=args.pervasive)
             sentence_id = files_output_list[index-1].split("/")[-1]
-            file_name = sentence_id + ".hs" 
             sil_list = silence_dict[sentence_id] if args.silence else None
-            finalstr, translation = segment(file_path, target=args.target, silence=sil_list)
-            print(finalstr, translation)
-            exit(1)
-            #utils.write_output(finalstr, folder + file_name)
-            '''if args.translation:
-                utils.write_output(translation, folder + file_name +args.translation)'''
+            matrix = utils.read_matrix_file(file_path)
+            discovered_words, discovered_translation, tgt_order, src_order = get_distributions(matrix, args.target, lab_lst=sil_list)
+            tgt_order = tgt_order[:-1] #removes </S>
+            src_order = src_order[:-1]
+            final_line = create_aligned_sequence(src_order, tgt_order)
+            file_name = sentence_id + ".align" 
+            utils.write_output(" ".join(final_line), folder + file_name)
     
     elif args.output_folder: #segmentation in individual files (without ID)
         folder = args.output_folder if args.output_folder[-1] == '/' else args.output_folder + '/'
         silence_dict = utils.read_lab_files(args.silence) if args.silence else None
         for sentencePath in sentencesPaths:
             sentence_id = ".".join(sentencePath.split("/")[-1].split(".")[:-1])
-            #print(silence_dict)
             sil_list = silence_dict[sentence_id] if args.silence else None
             matrix = utils.read_matrix_file(sentencePath)
-            discovered_words, index_list, discovered_translation = get_distributions(matrix, args.target, lab_lst=sil_list)
-            print(discovered_translation, discovered_words)
-            #finalstr, translation = segment(sentencePath, target=args.target, silence=sil_list)
-            #print(finalstr, translation)
-            exit(1)
-            file_name = sentencePath.split("/")[-1] + ".hs"
-            '''utils.write_output(finalstr, folder + file_name)
-            if args.translation:
-                utils.write_output(translation, folder + file_name +args.translation)'''
+            discovered_words, discovered_translation, tgt_order, src_order = get_distributions(matrix, args.target, lab_lst=sil_list)
+            tgt_order = tgt_order[:-1] #removes </S>
+            src_order = src_order[:-1]
+            final_line = create_aligned_sequence(src_order, tgt_order)
+            file_name = sentencePath.split("/")[-1] + ".align"
+            utils.write_output(" ".join(final_line), folder + file_name)
 
     
-    
-
-
 if __name__ == "__main__":
     parser = get_soft2hard_parser()
     args = parser.parse_args()

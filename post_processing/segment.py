@@ -28,7 +28,8 @@ def segment(file_path, target=True, silence=None):
     return segment_target(matrix, target, silence=silence)
 
 def segment_target(matrix, target, silence=None):
-    discovered_words, index_list, discovered_translation = s2h.get_distributions(matrix, target, lab_lst=silence)
+    discovered_words, discovered_translation, _, _ = s2h.get_distributions(matrix, target, lab_lst=silence)
+    discovered_words = s2h.cat_tokens(discovered_words)
     assert len(discovered_words) == len(discovered_translation)
     if discovered_words[-1] == utils.EOS_symbol: #if segmented the EOS symbol, we need to remove it and its aligned translation
         discovered_words = discovered_words[:-1]

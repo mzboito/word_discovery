@@ -13,6 +13,7 @@ def get_merger_parser():
 	parser.add_argument('--ids-file', type=str, nargs='?', help='id files')
 	parser.add_argument('--transformer', default=False, action='store_true', help='set for transformer path getter')
 	parser.add_argument('--pervasive', default=False, action='store_true', help='set for pervasive path getter')
+	parser.add_argument('--pierre', default=False, action='store_true', help='matrices start in 0')
 	return parser
 
 def merge_matrices(matrices_list):
@@ -71,8 +72,8 @@ def get_file_from_index(files_dict, folder, f_id):
 			return key
 	raise Exception("PROBLEM GETTING KEY FROM DICTIONARY:\nid: " + str(f_id) + " folder: " + folder)
 
-def read_ids_file(f_path):
-	count = 1
+def read_ids_file(f_path, zero=False):
+	count = 1 if not zero else 0
 	intern_dict = dict() #creates intern dict
 	with open(f_path, "r") as input_file: #reads id file
 		for line in input_file:
@@ -86,7 +87,7 @@ def load_files(args):
 	for folder in folders:
 		FILES_DICT[folder] = list() #creates entry for folder
 		file_name = args.ids_file
-		FILES_DICT[folder] = read_ids_file(args.ids_file)
+		FILES_DICT[folder] = read_ids_file(args.ids_file,zero=args.pierre)
 	return FILES_DICT
 
 def print_settings(args):
@@ -104,17 +105,28 @@ def merger(args):
 	folders = generate_folders(args.model_prefix, args.number)
 	FILES_DICT = load_files(args) #load files
 	size = len(FILES_DICT[folders[-1]])
-
+	
 	for i in range(1, args.number):
 		assert len(FILES_DICT[folders[i]]) == size, "PROBLEM READING THE LISTS (INDEX = " + str(i) + ")"
 
-	for i in range(1, size+1):
+	if not args.pierre:
+		for i in range(1, size+1):
 
-		file_i = get_file_from_index(FILES_DICT, folders[0], i)
-		matrices = find_matrices(args.root_folder, folders, FILES_DICT, file_i)
-		avg_matrix = merge_matrices(matrices)
-		output_path = "/".join([args.output_folder, file_i + ".txt"])
-		write_output_matrix(output_path, avg_matrix)
+			file_i = get_file_from_index(FILES_DICT, folders[0], i)
+			#print(i, file_i)
+			matrices = find_matrices(args.root_folder, folders, FILES_DICT, file_i)
+			avg_matrix = merge_matrices(matrices)
+			output_path = "/".join([args.output_folder, file_i + ".txt"])
+			write_output_matrix(output_path, avg_matrix)
+	else:
+		for i in range(size):
+
+			file_i = get_file_from_index(FILES_DICT, folders[0], i)
+			#print(i, file_i)
+			matrices = find_matrices(args.root_folder, folders, FILES_DICT, file_i)
+			avg_matrix = merge_matrices(matrices)
+			output_path = "/".join([args.output_folder, file_i + ".txt"])
+			write_output_matrix(output_path, avg_matrix)
 
 if __name__ == '__main__':
 	parser = get_merger_parser()

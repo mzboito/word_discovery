@@ -27,16 +27,6 @@ def read_vocab_multiple_files(path_raw, path_clean):
 
 
 
-def insert_grapheme(token, clean_token, lst):
-    for i in range(len(lst)):
-        element, e_lst = lst[i]
-        if element == token: #found match
-            if not clean_token in e_lst: #new grapheme
-                lst[i][1].append(clean_token)
-            else:
-                break
-                
-
 def read_vocab_single_file(path_raw, path_clean):
     raw_sentences = utils.read_file(path_raw)
     clean_sentences = utils.read_file(path_clean)
@@ -48,12 +38,8 @@ def read_vocab_single_file(path_raw, path_clean):
         tokens = raw_sentences[i].split(" ")
         tokens_clean = clean_sentences[i].split(" ")
         for i in range(len(tokens)): #for every token in the sentence
-            if tokens[i] != "SIL":
-                if is_new(tokens[i], types_list): # new phonetization
-                    types_list.append([tokens[i],[tokens_clean[i].lower()]])
-                else: # same phonetization, but maybe new graphemization
-                    insert_grapheme(tokens[i], tokens_clean[i].lower(),types_list)
-
+            if tokens[i] != "SIL" : #and is_new(tokens[i], types_list):
+                types_list.append([tokens[i],tokens_clean[i].lower()])
         for element in tokens_clean: #adds frequencies for list
             element = element.lower()
             if element in frequency_dict:
@@ -66,8 +52,7 @@ def read_vocab_single_file(path_raw, path_clean):
 def write_vocabulary(f_path, types, dictionary):
     with codecs.open(f_path, "w","utf-8") as output_file:
         for word_lst in types:
-            print(word_lst)
-            output_file.write("\t".join([word_lst[0]] + word_lst[1]) + "\t" + str(0) + "\n") #dictionary[word_lst[1].lower()]) + "\n")
+            output_file.write("\t".join(word_lst + [str(dictionary[word_lst[1].lower()])]) + "\n")
 
 def generate(args):
     
@@ -79,7 +64,6 @@ def generate(args):
     else:
         types, frequency = read_vocab_multiple_files(path_raw, path_clean)
 
-    #print(types)
     output_file = args.output_file
     write_vocabulary(output_file, types, frequency)
 

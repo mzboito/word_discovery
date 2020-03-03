@@ -24,7 +24,7 @@ flag_id_none=False #just to avoid multiples print of the same information when t
 def get_entropy_args(parser):
     parser.add_argument('--matrices-folder', type=str, nargs='?', help='soft-alignment probability matrices folder')
     parser.add_argument('--output-file', type=str, nargs='?', help='prefix name for the output name')
-    parser.add_argument('--dispersion', type=float, nargs='?', help='Dispersion degree for ANE penalization')
+    parser.add_argument('--dispersion', type=float, default=0, help='Dispersion degree for ANE penalization')
     #optional: ids path for labeling and output folder for individual results
     parser.add_argument('--ids-path', type=str, nargs='?', help='Path for (train,dev).ids')
     parser.add_argument('--buckets', default=False, action='store_true', help='folder for storing individual files')
