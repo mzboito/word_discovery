@@ -20,12 +20,6 @@ from train import load_model, prepare_dataloaders
 from text import text_to_sequence
 import argparse
 
-
-### DEFAULT: PATH FOR THE MODELS
-checkpoint_path = "tacotron2_statedict.pt"
-waveglow_path = 'waveglow/waveglow_256channels_ljs_v2.pt'
-###
-
 class Sentence():
     def __init__(self, alignment, id_wav, text, src_len, tgt_len, audio=None):
         self.id_wav = id_wav
@@ -103,7 +97,7 @@ def write_matrices(corpus, output_folder):
     for sentence in corpus.items():
         f_name = output_folder + "/" + sentence.id_wav.split("/")[-1].replace("wav","txt")
         with open(f_name,"w") as matrix:
-            header = "\t".join(sentence.text) + "\n" 
+            header = "\t".join("." + sentence.text) + "\n" 
             matrix.write(header)
             alignment = sentence.alignment[:sentence.tgt_len,:sentence.src_len]
             for i in range(len(alignment)):
@@ -125,13 +119,21 @@ def check_folder(directory):
     except:
         os.makedirs(directory)
 
+def write_textgrid(textgrid, sentence, output_folder):
+    pass
+
+def write_textgrids(corpus, output_folder):
+    for sentence in corpus.items():
+        textgrid = sentence.generate_textgrid()
+        write_textgrid(textgrid, sentence, output_folder)
+
 def generate(args):
-    hparams = create_hparams()
-    hparams.sampling_rate = 22050
     checkpoint_path = args.checkpoint_path
     check_folder(args.output_folder)
 
     #1 LOAD TACOTRON
+    hparams = create_hparams()
+    hparams.sampling_rate = 22050
     model = load_model(hparams)
     model.load_state_dict(torch.load(checkpoint_path)['state_dict'])
     _ = model.cuda().eval()#.half()
