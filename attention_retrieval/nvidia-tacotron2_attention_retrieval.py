@@ -128,6 +128,13 @@ def write_textgrids(corpus, output_folder):
         textgrid = sentence.generate_textgrid()
         write_textgrid(textgrid, sentence, output_folder)
 
+def save_checkpoint(corpus, audio_flag, output_folder):
+    #3 WRITING MATRICES
+    write_matrices(corpus, output_folder)
+    #4 GENERATING AUDIOS
+    if audio_flag:
+        write_audios(corpus, output_folder)
+
 def generate(args):
     checkpoint_path = args.checkpoint_path
     check_folder(args.output_folder)
@@ -157,20 +164,22 @@ def generate(args):
         train_loader, val_loader, sanity_check, _ = load_data(hparams)
         train_items = sanity_check[0].audiopaths_and_text
         val_items = sanity_check[1].audiopaths_and_text
-
-        index = 0
-        corpus = Corpus()       
         counter = args.save_interval
 
         #MAIN LOOP
         sets = [train_loader, val_loader] if args.valid else [train_loader]
-        for data_loader in sets:
+        items = [train_items, val_items] if args.valid else [train_items]
+        for i in range(len(sets)):
+            data_loader = sets[i]
+            ref_items = items[i]
+            index = 0
+            corpus = Corpus() 
             for i, batch in enumerate(data_loader):
                 print("Batch number: ", i)
                 x, _ = model.parse_batch(batch)
-                text_padded, input_lengths, mel_padded, max_len, output_lengths = x
+                _, input_lengths, _, _, output_lengths = x
                 _, mel_outputs_postnet, _, alignments = model(x)
-                texts = [train_items[index], train_items[index+1]]
+                texts = [ref_items[index], ref_items[index+1]]
                 #ids are sorted considering descending order (check data_utils.py TextMelCollate call)
                 texts.sort(key=lambda x: len(x[1]), reverse=True)
                 for j in range(hparams.batch_size):
@@ -184,13 +193,12 @@ def generate(args):
                 #SAVING THE INFORMATION
                 if counter == 0: 
                     print("Saving checkpoint! Saving ", args.save_interval, " matrices.")
-                    #3 WRITING MATRICES
-                    write_matrices(corpus, args.output_folder)
-                    #4 GENERATING AUDIOS
-                    if args.audios:
-                        write_audios(corpus, args.output_folder)
+                    save_checkpoint(corpus, args.audios, args.output_folder)
                     corpus = Corpus() #wipes the information to free memory
                     counter = args.save_interval
+            print("Last saving checkpoint! Saving the remaining matrices.")
+            save_checkpoint(corpus, args.audios, args.output_folder)
+
            
 
 if __name__ == "__main__":
