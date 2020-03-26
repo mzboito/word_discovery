@@ -20,7 +20,7 @@ def get_max_prob_col(line, sentenceMatrix):
 def cat_tokens(discovered_tokens):
     return ["".join(token) for token in discovered_tokens]
 
-def get_distributions(matrix, target=True, lab_lst=None):
+def get_distributions(matrix, target=True, lab_lst=None,eos=True):
     if not target:
         matrix = [list(i) for i in zip(*matrix)]
     tgt_index = []
@@ -56,7 +56,8 @@ def get_distributions(matrix, target=True, lab_lst=None):
         last_col = col
     src_index.append(last_col)
     discovered_translation.append(last_alignment)
-    discovered_tokens[-1] = ["".join(discovered_tokens[-1]).replace(utils.EOS_symbol,"")] #("</S>","")
+    if eos:
+        discovered_tokens[-1] = ["".join(discovered_tokens[-1]).replace(utils.EOS_symbol,"")] #("</S>","")
     return discovered_tokens, discovered_translation, tgt_index, src_index
 
 def get_matrix_entropy(f_path, dictionary, lab_lst=None, str_id=None, dispersion=False):

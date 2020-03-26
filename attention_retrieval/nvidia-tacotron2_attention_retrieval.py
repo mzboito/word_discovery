@@ -98,8 +98,9 @@ def write_matrices(corpus, output_folder):
         f_name = output_folder + "/" + sentence.id_wav.split("/")[-1].replace("wav","txt")
         with open(f_name,"w") as matrix:
             header = "\t".join("." + sentence.text) + "\n" 
+            header_size = len(sentence.text) + 1 #all chars + the tab
             matrix.write(header)
-            alignment = sentence.alignment[:sentence.tgt_len,:sentence.src_len]
+            alignment = sentence.alignment[:sentence.tgt_len,:header_size]
             for i in range(len(alignment)):
                 line = alignment[i]
                 str_line = line_to_str(line)
@@ -133,7 +134,7 @@ def generate(args):
 
     #1 LOAD TACOTRON
     hparams = create_hparams()
-    hparams.sampling_rate = 22050
+    #hparams.sampling_rate = 22050
     model = load_model(hparams)
     model.load_state_dict(torch.load(checkpoint_path)['state_dict'])
     _ = model.cuda().eval()#.half()
