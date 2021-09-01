@@ -76,6 +76,7 @@ def run(args):
             #print(silence_dict)
             sil_list = silence_dict[sentence_id] if args.silence else None
             finalstr, translation = segment(sentencePath, target=args.target, silence=sil_list)
+            finalstr = finalstr.replace("<mono>","").replace("<bi>","")
             file_name = sentencePath.split("/")[-1] + ".hs"
             utils.write_output(finalstr, folder + file_name)
             if args.translation:

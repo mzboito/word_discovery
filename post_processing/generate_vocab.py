@@ -13,7 +13,7 @@ def read_vocab_multiple_files(path_raw, path_clean):
     for f_path in labs_path:
         #read same sentence twice (encoded and clean)
         tokens = [line.strip().split(" ")[2] for line in open(f_path, "r")] 
-        tokens_clean = [line.strip().split(" ")[2] for line in open(f_path.replace(path_raw, path_clean).replace(".encoded","") , "r")]
+        tokens_clean = [line.strip().split(" ")[2] for line in open(f_path.replace(path_raw, path_clean).replace(".encoded",""),"r")]
         for i in range(len(tokens)): #for every token in the sentence
             if tokens[i] != "SIL" and is_new(tokens[i], types_list):
                 types_list.append([tokens[i],tokens_clean[i].lower()])
@@ -67,7 +67,7 @@ def write_vocabulary(f_path, types, dictionary):
     with codecs.open(f_path, "w","utf-8") as output_file:
         for word_lst in types:
             print(word_lst)
-            output_file.write("\t".join([word_lst[0]] + word_lst[1]) + "\t" + str(0) + "\n") #dictionary[word_lst[1].lower()]) + "\n")
+            output_file.write("\t".join([word_lst[0]] + [word_lst[1]]) + "\t" + str(dictionary[word_lst[1].lower()]) + "\n")
 
 def generate(args):
     

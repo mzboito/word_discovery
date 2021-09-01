@@ -28,9 +28,9 @@ def main():
             flag = True
 
     #segmentation: a20 a31 a37 a31 
-    #print(len(dpseg_clean))
+    print(len(dpseg_clean))
     #print(dpseg_clean[33185:])
-    #print(segmentation)
+    print(len(segmentation))
     assert len(dpseg_clean) == len(segmentation)
 
     for j in range(len(segmentation)):
@@ -39,6 +39,8 @@ def main():
         index = 0
         new_line = ""
         for i in range(len(line)):
+            #print(dpseg_line,index)
+            #print(new_line)
             if dpseg_line[index] == " ": #if found a boundary
                 new_line += " "
                 index+=1
